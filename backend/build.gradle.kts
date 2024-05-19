@@ -16,6 +16,7 @@ application {
 
 repositories {
     mavenCentral()
+    maven(url = "https://jitpack.io")
 }
 
 dependencies {
@@ -23,6 +24,10 @@ dependencies {
     implementation(libs.ktor.server)
     implementation(libs.ktor.server.host)
     implementation(libs.ktor.server.swagger)
+    implementation(libs.ktor.server.openapi)
+    implementation(libs.openapi.generator)
+    implementation(libs.swagger.codegen)
+    implementation(libs.kompendium)
     implementation(libs.ktor.server.websockets)
     implementation(libs.ktor.serialization.json)
     implementation(libs.ktor.server.neg)
@@ -41,3 +46,5 @@ dependencies {
     testImplementation(libs.ktor.server.tests)
     testImplementation(libs.kotlin.junit)
 }
+
+tasks.register<OpenApiGenerationTask>("generateOpenAPIYaml")

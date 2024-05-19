@@ -1,0 +1,126 @@
+---
+openapi: "3.0.3"
+jsonSchemaDialect: "https://json-schema.org/draft/2020-12/schema"
+info:
+  title: "Violet API"
+  version: "1.0.0"
+  summary: "Swagger documentation for the Violet backend API"
+  description: "Here you can find all the necessary endpoints to consume the Violet\
+    \ API"
+  termsOfService: "https://example.com"
+  contact:
+    name: "Gleb Gutnik"
+  license:
+    name: "Open license"
+servers: []
+paths:
+  /users:
+    post:
+      tags: []
+      summary: "Create a user"
+      description: "User creation endpooint"
+      parameters: []
+      requestBody:
+        description: "Create a user"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExposedUser"
+        required: true
+      responses:
+        "201":
+          description: "User successfully created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/String"
+      deprecated: false
+    parameters: []
+  /users/{id}:
+    get:
+      tags: []
+      summary: "Get a user"
+      description: "User retrieval endpoint"
+      parameters:
+      - name: "id"
+        in: "path"
+        schema:
+          type: "number"
+          format: "int32"
+        required: true
+        deprecated: false
+      responses:
+        "200":
+          description: "User successfully retrieved"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExposedUser"
+        "404":
+          description: "User not found"
+        "400":
+          description: "User request is inavlid"
+      deprecated: false
+    put:
+      tags: []
+      summary: "Update a user"
+      description: "User update endpoint"
+      parameters:
+      - name: "id"
+        in: "path"
+        schema:
+          type: "number"
+          format: "int32"
+        required: true
+        deprecated: false
+      requestBody:
+        description: "Update a user"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExposedUser"
+        required: true
+      responses:
+        "200":
+          description: "User successfully updated"
+        "400":
+          description: "User update request is invalid"
+      deprecated: false
+    delete:
+      tags: []
+      summary: "Delete a user"
+      description: "User deletion endpoint"
+      parameters:
+      - name: "id"
+        in: "path"
+        schema:
+          type: "number"
+          format: "int32"
+        required: true
+        deprecated: false
+      responses:
+        "200":
+          description: "User successfully deleted"
+        "400":
+          description: "User deletion request is invalid"
+      deprecated: false
+    parameters: []
+webhooks: {}
+components:
+  schemas:
+    String:
+      type: "string"
+    ExposedUser:
+      type: "object"
+      properties:
+        age:
+          type: "number"
+          format: "int32"
+        name:
+          type: "string"
+      required:
+      - "age"
+      - "name"
+  securitySchemes: {}
+security: []
+tags: []

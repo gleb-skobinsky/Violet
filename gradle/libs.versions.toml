@@ -19,6 +19,9 @@ logback = "1.5.5"
 postgres = "42.7.3"
 exposed = "0.41.1"
 h2 = "2.1.214"
+swagger-codegen = "1.0.47"
+openapi-generator = "0.3-beta.3"
+kompendium = "3.3.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
@@ -34,6 +37,7 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 ktor-server = { module = "io.ktor:ktor-server-core-jvm" }
 ktor-server-host = { module = "io.ktor:ktor-server-host-common-jvm" }
 ktor-server-swagger = { module = "io.ktor:ktor-server-swagger-jvm" }
+ktor-server-openapi = { module = "io.ktor:ktor-server-openapi" }
 ktor-server-websockets = { module = "io.ktor:ktor-server-websockets-jvm" }
 ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json-jvm" }
 ktor-server-neg = { module = "io.ktor:ktor-server-content-negotiation-jvm" }
@@ -50,6 +54,9 @@ ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 ktor-server-yaml-config = { module = "io.ktor:ktor-server-config-yaml", version.ref = "ktor" }
 ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm" }
+swagger-codegen = { module = "io.swagger.codegen.v3:swagger-codegen-generators", version.ref = "swagger-codegen" }
+openapi-generator = { module = "com.github.papsign:Ktor-OpenAPI-Generator", version.ref = "openapi-generator"}
+kompendium = { module = "io.bkbn:kompendium-core", version.ref = "kompendium" }
 
 kotlin-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
