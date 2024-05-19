@@ -1,11 +1,10 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.jetbrains.compose)
 }
 
 kotlin {
@@ -25,7 +24,7 @@ kotlin {
         }
         binaries.executable()
     }
-    
+
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -33,7 +32,7 @@ kotlin {
             }
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -44,9 +43,9 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
-        
+
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
@@ -98,6 +97,6 @@ android {
 }
 
 
-compose.experimental {
-    web.application {}
+compose.web {
+
 }

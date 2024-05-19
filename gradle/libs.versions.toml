@@ -11,16 +11,16 @@ androidx-espresso-core = "3.5.1"
 androidx-material = "1.11.0"
 androidx-test-junit = "1.1.5"
 compose = "1.6.5"
-compose-plugin = "1.6.2"
+compose-plugin = "1.6.10-rc03"
 junit = "4.13.2"
-kotlin = "1.9.23"
-ktor = "2.3.10"
+kotlin = "1.9.24"
+ktor = "2.3.11"
 logback = "1.5.5"
+postgres = "42.7.3"
+exposed = "0.41.1"
+h2 = "2.1.214"
 
 [libraries]
-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
 androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
@@ -30,15 +30,37 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+
+ktor-server = { module = "io.ktor:ktor-server-core-jvm" }
+ktor-server-host = { module = "io.ktor:ktor-server-host-common-jvm" }
+ktor-server-swagger = { module = "io.ktor:ktor-server-swagger-jvm" }
+ktor-server-websockets = { module = "io.ktor:ktor-server-websockets-jvm" }
+ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json-jvm" }
+ktor-server-neg = { module = "io.ktor:ktor-server-content-negotiation-jvm" }
+postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+h2 = { module = "com.h2database:h2", version.ref = "h2" }
+ktor-server-logging = { module = "io.ktor:ktor-server-call-logging-jvm" }
+ktor-server-auth = { module = "io.ktor:ktor-server-auth-jvm" }
+ktor-client-core = { module = "io.ktor:ktor-client-core-jvm" }
+ktor-client-apache = { module = "io.ktor:ktor-client-apache-jvm" }
+ktor-server-auth-jwt = { module = "io.ktor:ktor-server-auth-jwt-jvm" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
-ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
-ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
-ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor" }
+ktor-server-yaml-config = { module = "io.ktor:ktor-server-config-yaml", version.ref = "ktor" }
+ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm" }
+
+kotlin-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
 
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
-jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
-kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
-kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+ktor-plugin = { id = "io.ktor.plugin", version.ref = "ktor" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
