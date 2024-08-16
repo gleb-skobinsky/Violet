@@ -14,6 +14,21 @@ info:
     name: "Open license"
 servers: []
 paths:
+  /json/kotlinx-serialization:
+    get:
+      tags: []
+      summary: "Serialization test"
+      description: "Hello world from kotlinx serialization"
+      parameters: []
+      responses:
+        "200":
+          description: "Check success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Map-String-String"
+      deprecated: false
+    parameters: []
   /users:
     post:
       tags: []
@@ -130,6 +145,10 @@ paths:
 webhooks: {}
 components:
   schemas:
+    Map-String-String:
+      additionalProperties:
+        type: "string"
+      type: "object"
     String:
       type: "string"
     ExposedUser:
