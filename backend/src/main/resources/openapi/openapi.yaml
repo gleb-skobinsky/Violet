@@ -105,6 +105,28 @@ paths:
           description: "User deletion request is invalid"
       deprecated: false
     parameters: []
+  /direct-login:
+    post:
+      tags: []
+      summary: "Login"
+      description: "Login a user with his username and password"
+      parameters: []
+      requestBody:
+        description: "Login a user"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExposedUser"
+        required: true
+      responses:
+        "201":
+          description: "User successfully logged in"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenData"
+      deprecated: false
+    parameters: []
 webhooks: {}
 components:
   schemas:
@@ -113,14 +135,20 @@ components:
     ExposedUser:
       type: "object"
       properties:
-        age:
-          type: "number"
-          format: "int32"
         name:
           type: "string"
+        password:
+          type: "string"
       required:
-      - "age"
       - "name"
+      - "password"
+    TokenData:
+      type: "object"
+      properties:
+        token:
+          type: "string"
+      required:
+      - "token"
   securitySchemes: {}
 security: []
 tags: []
