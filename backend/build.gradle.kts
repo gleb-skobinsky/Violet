@@ -20,6 +20,7 @@ repositories {
 }
 
 dependencies {
+    implementation(libs.simple.mail)
     implementation(projects.shared)
     implementation(libs.ktor.server)
     implementation(libs.ktor.server.host)

@@ -22,6 +22,7 @@ h2 = "2.1.214"
 swagger-codegen = "1.0.47"
 openapi-generator = "0.3-beta.3"
 kompendium = "3.3.1"
+simplejavaMail = "8.11.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
@@ -49,13 +50,14 @@ ktor-server-logging = { module = "io.ktor:ktor-server-call-logging-jvm" }
 ktor-server-auth = { module = "io.ktor:ktor-server-auth-jvm" }
 ktor-client-core = { module = "io.ktor:ktor-client-core-jvm" }
 ktor-client-apache = { module = "io.ktor:ktor-client-apache-jvm" }
+simple-mail = { module = "org.simplejavamail:simple-java-mail", version.ref = "simplejavaMail" }
 ktor-server-auth-jwt = { module = "io.ktor:ktor-server-auth-jwt-jvm" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 ktor-server-yaml-config = { module = "io.ktor:ktor-server-config-yaml", version.ref = "ktor" }
 ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm" }
 swagger-codegen = { module = "io.swagger.codegen.v3:swagger-codegen-generators", version.ref = "swagger-codegen" }
-openapi-generator = { module = "com.github.papsign:Ktor-OpenAPI-Generator", version.ref = "openapi-generator"}
+openapi-generator = { module = "com.github.papsign:Ktor-OpenAPI-Generator", version.ref = "openapi-generator" }
 kompendium = { module = "io.bkbn:kompendium-core", version.ref = "kompendium" }
 
 kotlin-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
