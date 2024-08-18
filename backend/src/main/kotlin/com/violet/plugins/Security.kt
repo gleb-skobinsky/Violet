@@ -2,7 +2,11 @@ package com.violet.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.violet.database.UserServiceProvider
+import com.violet.email.data.EmailData
+import com.violet.email.data.EmailService
+import com.violet.users.data.ExposedUser
+import com.violet.users.data.UserService
+import com.violet.users.data.SimpleUserRequest
 import io.bkbn.kompendium.core.metadata.PostInfo
 import io.bkbn.kompendium.core.plugin.NotarizedRoute
 import io.ktor.client.HttpClient
@@ -31,7 +35,10 @@ import io.ktor.server.sessions.set
 import kotlinx.serialization.Serializable
 import java.util.Date
 
-fun Application.configureSecurity() {
+fun Application.configureSecurity(
+    userService: UserService,
+    emailService: EmailService
+) {
     authentication {
         oauth("auth-oauth-google") {
             urlProvider = { "http://localhost:8080/callback" }
@@ -88,7 +95,7 @@ fun Application.configureSecurity() {
                     description("Login a user with his username and password")
                     request {
                         description("Login a user")
-                        requestType<ExposedUser>()
+                        requestType<SimpleUserRequest>()
                     }
                     response {
                         description("User successfully logged in")
@@ -99,7 +106,7 @@ fun Application.configureSecurity() {
             }
             post {
                 val user = call.receive<ExposedUser>()
-                val dbUser = UserServiceProvider.service.readByName(user.name) ?: run {
+                val dbUser = userService.readByEmail(user.email) ?: run {
                     call.respond(HttpStatusCode.NotFound, "User name not found")
                     return@post
                 }
@@ -110,10 +117,43 @@ fun Application.configureSecurity() {
                 val token = JWT.create()
                     .withAudience(jwtAudience)
                     .withIssuer(jwtIssuer)
-                    .withClaim("name", user.name)
+                    .withClaim("name", user.email)
                     .withExpiresAt(Date(System.currentTimeMillis() + 60000))
                     .sign(Algorithm.HMAC256(jwtSecret))
                 call.respond(TokenData(token))
+            }
+        }
+        route("/signup") {
+            install(NotarizedRoute()) {
+                post = PostInfo.builder {
+                    summary("User signup")
+                    description("Sign up a user with their email and password")
+                    request {
+                        description("Register a user")
+                        requestType<SimpleUserRequest>()
+                    }
+                    response {
+                        description("User successfully registered")
+                        responseCode(HttpStatusCode.Created)
+                        responseType<String>()
+                    }
+                }
+            }
+            post {
+                val user = call.receive<SimpleUserRequest>()
+                userService.readByEmail(user.email)?.let {
+                    call.respond(HttpStatusCode.BadRequest, "User already exists")
+                    return@post
+                }
+                userService.create(
+                    ExposedUser(email = user.email, password = user.password, verified = false)
+                )
+                val emailData = EmailData.withDefaultSender(
+                    emailTo = user.email,
+                    message = "Test text",
+                    subject = "Test subject"
+                )
+                emailService.sendEmail(emailData)
             }
         }
     }

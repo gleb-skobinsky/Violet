@@ -1,9 +1,9 @@
 package com.violet.plugins
 
-import com.violet.database.UserServiceProvider
+import com.violet.users.data.ExposedUser
+import com.violet.users.data.UserService
 import io.bkbn.kompendium.core.metadata.DeleteInfo
 import io.bkbn.kompendium.core.metadata.GetInfo
-import io.bkbn.kompendium.core.metadata.PostInfo
 import io.bkbn.kompendium.core.metadata.PutInfo
 import io.bkbn.kompendium.core.plugin.NotarizedRoute
 import io.bkbn.kompendium.json.schema.definition.TypeDefinition
@@ -17,24 +17,15 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
-import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 
-fun Application.configureDatabases() {
+fun Application.configureDatabases(
+    userService: UserService
+) {
 
     routing {
-        // Create user
-        route("/users") {
-            installCreateUserDescription()
-            post {
-                val user = call.receive<ExposedUser>()
-                val id = UserServiceProvider.service.create(user)
-                call.respond(HttpStatusCode.Created, id)
-            }
-        }
-
         // Read user
         route("/users/{id}") {
             installGetUserDescription()
@@ -46,7 +37,7 @@ fun Application.configureDatabases() {
                     )
                     return@get
                 }
-                val user = UserServiceProvider.service.readById(id)
+                val user = userService.readById(id)
                 if (user != null) {
                     call.respond(HttpStatusCode.OK, user)
                 } else {
@@ -62,7 +53,7 @@ fun Application.configureDatabases() {
                     return@put
                 }
                 val user = call.receive<ExposedUser>()
-                UserServiceProvider.service.update(id, user)
+                userService.update(id, user)
                 call.respond(HttpStatusCode.OK)
             }
             delete {
@@ -73,26 +64,8 @@ fun Application.configureDatabases() {
                     )
                     return@delete
                 }
-                UserServiceProvider.service.delete(id)
+                userService.delete(id)
                 call.respond(HttpStatusCode.OK)
-            }
-        }
-    }
-}
-
-private fun Route.installCreateUserDescription() {
-    install(NotarizedRoute()) {
-        post = PostInfo.builder {
-            summary("Create a user")
-            description("User creation endpooint")
-            request {
-                description("Create a user")
-                requestType<ExposedUser>()
-            }
-            response {
-                description("User successfully created")
-                responseCode(HttpStatusCode.Created)
-                responseType<String>()
             }
         }
     }

@@ -142,6 +142,28 @@ paths:
                 $ref: "#/components/schemas/TokenData"
       deprecated: false
     parameters: []
+  /signup:
+    post:
+      tags: []
+      summary: "User signup"
+      description: "Sign up a user with their email and password"
+      parameters: []
+      requestBody:
+        description: "Register a user"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserSignupRequest"
+        required: true
+      responses:
+        "201":
+          description: "User successfully registered"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/String"
+      deprecated: false
+    parameters: []
 webhooks: {}
 components:
   schemas:
@@ -154,13 +176,16 @@ components:
     ExposedUser:
       type: "object"
       properties:
-        name:
+        email:
           type: "string"
         password:
           type: "string"
+        verified:
+          type: "boolean"
       required:
-      - "name"
+      - "email"
       - "password"
+      - "verified"
     TokenData:
       type: "object"
       properties:
@@ -168,6 +193,16 @@ components:
           type: "string"
       required:
       - "token"
+    UserSignupRequest:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        password:
+          type: "string"
+      required:
+      - "email"
+      - "password"
   securitySchemes: {}
 security: []
 tags: []
