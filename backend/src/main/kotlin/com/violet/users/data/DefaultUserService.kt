@@ -35,6 +35,7 @@ class DefaultUserService(database: Database) : UserService {
         Users.insert {
             it[email] = user.email
             it[password] = user.password
+            it[verified] = user.verified
         }[Users.id]
     }
 

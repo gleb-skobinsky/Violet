@@ -21,6 +21,8 @@ repositories {
 
 dependencies {
     implementation(libs.simple.mail)
+    implementation(libs.javax.activation)
+    implementation(libs.jakarta.activation)
     implementation(projects.shared)
     implementation(libs.ktor.server)
     implementation(libs.ktor.server.host)

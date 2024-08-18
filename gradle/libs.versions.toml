@@ -22,8 +22,10 @@ h2 = "2.1.214"
 swagger-codegen = "1.0.47"
 openapi-generator = "0.3-beta.3"
 kompendium = "3.3.1"
-simplejavaMail = "8.11.2"
+simplejavaMail = "8.5.1"
 koin = "3.5.6"
+javax-activation = "1.2.0"
+jakarta = "2.1.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
@@ -52,6 +54,8 @@ ktor-server-auth = { module = "io.ktor:ktor-server-auth-jvm" }
 ktor-client-core = { module = "io.ktor:ktor-client-core-jvm" }
 ktor-client-apache = { module = "io.ktor:ktor-client-apache-jvm" }
 simple-mail = { module = "org.simplejavamail:simple-java-mail", version.ref = "simplejavaMail" }
+javax-activation = { module = "com.sun.activation:javax.activation", version.ref = "javax-activation" }
+jakarta-activation = { module = "jakarta.activation:jakarta.activation-api", version.ref = "jakarta" }
 ktor-server-auth-jwt = { module = "io.ktor:ktor-server-auth-jwt-jvm" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }

@@ -29,28 +29,6 @@ paths:
                 $ref: "#/components/schemas/Map-String-String"
       deprecated: false
     parameters: []
-  /users:
-    post:
-      tags: []
-      summary: "Create a user"
-      description: "User creation endpooint"
-      parameters: []
-      requestBody:
-        description: "Create a user"
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ExposedUser"
-        required: true
-      responses:
-        "201":
-          description: "User successfully created"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/String"
-      deprecated: false
-    parameters: []
   /users/{id}:
     get:
       tags: []
@@ -131,7 +109,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ExposedUser"
+              $ref: "#/components/schemas/SimpleUserRequest"
         required: true
       responses:
         "201":
@@ -153,7 +131,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserSignupRequest"
+              $ref: "#/components/schemas/SimpleUserRequest"
         required: true
       responses:
         "201":
@@ -171,8 +149,6 @@ components:
       additionalProperties:
         type: "string"
       type: "object"
-    String:
-      type: "string"
     ExposedUser:
       type: "object"
       properties:
@@ -193,7 +169,7 @@ components:
           type: "string"
       required:
       - "token"
-    UserSignupRequest:
+    SimpleUserRequest:
       type: "object"
       properties:
         email:
@@ -203,6 +179,8 @@ components:
       required:
       - "email"
       - "password"
+    String:
+      type: "string"
   securitySchemes: {}
 security: []
 tags: []

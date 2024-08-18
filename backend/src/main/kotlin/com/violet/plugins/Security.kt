@@ -154,6 +154,7 @@ fun Application.configureSecurity(
                     subject = "Test subject"
                 )
                 emailService.sendEmail(emailData)
+                call.respond(HttpStatusCode.OK, "Check your inbox for a verification email")
             }
         }
     }
