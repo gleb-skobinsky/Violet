@@ -34,6 +34,7 @@ import io.ktor.server.sessions.sessions
 import io.ktor.server.sessions.set
 import kotlinx.serialization.Serializable
 import java.util.Date
+import java.util.Random
 
 fun Application.configureSecurity(
     userService: UserService,
@@ -150,10 +151,10 @@ fun Application.configureSecurity(
                 )
                 val emailData = EmailData.withDefaultSender(
                     emailTo = user.email,
-                    message = "Test text",
-                    subject = "Test subject"
+                    message = "Verify your email using the following code: ${Random().nextInt(999999)}",
+                    subject = "Email verification"
                 )
-                emailService.sendEmail(emailData)
+                emailService.sendEmail2(emailData)
                 call.respond(HttpStatusCode.OK, "Check your inbox for a verification email")
             }
         }

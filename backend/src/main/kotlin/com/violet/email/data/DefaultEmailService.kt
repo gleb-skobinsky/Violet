@@ -2,6 +2,11 @@ package com.violet.email.data
 
 import org.simplejavamail.api.mailer.Mailer
 import org.simplejavamail.email.EmailBuilder
+import jakarta.mail.Message
+import jakarta.mail.Session
+import jakarta.mail.Transport
+import jakarta.mail.internet.InternetAddress
+import jakarta.mail.internet.MimeMessage
 
 class DefaultEmailService(
     private val mailer: Mailer
@@ -20,6 +25,30 @@ class DefaultEmailService(
         } catch (e: Exception) {
             e.printStackTrace()
             false
+        }
+    }
+
+    override suspend fun sendEmail2(data: EmailData): Boolean {
+        //Get the session object
+        val properties = System.getProperties()
+        properties.setProperty("mail.smtp.host", "localhost");
+        val session = Session.getDefaultInstance(properties);
+
+        //compose the message
+        try{
+            val message = MimeMessage(session);
+            message.setFrom(InternetAddress(data.emailFrom));
+            message.addRecipient(Message.RecipientType.TO, InternetAddress(data.emailTo));
+            message.subject = data.subject;
+            message.setText(data.message);
+
+            // Send message
+            Transport.send(message);
+            println("message sent successfully...")
+            return true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
         }
     }
 }
