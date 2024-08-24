@@ -44,7 +44,7 @@ class DefaultEmailService(
             }
 
             // Send message
-            Transport.send(message);
+            Transport.send(message)
             println("message sent successfully...")
             return true
         } catch (e: Exception) {
