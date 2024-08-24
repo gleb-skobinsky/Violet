@@ -1,12 +1,12 @@
 package com.violet.email.data
 
-import org.simplejavamail.api.mailer.Mailer
-import org.simplejavamail.email.EmailBuilder
 import jakarta.mail.Message
 import jakarta.mail.Session
 import jakarta.mail.Transport
 import jakarta.mail.internet.InternetAddress
 import jakarta.mail.internet.MimeMessage
+import org.simplejavamail.api.mailer.Mailer
+import org.simplejavamail.email.EmailBuilder
 
 class DefaultEmailService(
     private val mailer: Mailer
@@ -31,16 +31,17 @@ class DefaultEmailService(
     override suspend fun sendEmail2(data: EmailData): Boolean {
         //Get the session object
         val properties = System.getProperties()
-        properties.setProperty("mail.smtp.host", "localhost");
-        val session = Session.getDefaultInstance(properties);
+        properties.setProperty("mail.smtp.host", "localhost")
+        val session = Session.getDefaultInstance(properties)
 
         //compose the message
-        try{
-            val message = MimeMessage(session);
-            message.setFrom(InternetAddress(data.emailFrom));
-            message.addRecipient(Message.RecipientType.TO, InternetAddress(data.emailTo));
-            message.subject = data.subject;
-            message.setText(data.message);
+        try {
+            val message = MimeMessage(session).apply {
+                setFrom(InternetAddress(data.emailFrom))
+                addRecipient(Message.RecipientType.TO, InternetAddress(data.emailTo))
+                subject = data.subject
+                setText(data.message)
+            }
 
             // Send message
             Transport.send(message);
