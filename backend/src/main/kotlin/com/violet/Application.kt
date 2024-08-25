@@ -7,12 +7,9 @@ import com.violet.users.usersModule
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import org.koin.ktor.ext.get
 import org.koin.ktor.plugin.koin
-import java.io.File
-import java.nio.file.Paths
 
 fun main() {
     embeddedServer(
@@ -23,8 +20,7 @@ fun main() {
 }
 
 fun Application.module() {
-    val secrets = readConfig()
-    configureKoin(secrets)
+    configureKoin(AppSecrets.fromEnvironment())
     configureHTTP()
     configureSockets()
     configureSerialization()
@@ -32,15 +28,6 @@ fun Application.module() {
     configureMonitoring()
     configureSecurity(get(), get(), get())
     configureRouting()
-}
-
-private fun readConfig(): AppSecrets {
-    val appSecretsJson = Json {
-        ignoreUnknownKeys = true
-    }
-    val path = Paths.get("").toAbsolutePath()
-    val fileText = File(path.toString(), "server-config-dev.json").readText()
-    return appSecretsJson.decodeFromString(fileText)
 }
 
 private fun Application.configureKoin(secrets: AppSecrets) {

@@ -20,6 +20,7 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":shared"))
     implementation(libs.simple.mail)
     implementation(libs.javax.activation)
     implementation(libs.jakarta.activation)
