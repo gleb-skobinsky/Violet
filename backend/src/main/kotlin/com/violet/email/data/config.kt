@@ -16,20 +16,27 @@ data class AppSecrets(
 ) {
     companion object {
         fun fromEnvironment(): AppSecrets {
-            val envMap = File(".env").readText()
-                .split('\n')
-                .associate { it.split('=').run { first() to last() } }
+            val envFile = File(".env")
+            val envMap = if (envFile.exists()) {
+                envFile.readText()
+                    .split('\n')
+                    .associate { it.split('=').run { first() to last() } }
+            } else emptyMap()
             return AppSecrets(
-                smtpServerHost = envMap.getValue("smtp_server_host"),
-                smtpServerPort = envMap.getValue("smtp_server_port").toInt(),
-                smtpServerUserName = envMap.getValue("smtp_server_user_name"),
-                smtpServerPassword = envMap.getValue("smtp_server_password"),
-                emailFrom = envMap.getValue("email_from"),
-                dbPort = envMap.getValue("db_port").toInt(),
-                dbName = envMap.getValue("db_name"),
-                dbUser = envMap.getValue("db_user"),
-                dbPassword = envMap.getValue("db_password")
+                smtpServerHost = envMap.getEnvString("smtp_server_host"),
+                smtpServerPort = envMap.getEnvInt("smtp_server_port"),
+                smtpServerUserName = envMap.getEnvString("smtp_server_user_name"),
+                smtpServerPassword = envMap.getEnvString("smtp_server_password"),
+                emailFrom = envMap.getEnvString("email_from"),
+                dbPort = envMap.getEnvInt("db_port"),
+                dbName = envMap.getEnvString("db_name"),
+                dbUser = envMap.getEnvString("db_user"),
+                dbPassword = envMap.getEnvString("db_password")
             )
         }
+
+        private fun Map<String, String>.getEnvString(key: String): String = System.getenv(key) ?: getValue(key)
+
+        private fun Map<String, String>.getEnvInt(key: String): Int = (System.getenv(key) ?: getValue(key)).toInt()
     }
 }
