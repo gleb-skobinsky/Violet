@@ -36,8 +36,8 @@ private fun Application.configureKoin(secrets: AppSecrets) {
             module {
                 single<AppSecrets> { secrets }
             },
-            emailKoinModule(secrets),
-            usersModule(secrets)
+            emailKoinModule,
+            usersModule
         )
     }
 }
