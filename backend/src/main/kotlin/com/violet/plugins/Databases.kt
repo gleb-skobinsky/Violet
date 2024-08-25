@@ -24,7 +24,6 @@ import io.ktor.server.routing.routing
 fun Application.configureDatabases(
     userService: UserService
 ) {
-
     routing {
         // Read user
         route("/users/{id}") {

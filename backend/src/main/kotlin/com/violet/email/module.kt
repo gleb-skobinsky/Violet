@@ -8,13 +8,13 @@ import org.simplejavamail.api.mailer.Mailer
 import org.simplejavamail.api.mailer.config.TransportStrategy
 import org.simplejavamail.mailer.MailerBuilder
 
-val emailKoinModule = module {
+fun emailKoinModule(secrets: AppSecrets) = module {
     single<Mailer> {
         MailerBuilder
-            .withSMTPServer(AppSecrets.SMTP_SERVER_HOST, AppSecrets.SMTP_SERVER_PORT)
+            .withSMTPServer(secrets.smtpServerHost, secrets.smtpServerPort)
             .withTransportStrategy(TransportStrategy.SMTP_TLS)
-            .withSMTPServerUsername(AppSecrets.SMTP_SERVER_USER_NAME)
-            .withSMTPServerPassword(AppSecrets.SMTP_SERVER_PASSWORD)
+            .withSMTPServerUsername(secrets.smtpServerUserName)
+            .withSMTPServerPassword(secrets.smtpServerPassword)
             .buildMailer()
 
     }

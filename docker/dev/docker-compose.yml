@@ -1,0 +1,17 @@
+services:
+  database:
+    container_name: violet_database
+    image: postgres:14.10-alpine3.19
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+      - PGPORT=${DATABASE_PORT}
+      - POSTGRES_USER=${DATABASE_USER}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - ${DATABASE_PORT}:${DATABASE_PORT}
+
+volumes:
+  pgdata:

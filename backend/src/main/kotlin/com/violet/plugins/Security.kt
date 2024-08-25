@@ -2,41 +2,29 @@ package com.violet.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.violet.email.data.AppSecrets
 import com.violet.email.data.EmailData
 import com.violet.email.data.EmailService
 import com.violet.users.data.ExposedUser
-import com.violet.users.data.UserService
 import com.violet.users.data.SimpleUserRequest
+import com.violet.users.data.UserService
 import io.bkbn.kompendium.core.metadata.PostInfo
 import io.bkbn.kompendium.core.plugin.NotarizedRoute
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.apache.Apache
-import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.Application
-import io.ktor.server.application.call
-import io.ktor.server.application.install
-import io.ktor.server.auth.OAuthAccessTokenResponse
-import io.ktor.server.auth.OAuthServerSettings
-import io.ktor.server.auth.authenticate
-import io.ktor.server.auth.authentication
-import io.ktor.server.auth.jwt.JWTPrincipal
-import io.ktor.server.auth.jwt.jwt
-import io.ktor.server.auth.oauth
-import io.ktor.server.request.receive
-import io.ktor.server.response.respond
-import io.ktor.server.response.respondRedirect
-import io.ktor.server.routing.get
-import io.ktor.server.routing.post
-import io.ktor.server.routing.route
-import io.ktor.server.routing.routing
-import io.ktor.server.sessions.sessions
-import io.ktor.server.sessions.set
+import io.ktor.client.*
+import io.ktor.client.engine.apache.*
+import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import io.ktor.server.sessions.*
 import kotlinx.serialization.Serializable
-import java.util.Date
-import java.util.Random
+import java.util.*
 
 fun Application.configureSecurity(
+    secrets: AppSecrets,
     userService: UserService,
     emailService: EmailService
 ) {
@@ -149,7 +137,8 @@ fun Application.configureSecurity(
                 userService.create(
                     ExposedUser(email = user.email, password = user.password, verified = false)
                 )
-                val emailData = EmailData.withDefaultSender(
+                val emailData = EmailData(
+                    emailFrom = secrets.emailFrom,
                     emailTo = user.email,
                     message = "Verify your email using the following code: ${Random().nextInt(999999)}",
                     subject = "Email verification"
