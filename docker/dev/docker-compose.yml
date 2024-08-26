@@ -12,6 +12,15 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - ${DATABASE_PORT}:${DATABASE_PORT}
+  smtp:
+    container_name: violet_smtp_server
+    image: marcopas/docker-mailslurper
+    restart: always
+    ports:
+      - 8081:8080
+      - 25:2500
+      - 8888:8888
+
 
 volumes:
   pgdata:
