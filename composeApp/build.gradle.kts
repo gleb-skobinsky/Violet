@@ -1,10 +1,18 @@
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.compose)
+    alias(libs.plugins.serialization)
+    alias(libs.plugins.compose.compiler)
+}
+
+repositories {
+    maven("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
+    mavenCentral()
+    google()
 }
 
 kotlin {
@@ -45,19 +53,41 @@ kotlin {
     }
 
     sourceSets {
-
-        androidMain.dependencies {
-            implementation(libs.compose.ui.tooling.preview)
-            implementation(libs.androidx.activity.compose)
-        }
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(projects.shared)
+            implementation(projects.secureStorage)
+            implementation(libs.ktor.client.core)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.client.json.serialization)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.kmp.viewmodel)
+            implementation(libs.kmp.navigation)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.coil.core)
+            implementation(libs.coil.compose)
+            implementation(libs.haze)
+            implementation(libs.qrcode.gen)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.ktor.client.auth)
+            implementation(libs.kotlinx.datetime)
+        }
+        androidMain.dependencies {
+            implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.androidx.activity.compose)
+            implementation(libs.splashscreen)
+            implementation(libs.androidx.appcompat)
+            implementation(libs.ktor.client.android)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.ios)
         }
     }
 }
@@ -94,6 +124,11 @@ android {
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
     }
+}
+
+compose.resources {
+    publicResClass = true
+    generateResClass = always
 }
 
 

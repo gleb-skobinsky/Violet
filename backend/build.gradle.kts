@@ -41,7 +41,7 @@ dependencies {
     implementation(libs.exposed.jdbc)
     implementation(libs.ktor.server.logging)
     implementation(libs.ktor.server.auth)
-    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.core.jvm)
     implementation(libs.ktor.client.apache)
     implementation(libs.ktor.server.auth.jwt)
     implementation(libs.ktor.server.netty)
