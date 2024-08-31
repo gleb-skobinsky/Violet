@@ -22,9 +22,9 @@ val Lock: ImageVector
             path(
                 fill = Brush.linearGradient(
                     colorStops = arrayOf(
-                        0f to Color(0xFF3ADD5E),
-                        0.5f to Color(0xFF73F178),
-                        1f to Color(0xFF5DEB85)
+                        0f to Color(244, 128, 102),
+                        0.5f to Color(245, 149, 129),
+                        1f to Color(245, 177, 164)
                     ),
                     start = Offset(5.25f, 1.25f),
                     end = Offset(12.563f, 13.343f)
@@ -48,9 +48,9 @@ val Lock: ImageVector
             path(
                 fill = Brush.linearGradient(
                     colorStops = arrayOf(
-                        0f to Color(0xFF3ADD5E),
-                        0.5f to Color(0xFF73F178),
-                        1f to Color(0xFF5DEB85)
+                        0f to Color(244, 128, 102),
+                        0.5f to Color(245, 149, 129),
+                        1f to Color(245, 177, 164)
                     ),
                     start = Offset(8.75f, 12.75f),
                     end = Offset(14.336f, 19.25f)
@@ -72,9 +72,9 @@ val Lock: ImageVector
             path(
                 fill = Brush.linearGradient(
                     colorStops = arrayOf(
-                        0f to Color(0xFF3ADD5E),
-                        0.5f to Color(0xFF73F178),
-                        1f to Color(0xFF5DEB85)
+                        0f to Color(244, 128, 102),
+                        0.5f to Color(245, 149, 129),
+                        1f to Color(245, 177, 164)
                     ),
                     start = Offset(1.25f, 9.25f),
                     end = Offset(11.059f, 27.427f)

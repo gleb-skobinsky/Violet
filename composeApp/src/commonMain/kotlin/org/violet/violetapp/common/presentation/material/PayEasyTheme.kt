@@ -47,9 +47,9 @@ val VioletAppColorScheme = ColorScheme(
 )
 
 private val primaryGradientColors = listOf(
-    Color(58, 221, 94),
-    Color(115, 241, 120),
-    Color(93, 235, 133)
+    Color(244, 128, 102),
+    Color(245, 149, 129),
+    Color(245, 177, 164)
 )
 
 private val dangerColors = listOf(

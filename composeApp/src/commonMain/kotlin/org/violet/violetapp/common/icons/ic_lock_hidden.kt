@@ -1,11 +1,9 @@
 package org.violet.violetapp.common.icons
 
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
+import org.violet.violetapp.common.presentation.material.PrimaryGradient
 
 val LockHidden: ImageVector
     get() {
@@ -20,15 +18,7 @@ val LockHidden: ImageVector
             viewportHeight = 24f
         ).apply {
             path(
-                fill = Brush.linearGradient(
-                    colorStops = arrayOf(
-                        0f to Color(0xFF3ADD5E),
-                        0.5f to Color(0xFF73F178),
-                        1f to Color(0xFF5DEB85)
-                    ),
-                    start = Offset(5.25f, 1.25f),
-                    end = Offset(12.563f, 13.343f)
-                )
+                fill = PrimaryGradient
             ) {
                 moveTo(18f, 10.75f)
                 curveTo(17.59f, 10.75f, 17.25f, 10.41f, 17.25f, 10f)
@@ -46,15 +36,7 @@ val LockHidden: ImageVector
                 close()
             }
             path(
-                fill = Brush.linearGradient(
-                    colorStops = arrayOf(
-                        0f to Color(0xFF3ADD5E),
-                        0.5f to Color(0xFF73F178),
-                        1f to Color(0xFF5DEB85)
-                    ),
-                    start = Offset(1.25f, 9.25f),
-                    end = Offset(11.059f, 27.427f)
-                )
+                fill = PrimaryGradient
             ) {
                 moveTo(17f, 22.75f)
                 horizontalLineTo(7f)
@@ -78,15 +60,7 @@ val LockHidden: ImageVector
                 close()
             }
             path(
-                fill = Brush.linearGradient(
-                    colorStops = arrayOf(
-                        0f to Color(0xFF3ADD5E),
-                        0.5f to Color(0xFF73F178),
-                        1f to Color(0xFF5DEB85)
-                    ),
-                    start = Offset(7f, 15.001f),
-                    end = Offset(8.718f, 17.001f)
-                )
+                fill = PrimaryGradient
             ) {
                 moveTo(8f, 17f)
                 curveTo(7.87f, 17f, 7.74f, 16.97f, 7.62f, 16.92f)
@@ -103,15 +77,7 @@ val LockHidden: ImageVector
                 close()
             }
             path(
-                fill = Brush.linearGradient(
-                    colorStops = arrayOf(
-                        0f to Color(0xFF3ADD5E),
-                        0.5f to Color(0xFF73F178),
-                        1f to Color(0xFF5DEB85)
-                    ),
-                    start = Offset(11f, 14.999f),
-                    end = Offset(12.72f, 16.999f)
-                )
+                fill = PrimaryGradient
             ) {
                 moveTo(12f, 17f)
                 curveTo(11.74f, 17f, 11.48f, 16.89f, 11.29f, 16.71f)
@@ -132,15 +98,7 @@ val LockHidden: ImageVector
                 close()
             }
             path(
-                fill = Brush.linearGradient(
-                    colorStops = arrayOf(
-                        0f to Color(0xFF3ADD5E),
-                        0.5f to Color(0xFF73F178),
-                        1f to Color(0xFF5DEB85)
-                    ),
-                    start = Offset(15f, 14.999f),
-                    end = Offset(16.72f, 16.999f)
-                )
+                fill = PrimaryGradient
             ) {
                 moveTo(16f, 17f)
                 curveTo(15.73f, 17f, 15.48f, 16.89f, 15.29f, 16.71f)
