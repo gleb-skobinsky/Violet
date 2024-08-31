@@ -75,6 +75,7 @@ fun Application.configureDatabases(
 
 private fun Route.installGetUserDescription() {
     install(NotarizedRoute()) {
+        tags = setOf("Users Repository")
         get = GetInfo.builder {
             summary("Get a user")
             description("User retrieval endpoint")

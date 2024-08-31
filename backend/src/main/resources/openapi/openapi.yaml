@@ -14,24 +14,10 @@ info:
     name: "Open license"
 servers: []
 paths:
-  /json/kotlinx-serialization:
-    get:
-      tags: []
-      summary: "Serialization test"
-      description: "Hello world from kotlinx serialization"
-      parameters: []
-      responses:
-        "200":
-          description: "Check success"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Map-String-String"
-      deprecated: false
-    parameters: []
   /direct-login:
     post:
-      tags: []
+      tags:
+      - "Auth Repository"
       summary: "Login"
       description: "Login a user with his username and password"
       parameters: []
@@ -53,7 +39,8 @@ paths:
     parameters: []
   /signup:
     post:
-      tags: []
+      tags:
+      - "Auth Repository"
       summary: "User signup"
       description: "Sign up a user with their email and password"
       parameters: []
@@ -75,7 +62,8 @@ paths:
     parameters: []
   /users/{id}:
     get:
-      tags: []
+      tags:
+      - "Users Repository"
       summary: "Get a user"
       description: "User retrieval endpoint"
       parameters:
@@ -101,7 +89,8 @@ paths:
       security:
       - matchme-jwt-auth: []
     put:
-      tags: []
+      tags:
+      - "Users Repository"
       summary: "Update a user"
       description: "User update endpoint"
       parameters:
@@ -128,7 +117,8 @@ paths:
       security:
       - matchme-jwt-auth: []
     delete:
-      tags: []
+      tags:
+      - "Users Repository"
       summary: "Delete a user"
       description: "User deletion endpoint"
       parameters:
@@ -151,10 +141,6 @@ paths:
 webhooks: {}
 components:
   schemas:
-    Map-String-String:
-      additionalProperties:
-        type: "string"
-      type: "object"
     TokenData:
       type: "object"
       properties:

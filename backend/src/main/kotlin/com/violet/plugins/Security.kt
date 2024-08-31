@@ -92,6 +92,7 @@ fun Application.configureSecurity(
         }
         route("/direct-login") {
             install(NotarizedRoute()) {
+                tags = setOf("Auth Repository")
                 post = PostInfo.builder {
                     summary("Login")
                     description("Login a user with his username and password")
@@ -127,6 +128,7 @@ fun Application.configureSecurity(
         }
         route("/signup") {
             install(NotarizedRoute()) {
+                tags = setOf("Auth Repository")
                 post = PostInfo.builder {
                     summary("User signup")
                     description("Sign up a user with their email and password")
