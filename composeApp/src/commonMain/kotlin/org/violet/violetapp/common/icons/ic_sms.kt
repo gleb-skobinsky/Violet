@@ -1,11 +1,9 @@
 package org.violet.violetapp.common.icons
 
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
+import org.violet.violetapp.common.presentation.material.PrimaryGradient
 
 val Sms: ImageVector
     get() {
@@ -20,15 +18,7 @@ val Sms: ImageVector
             viewportHeight = 24f
         ).apply {
             path(
-                fill = Brush.linearGradient(
-                    colorStops = arrayOf(
-                        0f to Color(0xFF3ADD5E),
-                        0.5f to Color(0xFF73F178),
-                        1f to Color(0xFF5DEB85)
-                    ),
-                    start = Offset(1.25f, 2.75f),
-                    end = Offset(16.626f, 23.543f)
-                )
+                fill = PrimaryGradient
             ) {
                 moveTo(17f, 21.25f)
                 horizontalLineTo(7f)
@@ -52,15 +42,7 @@ val Sms: ImageVector
                 close()
             }
             path(
-                fill = Brush.linearGradient(
-                    colorStops = arrayOf(
-                        0f to Color(0xFF3ADD5E),
-                        0.5f to Color(0xFF73F178),
-                        1f to Color(0xFF5DEB85)
-                    ),
-                    start = Offset(6.246f, 8.244f),
-                    end = Offset(8.73f, 15.428f)
-                )
+                fill = PrimaryGradient
             ) {
                 moveTo(11.999f, 12.87f)
                 curveTo(11.159f, 12.87f, 10.309f, 12.61f, 9.659f, 12.08f)
