@@ -10,18 +10,32 @@ import com.violet.users.data.SimpleUserRequest
 import com.violet.users.data.UserService
 import io.bkbn.kompendium.core.metadata.PostInfo
 import io.bkbn.kompendium.core.plugin.NotarizedRoute
-import io.ktor.client.*
-import io.ktor.client.engine.apache.*
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
-import io.ktor.server.sessions.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.apache.Apache
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.Application
+import io.ktor.server.application.call
+import io.ktor.server.application.install
+import io.ktor.server.auth.OAuthAccessTokenResponse
+import io.ktor.server.auth.OAuthServerSettings
+import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.authentication
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.jwt.jwt
+import io.ktor.server.auth.oauth
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.response.respondRedirect
+import io.ktor.server.routing.get
+import io.ktor.server.routing.post
+import io.ktor.server.routing.route
+import io.ktor.server.routing.routing
+import io.ktor.server.sessions.sessions
+import io.ktor.server.sessions.set
 import kotlinx.serialization.Serializable
-import java.util.*
+import java.util.Date
+import java.util.Random
 
 fun Application.configureSecurity(
     secrets: AppSecrets,
@@ -45,23 +59,20 @@ fun Application.configureSecurity(
             client = HttpClient(Apache)
         }
     }
-    // Please read the jwt property from the config file if you are using EngineMain
-    val jwtAudience = "jwt-audience"
-    val jwtIssuer = "https://jwt-provider-domain/"
-    val jwtRealm = "ktor sample app"
-    val jwtSecret = "secret"
     authentication {
         jwt {
-            realm = jwtRealm
+            realm = secrets.jwtRealm
             verifier(
                 JWT
-                    .require(Algorithm.HMAC256(jwtSecret))
-                    .withAudience(jwtAudience)
-                    .withIssuer(jwtIssuer)
+                    .require(Algorithm.HMAC256(secrets.jwtSecret))
+                    .withAudience(secrets.jwtAudience)
+                    .withIssuer(secrets.jwtIssuer)
                     .build()
             )
             validate { credential ->
-                if (credential.payload.audience.contains(jwtAudience)) JWTPrincipal(credential.payload) else null
+                if (credential.payload.audience.contains(secrets.jwtAudience)) JWTPrincipal(
+                    credential.payload
+                ) else null
             }
         }
     }
@@ -104,11 +115,11 @@ fun Application.configureSecurity(
                     return@post
                 }
                 val token = JWT.create()
-                    .withAudience(jwtAudience)
-                    .withIssuer(jwtIssuer)
+                    .withAudience(secrets.jwtAudience)
+                    .withIssuer(secrets.jwtIssuer)
                     .withClaim("name", user.email)
                     .withExpiresAt(Date(System.currentTimeMillis() + 60000))
-                    .sign(Algorithm.HMAC256(jwtSecret))
+                    .sign(Algorithm.HMAC256(secrets.jwtSecret))
                 call.respond(TokenData(token))
             }
         }
