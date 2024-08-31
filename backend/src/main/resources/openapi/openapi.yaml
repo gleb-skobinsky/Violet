@@ -14,7 +14,7 @@ info:
     name: "Open license"
 servers: []
 paths:
-  /direct-login:
+  /login:
     post:
       tags:
       - "Auth Repository"
@@ -26,11 +26,34 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SimpleUserRequest"
+              $ref: "#/components/schemas/SimpleUser"
         required: true
       responses:
         "201":
           description: "User successfully logged in"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenData"
+      deprecated: false
+    parameters: []
+  /refresh:
+    post:
+      tags:
+      - "Auth Repository"
+      summary: "Refresh"
+      description: "Refresh JWT token"
+      parameters: []
+      requestBody:
+        description: "Refresh a token"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshToken"
+        required: true
+      responses:
+        "200":
+          description: "Token successfully refreshed"
           content:
             application/json:
               schema:
@@ -49,7 +72,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SimpleUserRequest"
+              $ref: "#/components/schemas/SimpleUser"
         required: true
       responses:
         "201":
@@ -144,11 +167,14 @@ components:
     TokenData:
       type: "object"
       properties:
-        token:
+        accessToken:
+          type: "string"
+        refreshToken:
           type: "string"
       required:
-      - "token"
-    SimpleUserRequest:
+      - "accessToken"
+      - "refreshToken"
+    SimpleUser:
       type: "object"
       properties:
         email:
@@ -158,6 +184,13 @@ components:
       required:
       - "email"
       - "password"
+    RefreshToken:
+      type: "object"
+      properties:
+        token:
+          type: "string"
+      required:
+      - "token"
     String:
       type: "string"
     ExposedUser:

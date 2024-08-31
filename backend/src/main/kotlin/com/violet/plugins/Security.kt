@@ -5,8 +5,12 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.violet.email.data.AppSecrets
 import com.violet.email.data.EmailData
 import com.violet.email.data.EmailService
+import com.violet.jwt.JWTConfig
+import com.violet.jwt.createToken
+import com.violet.jwt.verify
 import com.violet.users.data.ExposedUser
-import com.violet.users.data.SimpleUserRequest
+import com.violet.users.data.RefreshToken
+import com.violet.users.data.SimpleUser
 import com.violet.users.data.UserService
 import io.bkbn.kompendium.core.metadata.PostInfo
 import io.bkbn.kompendium.core.plugin.NotarizedRoute
@@ -34,10 +38,19 @@ import io.ktor.server.routing.routing
 import io.ktor.server.sessions.sessions
 import io.ktor.server.sessions.set
 import kotlinx.serialization.Serializable
-import java.util.Date
 import java.util.Random
+import kotlin.time.Duration.Companion.minutes
 
 const val JWT_AUTH_ID = "matchme-jwt-auth"
+private val ACCESS_EXPIRATION_TIMEOUT = 1.minutes
+private val REFRESH_EXPIRATION_TIMEOUT = 7.minutes
+
+private fun AppSecrets.toJwtConfig(): JWTConfig = JWTConfig(
+    realm = jwtRealm,
+    secret = jwtSecret,
+    audience = jwtAudience,
+    issuer = jwtIssuer
+)
 
 fun Application.configureSecurity(
     secrets: AppSecrets,
@@ -61,12 +74,12 @@ fun Application.configureSecurity(
             client = HttpClient(Apache)
         }
     }
+    val jwtConfig = secrets.toJwtConfig()
     authentication {
         jwt(JWT_AUTH_ID) {
             realm = secrets.jwtRealm
             verifier(
-                JWT
-                    .require(Algorithm.HMAC256(secrets.jwtSecret))
+                JWT.require(Algorithm.HMAC256(secrets.jwtSecret))
                     .withAudience(secrets.jwtAudience)
                     .withIssuer(secrets.jwtIssuer)
                     .build()
@@ -80,7 +93,7 @@ fun Application.configureSecurity(
     }
     routing {
         authenticate("auth-oauth-google") {
-            get("login") {
+            get("/login") {
                 call.respondRedirect("/callback")
             }
 
@@ -90,7 +103,7 @@ fun Application.configureSecurity(
                 call.respondRedirect("/hello")
             }
         }
-        route("/direct-login") {
+        route("/login") {
             install(NotarizedRoute()) {
                 tags = setOf("Auth Repository")
                 post = PostInfo.builder {
@@ -98,7 +111,7 @@ fun Application.configureSecurity(
                     description("Login a user with his username and password")
                     request {
                         description("Login a user")
-                        requestType<SimpleUserRequest>()
+                        requestType<SimpleUser>()
                     }
                     response {
                         description("User successfully logged in")
@@ -108,7 +121,7 @@ fun Application.configureSecurity(
                 }
             }
             post {
-                val user = call.receive<SimpleUserRequest>()
+                val user = call.receive<SimpleUser>()
                 val dbUser = userService.readByEmail(user.email) ?: run {
                     call.respond(HttpStatusCode.NotFound, "User name not found")
                     return@post
@@ -117,13 +130,44 @@ fun Application.configureSecurity(
                     call.respond(HttpStatusCode.Unauthorized, "Password is incorrect")
                     return@post
                 }
-                val token = JWT.create()
-                    .withAudience(secrets.jwtAudience)
-                    .withIssuer(secrets.jwtIssuer)
-                    .withClaim("name", user.email)
-                    .withExpiresAt(Date(System.currentTimeMillis() + 60000))
-                    .sign(Algorithm.HMAC256(secrets.jwtSecret))
-                call.respond(TokenData(token))
+                val accessToken = jwtConfig.createToken(user.email, ACCESS_EXPIRATION_TIMEOUT)
+                val refreshToken = jwtConfig.createToken(user.email, REFRESH_EXPIRATION_TIMEOUT)
+                call.respond(TokenData(accessToken, refreshToken))
+            }
+        }
+        route("/refresh") {
+            install(NotarizedRoute()) {
+                tags = setOf("Auth Repository")
+                post = PostInfo.builder {
+                    summary("Refresh")
+                    description("Refresh JWT token")
+                    request {
+                        description("Refresh a token")
+                        requestType<RefreshToken>()
+                    }
+                    response {
+                        description("Token successfully refreshed")
+                        responseCode(HttpStatusCode.OK)
+                        responseType<TokenData>()
+                    }
+                }
+            }
+            post {
+                // Extract the refresh token from the request
+                val refreshToken = call.receive<RefreshToken>()
+
+                // Verify the refresh token and obtain the user
+                val email = jwtConfig.verify(refreshToken.token) ?: run {
+                    call.respond(HttpStatusCode.Forbidden, "Invalid refresh token")
+                    return@post
+                }
+
+                // Create new access and refresh tokens for the user
+                val newAccessToken = jwtConfig.createToken(email, ACCESS_EXPIRATION_TIMEOUT)
+                val newRefreshToken = jwtConfig.createToken(email, REFRESH_EXPIRATION_TIMEOUT)
+
+                // Respond with the new tokens
+                call.respond(TokenData(newAccessToken, newRefreshToken))
             }
         }
         route("/signup") {
@@ -134,7 +178,7 @@ fun Application.configureSecurity(
                     description("Sign up a user with their email and password")
                     request {
                         description("Register a user")
-                        requestType<SimpleUserRequest>()
+                        requestType<SimpleUser>()
                     }
                     response {
                         description("User successfully registered")
@@ -144,7 +188,7 @@ fun Application.configureSecurity(
                 }
             }
             post {
-                val user = call.receive<SimpleUserRequest>()
+                val user = call.receive<SimpleUser>()
                 userService.readByEmail(user.email)?.let {
                     call.respond(HttpStatusCode.BadRequest, "User already exists")
                     return@post
@@ -166,6 +210,6 @@ fun Application.configureSecurity(
 }
 
 @Serializable
-private data class TokenData(val token: String)
+private data class TokenData(val accessToken: String, val refreshToken: String)
 
 data class UserSession(val accessToken: String)
