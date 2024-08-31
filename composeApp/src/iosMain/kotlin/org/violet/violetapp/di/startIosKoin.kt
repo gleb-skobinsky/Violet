@@ -1,4 +1,4 @@
-package org.violet.violetapp.org.violet.violetapp.di
+package org.violet.violetapp.di
 
 import coil3.PlatformContext
 import org.koin.core.context.startKoin

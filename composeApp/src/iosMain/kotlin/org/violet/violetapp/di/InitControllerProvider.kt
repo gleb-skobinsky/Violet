@@ -1,4 +1,4 @@
-package org.violet.violetapp.org.violet.violetapp.di
+package org.violet.violetapp.di
 
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
