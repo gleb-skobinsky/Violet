@@ -20,14 +20,15 @@ fun main() {
 }
 
 fun Application.module() {
-    configureKoin(AppSecrets.fromEnvironment())
-    configureHTTP()
+    val secrets = AppSecrets.fromEnvironment()
+    configureKoin(secrets)
+    configureSwagger(secrets)
     configureSockets()
     configureSerialization()
+    configureSecurity(secrets, get(), get())
     configureDatabases(get())
     configureMonitoring()
-    configureSecurity(get(), get(), get())
-    configureRouting()
+    configureStaticFiles()
 }
 
 private fun Application.configureKoin(secrets: AppSecrets) {

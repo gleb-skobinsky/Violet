@@ -29,75 +29,6 @@ paths:
                 $ref: "#/components/schemas/Map-String-String"
       deprecated: false
     parameters: []
-  /users/{id}:
-    get:
-      tags: []
-      summary: "Get a user"
-      description: "User retrieval endpoint"
-      parameters:
-      - name: "id"
-        in: "path"
-        schema:
-          type: "number"
-          format: "int32"
-        required: true
-        deprecated: false
-      responses:
-        "200":
-          description: "User successfully retrieved"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExposedUser"
-        "404":
-          description: "User not found"
-        "400":
-          description: "User request is inavlid"
-      deprecated: false
-    put:
-      tags: []
-      summary: "Update a user"
-      description: "User update endpoint"
-      parameters:
-      - name: "id"
-        in: "path"
-        schema:
-          type: "number"
-          format: "int32"
-        required: true
-        deprecated: false
-      requestBody:
-        description: "Update a user"
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ExposedUser"
-        required: true
-      responses:
-        "200":
-          description: "User successfully updated"
-        "400":
-          description: "User update request is invalid"
-      deprecated: false
-    delete:
-      tags: []
-      summary: "Delete a user"
-      description: "User deletion endpoint"
-      parameters:
-      - name: "id"
-        in: "path"
-        schema:
-          type: "number"
-          format: "int32"
-        required: true
-        deprecated: false
-      responses:
-        "200":
-          description: "User successfully deleted"
-        "400":
-          description: "User deletion request is invalid"
-      deprecated: false
-    parameters: []
   /direct-login:
     post:
       tags: []
@@ -142,6 +73,81 @@ paths:
                 $ref: "#/components/schemas/String"
       deprecated: false
     parameters: []
+  /users/{id}:
+    get:
+      tags: []
+      summary: "Get a user"
+      description: "User retrieval endpoint"
+      parameters:
+      - name: "id"
+        in: "path"
+        schema:
+          type: "number"
+          format: "int32"
+        required: true
+        deprecated: false
+      responses:
+        "200":
+          description: "User successfully retrieved"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExposedUser"
+        "404":
+          description: "User not found"
+        "400":
+          description: "User request is inavlid"
+      deprecated: false
+      security:
+      - matchme-jwt-auth: []
+    put:
+      tags: []
+      summary: "Update a user"
+      description: "User update endpoint"
+      parameters:
+      - name: "id"
+        in: "path"
+        schema:
+          type: "number"
+          format: "int32"
+        required: true
+        deprecated: false
+      requestBody:
+        description: "Update a user"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExposedUser"
+        required: true
+      responses:
+        "200":
+          description: "User successfully updated"
+        "400":
+          description: "User update request is invalid"
+      deprecated: false
+      security:
+      - matchme-jwt-auth: []
+    delete:
+      tags: []
+      summary: "Delete a user"
+      description: "User deletion endpoint"
+      parameters:
+      - name: "id"
+        in: "path"
+        schema:
+          type: "number"
+          format: "int32"
+        required: true
+        deprecated: false
+      responses:
+        "200":
+          description: "User successfully deleted"
+        "400":
+          description: "User deletion request is invalid"
+      deprecated: false
+      security:
+      - matchme-jwt-auth: []
+    parameters: []
 webhooks: {}
 components:
   schemas:
@@ -149,19 +155,6 @@ components:
       additionalProperties:
         type: "string"
       type: "object"
-    ExposedUser:
-      type: "object"
-      properties:
-        email:
-          type: "string"
-        password:
-          type: "string"
-        verified:
-          type: "boolean"
-      required:
-      - "email"
-      - "password"
-      - "verified"
     TokenData:
       type: "object"
       properties:
@@ -181,6 +174,23 @@ components:
       - "password"
     String:
       type: "string"
-  securitySchemes: {}
+    ExposedUser:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        password:
+          type: "string"
+        verified:
+          type: "boolean"
+      required:
+      - "email"
+      - "password"
+      - "verified"
+  securitySchemes:
+    matchme-jwt-auth:
+      bearerFormat: "JWT"
+      type: "http"
+      scheme: "bearer"
 security: []
 tags: []

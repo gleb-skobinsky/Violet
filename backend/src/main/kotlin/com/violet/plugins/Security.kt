@@ -37,6 +37,8 @@ import kotlinx.serialization.Serializable
 import java.util.Date
 import java.util.Random
 
+const val JWT_AUTH_ID = "matchme-jwt-auth"
+
 fun Application.configureSecurity(
     secrets: AppSecrets,
     userService: UserService,
@@ -60,7 +62,7 @@ fun Application.configureSecurity(
         }
     }
     authentication {
-        jwt {
+        jwt(JWT_AUTH_ID) {
             realm = secrets.jwtRealm
             verifier(
                 JWT
@@ -70,9 +72,9 @@ fun Application.configureSecurity(
                     .build()
             )
             validate { credential ->
-                if (credential.payload.audience.contains(secrets.jwtAudience)) JWTPrincipal(
-                    credential.payload
-                ) else null
+                if (secrets.jwtAudience in credential.payload.audience) {
+                    JWTPrincipal(credential.payload)
+                } else null
             }
         }
     }
@@ -105,7 +107,7 @@ fun Application.configureSecurity(
                 }
             }
             post {
-                val user = call.receive<ExposedUser>()
+                val user = call.receive<SimpleUserRequest>()
                 val dbUser = userService.readByEmail(user.email) ?: run {
                     call.respond(HttpStatusCode.NotFound, "User name not found")
                     return@post

@@ -12,6 +12,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.server.application.install
+import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -26,45 +27,47 @@ fun Application.configureDatabases(
 ) {
     routing {
         // Read user
-        route("/users/{id}") {
-            installGetUserDescription()
-            get {
-                val id = call.parameters["id"]?.toIntOrNull() ?: run {
-                    call.respond(
-                        HttpStatusCode.BadRequest,
-                        "Invalid id"
-                    )
-                    return@get
+        authenticate(JWT_AUTH_ID) {
+            route("/users/{id}") {
+                installGetUserDescription()
+                get {
+                    val id = call.parameters["id"]?.toIntOrNull() ?: run {
+                        call.respond(
+                            HttpStatusCode.BadRequest,
+                            "Invalid id"
+                        )
+                        return@get
+                    }
+                    val user = userService.readById(id)
+                    if (user != null) {
+                        call.respond(HttpStatusCode.OK, user)
+                    } else {
+                        call.respond(HttpStatusCode.NotFound)
+                    }
                 }
-                val user = userService.readById(id)
-                if (user != null) {
-                    call.respond(HttpStatusCode.OK, user)
-                } else {
-                    call.respond(HttpStatusCode.NotFound)
+                put {
+                    val id = call.parameters["id"]?.toIntOrNull() ?: run {
+                        call.respond(
+                            HttpStatusCode.BadRequest,
+                            "Invalid id"
+                        )
+                        return@put
+                    }
+                    val user = call.receive<ExposedUser>()
+                    userService.update(id, user)
+                    call.respond(HttpStatusCode.OK)
                 }
-            }
-            put {
-                val id = call.parameters["id"]?.toIntOrNull() ?: run {
-                    call.respond(
-                        HttpStatusCode.BadRequest,
-                        "Invalid id"
-                    )
-                    return@put
+                delete {
+                    val id = call.parameters["id"]?.toIntOrNull() ?: run {
+                        call.respond(
+                            HttpStatusCode.BadRequest,
+                            "Invalid id"
+                        )
+                        return@delete
+                    }
+                    userService.delete(id)
+                    call.respond(HttpStatusCode.OK)
                 }
-                val user = call.receive<ExposedUser>()
-                userService.update(id, user)
-                call.respond(HttpStatusCode.OK)
-            }
-            delete {
-                val id = call.parameters["id"]?.toIntOrNull() ?: run {
-                    call.respond(
-                        HttpStatusCode.BadRequest,
-                        "Invalid id"
-                    )
-                    return@delete
-                }
-                userService.delete(id)
-                call.respond(HttpStatusCode.OK)
             }
         }
     }

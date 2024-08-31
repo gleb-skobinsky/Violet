@@ -16,7 +16,8 @@ data class AppSecrets(
     val jwtAudience: String,
     val jwtIssuer: String,
     val jwtRealm: String,
-    val jwtSecret: String
+    val jwtSecret: String,
+    val isDebug: Boolean
 ) {
     companion object {
         fun fromEnvironment(): AppSecrets {
@@ -39,12 +40,15 @@ data class AppSecrets(
                 jwtAudience = envMap.getEnvString("JWT_AUDIENCE"),
                 jwtIssuer = envMap.getEnvString("JWT_ISSUER"),
                 jwtRealm = envMap.getEnvString("JWT_REALM"),
-                jwtSecret = envMap.getEnvString("JWT_SECRET")
+                jwtSecret = envMap.getEnvString("JWT_SECRET"),
+                isDebug = envMap.getEnvBool("DEBUG_MODE")
             )
         }
 
         private fun Map<String, String>.getEnvString(key: String): String = System.getenv(key) ?: getValue(key)
 
         private fun Map<String, String>.getEnvInt(key: String): Int = (System.getenv(key) ?: getValue(key)).toInt()
+
+        private fun Map<String, String>.getEnvBool(key: String): Boolean = (System.getenv(key) ?: getValue(key)).toBoolean()
     }
 }
