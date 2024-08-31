@@ -18,3 +18,4 @@ captures
 *.env
 server-config-dev.json
 server-config-prod.json
+/.kotlin/
