@@ -6,8 +6,9 @@ import com.violet.email.data.AppSecrets
 import com.violet.email.data.EmailData
 import com.violet.email.data.EmailService
 import com.violet.jwt.JWTConfig
+import com.violet.jwt.TokenType
 import com.violet.jwt.createToken
-import com.violet.jwt.verify
+import com.violet.jwt.verifyToken
 import com.violet.users.data.ExposedUser
 import com.violet.users.data.RefreshToken
 import com.violet.users.data.SimpleUser
@@ -39,11 +40,12 @@ import io.ktor.server.sessions.sessions
 import io.ktor.server.sessions.set
 import kotlinx.serialization.Serializable
 import java.util.Random
+import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
 
 const val JWT_AUTH_ID = "matchme-jwt-auth"
-private val ACCESS_EXPIRATION_TIMEOUT = 1.minutes
-private val REFRESH_EXPIRATION_TIMEOUT = 7.minutes
+private val ACCESS_EXPIRATION_TIMEOUT = 30.minutes
+private val REFRESH_EXPIRATION_TIMEOUT = 7.days
 
 private fun AppSecrets.toJwtConfig(): JWTConfig = JWTConfig(
     realm = jwtRealm,
@@ -130,8 +132,16 @@ fun Application.configureSecurity(
                     call.respond(HttpStatusCode.Unauthorized, "Password is incorrect")
                     return@post
                 }
-                val accessToken = jwtConfig.createToken(user.email, ACCESS_EXPIRATION_TIMEOUT)
-                val refreshToken = jwtConfig.createToken(user.email, REFRESH_EXPIRATION_TIMEOUT)
+                val accessToken = jwtConfig.createToken(
+                    user.email,
+                    TokenType.AccessToken,
+                    ACCESS_EXPIRATION_TIMEOUT
+                )
+                val refreshToken = jwtConfig.createToken(
+                    user.email,
+                    TokenType.RefreshToken,
+                    REFRESH_EXPIRATION_TIMEOUT
+                )
                 call.respond(TokenData(accessToken, refreshToken))
             }
         }
@@ -157,14 +167,17 @@ fun Application.configureSecurity(
                 val refreshToken = call.receive<RefreshToken>()
 
                 // Verify the refresh token and obtain the user
-                val email = jwtConfig.verify(refreshToken.token) ?: run {
-                    call.respond(HttpStatusCode.Forbidden, "Invalid refresh token")
-                    return@post
-                }
+                val email =
+                    jwtConfig.verifyToken(refreshToken.token, TokenType.RefreshToken) ?: run {
+                        call.respond(HttpStatusCode.Forbidden, "Invalid refresh token")
+                        return@post
+                    }
 
                 // Create new access and refresh tokens for the user
-                val newAccessToken = jwtConfig.createToken(email, ACCESS_EXPIRATION_TIMEOUT)
-                val newRefreshToken = jwtConfig.createToken(email, REFRESH_EXPIRATION_TIMEOUT)
+                val newAccessToken =
+                    jwtConfig.createToken(email, TokenType.AccessToken, ACCESS_EXPIRATION_TIMEOUT)
+                val newRefreshToken =
+                    jwtConfig.createToken(email, TokenType.RefreshToken, REFRESH_EXPIRATION_TIMEOUT)
 
                 // Respond with the new tokens
                 call.respond(TokenData(newAccessToken, newRefreshToken))

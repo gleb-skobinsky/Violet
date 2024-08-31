@@ -3,6 +3,7 @@ package com.violet.jwt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
+import com.violet.plugins.TokenType
 import java.util.Date
 import kotlin.time.Duration
 
@@ -13,18 +14,24 @@ data class JWTConfig(
     val issuer: String
 )
 
-fun JWTConfig.createToken(email: String, expiration: Duration): String =
+fun JWTConfig.createToken(
+    email: String,
+    type: TokenType,
+    expiration: Duration
+): String =
     JWT.create()
         .withAudience(audience)
         .withIssuer(issuer)
+        .withJWTId(type.name)
         .withClaim("email", email)
         .withExpiresAt(Date(System.currentTimeMillis() + expiration.inWholeMilliseconds))
         .sign(Algorithm.HMAC256(secret))
 
-fun JWTConfig.verify(token: String): String? =
+fun JWTConfig.verifyToken(token: String, type: TokenType): String? =
     try {
         val jwt = JWT.require(Algorithm.HMAC256(secret))
             .withAudience(audience)
+            .withJWTId(type.name)
             .withIssuer(issuer)
             .build()
             .verify(token)
