@@ -1,18 +1,13 @@
-package com.violet.users.data
+package com.violet.features.users.repository
 
+import com.violet.features.users.models.ExposedUser
 import kotlinx.coroutines.Dispatchers
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 
-class DefaultUserService(database: Database) : UserService {
+class DefaultUsersRepository(database: Database) : UsersRepository {
     private object Users : Table() {
         val id = integer("id").autoIncrement()
         val email = varchar("email", length = 50)

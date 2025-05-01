@@ -1,8 +1,8 @@
 package com.violet.features.users
 
+import com.violet.features.users.models.ExposedUser
+import com.violet.features.users.repository.UsersRepository
 import com.violet.jwt.JWTConfig.Companion.JWT_AUTH_ID
-import com.violet.users.data.ExposedUser
-import com.violet.users.data.UserService
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -11,7 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Application.configureUsersRoutes(
-    userService: UserService
+    usersRepository: UsersRepository
 ) {
     routing {
         // Read user
@@ -26,7 +26,7 @@ fun Application.configureUsersRoutes(
                         )
                         return@get
                     }
-                    val user = userService.readById(id)
+                    val user = usersRepository.readById(id)
                     if (user != null) {
                         call.respond(HttpStatusCode.OK, user)
                     } else {
@@ -42,7 +42,7 @@ fun Application.configureUsersRoutes(
                         return@put
                     }
                     val user = call.receive<ExposedUser>()
-                    userService.update(id, user)
+                    usersRepository.update(id, user)
                     call.respond(HttpStatusCode.OK)
                 }
                 delete {
@@ -53,7 +53,7 @@ fun Application.configureUsersRoutes(
                         )
                         return@delete
                     }
-                    userService.delete(id)
+                    usersRepository.delete(id)
                     call.respond(HttpStatusCode.OK)
                 }
             }

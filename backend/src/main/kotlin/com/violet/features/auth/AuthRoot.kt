@@ -10,7 +10,7 @@ import com.violet.features.auth.routes.refreshTokenRoute
 import com.violet.features.auth.routes.signupRoute
 import com.violet.jwt.JWTConfig
 import com.violet.jwt.JWTConfig.Companion.JWT_AUTH_ID
-import com.violet.users.data.UserService
+import com.violet.features.users.repository.UsersRepository
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import io.ktor.http.*
@@ -30,7 +30,7 @@ private fun AppSecrets.toJwtConfig(): JWTConfig = JWTConfig(
 
 fun Application.configureAuth(
     secrets: AppSecrets,
-    userService: UserService,
+    usersRepository: UsersRepository,
     emailService: EmailService
 ) {
     authentication {
@@ -79,9 +79,9 @@ fun Application.configureAuth(
                 call.respondRedirect("/hello")
             }
         }
-        loginRoute(userService, jwtConfig)
+        loginRoute(usersRepository, jwtConfig)
         refreshTokenRoute(jwtConfig)
-        signupRoute(userService, secrets, emailService)
+        signupRoute(usersRepository, secrets, emailService)
     }
 }
 

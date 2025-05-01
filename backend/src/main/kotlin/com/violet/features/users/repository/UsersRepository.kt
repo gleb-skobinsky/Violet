@@ -1,6 +1,8 @@
-package com.violet.users.data
+package com.violet.features.users.repository
 
-interface UserService {
+import com.violet.features.users.models.ExposedUser
+
+interface UsersRepository {
 
     suspend fun create(user: ExposedUser): Int
 

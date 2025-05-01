@@ -1,14 +1,14 @@
 package com.violet.features.auth.routes
 
 import com.violet.features.auth.models.TokenData
+import com.violet.features.users.models.SimpleUser
+import com.violet.features.users.repository.UsersRepository
 import com.violet.jwt.JWTConfig
 import com.violet.jwt.JWTConfig.Companion.ACCESS_EXPIRATION_TIMEOUT
 import com.violet.jwt.JWTConfig.Companion.REFRESH_EXPIRATION_TIMEOUT
 import com.violet.jwt.TokenType
 import com.violet.jwt.createToken
 import com.violet.shared.RepositoriesTags
-import com.violet.users.data.SimpleUser
-import com.violet.users.data.UserService
 import io.bkbn.kompendium.core.metadata.PostInfo
 import io.bkbn.kompendium.core.plugin.NotarizedRoute
 import io.ktor.http.*
@@ -18,7 +18,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 internal fun Routing.loginRoute(
-    userService: UserService,
+    usersRepository: UsersRepository,
     jwtConfig: JWTConfig
 ) {
     route("/login") {
@@ -40,7 +40,7 @@ internal fun Routing.loginRoute(
         }
         post {
             val user = call.receive<SimpleUser>()
-            val dbUser = userService.readByEmail(user.email) ?: run {
+            val dbUser = usersRepository.readByEmail(user.email) ?: run {
                 call.respond(HttpStatusCode.NotFound, "User name not found")
                 return@post
             }

@@ -4,10 +4,10 @@ import com.violet.email.data.AppSecrets
 import com.violet.email.data.EmailData
 import com.violet.email.data.EmailService
 import com.violet.features.auth.models.SignupResponse
+import com.violet.features.users.models.ExposedUser
+import com.violet.features.users.models.SimpleUser
+import com.violet.features.users.repository.UsersRepository
 import com.violet.shared.RepositoriesTags
-import com.violet.users.data.ExposedUser
-import com.violet.users.data.SimpleUser
-import com.violet.users.data.UserService
 import io.bkbn.kompendium.core.metadata.PostInfo
 import io.bkbn.kompendium.core.plugin.NotarizedRoute
 import io.ktor.http.*
@@ -18,7 +18,7 @@ import io.ktor.server.routing.*
 import java.util.*
 
 internal fun Routing.signupRoute(
-    userService: UserService,
+    usersRepository: UsersRepository,
     secrets: AppSecrets,
     emailService: EmailService
 ) {
@@ -41,12 +41,12 @@ internal fun Routing.signupRoute(
         }
         post {
             val user = call.receive<SimpleUser>()
-            userService.readByEmail(user.email)?.let {
+            usersRepository.readByEmail(user.email)?.let {
                 call.respond(HttpStatusCode.BadRequest, "User already exists")
                 return@post
             }
             if (secrets.smtpSupported) {
-                userService.create(
+                usersRepository.create(
                     ExposedUser(
                         email = user.email,
                         password = user.password,
@@ -68,7 +68,7 @@ internal fun Routing.signupRoute(
                     )
                 )
             } else {
-                userService.create(
+                usersRepository.create(
                     ExposedUser(
                         email = user.email,
                         password = user.password,

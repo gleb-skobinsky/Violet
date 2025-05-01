@@ -1,7 +1,7 @@
 package com.violet.features.users
 
+import com.violet.features.users.models.ExposedUser
 import com.violet.shared.RepositoriesTags
-import com.violet.users.data.ExposedUser
 import io.bkbn.kompendium.core.metadata.DeleteInfo
 import io.bkbn.kompendium.core.metadata.GetInfo
 import io.bkbn.kompendium.core.metadata.PutInfo
