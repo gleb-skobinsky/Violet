@@ -2,6 +2,7 @@ package com.violet.di
 
 import com.violet.email.data.AppSecrets
 import com.violet.email.emailKoinModule
+import com.violet.features.notes.notesModule
 import io.ktor.server.application.*
 import org.koin.dsl.module
 import org.koin.ktor.plugin.koin
@@ -16,7 +17,8 @@ internal fun Application.configureKoin(secrets: AppSecrets) {
             },
             databaseModule,
             emailKoinModule,
-            usersModule
+            usersModule,
+            notesModule
         )
     }
 }

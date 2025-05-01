@@ -3,7 +3,8 @@ package com.violet.jwt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
-import java.util.Date
+import io.ktor.server.auth.jwt.*
+import java.util.*
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
@@ -22,6 +23,9 @@ data class JWTConfig(
         val REFRESH_EXPIRATION_TIMEOUT = 7.days
     }
 }
+
+val JWTPrincipal.email: String
+    get() = payload.getClaim(EMAIL_CLAIM_KEY).asString()
 
 fun JWTConfig.createToken(
     email: String,

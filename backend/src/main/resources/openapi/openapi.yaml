@@ -83,6 +83,24 @@ paths:
                 $ref: "#/components/schemas/SignupResponse"
       deprecated: false
     parameters: []
+  /api/notes:
+    get:
+      tags:
+      - "Notes repository"
+      summary: "Notes for user"
+      description: "All notes for the given user"
+      parameters: []
+      responses:
+        "201":
+          description: "Notes list successfully retrieved"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/List-NoteResponse"
+      deprecated: false
+      security:
+      - matchme-jwt-auth: []
+    parameters: []
   /users/{id}:
     get:
       tags:
@@ -201,6 +219,20 @@ components:
       required:
       - "emailSent"
       - "message"
+    NoteResponse:
+      type: "object"
+      properties:
+        body:
+          type: "string"
+        title:
+          type: "string"
+      required:
+      - "body"
+      - "title"
+    List-NoteResponse:
+      items:
+        $ref: "#/components/schemas/NoteResponse"
+      type: "array"
     ExposedUser:
       type: "object"
       properties:

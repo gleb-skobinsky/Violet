@@ -1,30 +1,27 @@
 package com.violet.features.users.repository
 
 import com.violet.features.users.models.ExposedUser
-import kotlinx.coroutines.Dispatchers
+import com.violet.shared.BaseRepository
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class DefaultUsersRepository(database: Database) : UsersRepository {
-    private object Users : Table() {
-        val id = integer("id").autoIncrement()
-        val email = varchar("email", length = 50)
-        val password = varchar("password", length = 50)
-        val verified = bool("verified")
+object Users : Table() {
+    val id = integer("id").autoIncrement()
+    val email = varchar("email", length = 50)
+    val password = varchar("password", length = 50)
+    val verified = bool("verified")
 
-        override val primaryKey = PrimaryKey(id)
-    }
+    override val primaryKey = PrimaryKey(id)
+}
+
+class DefaultUsersRepository(database: Database) : UsersRepository, BaseRepository() {
 
     init {
         transaction(database) {
             SchemaUtils.create(Users)
         }
     }
-
-    private suspend fun <T> dbQuery(block: suspend () -> T): T =
-        newSuspendedTransaction(Dispatchers.IO) { block() }
 
     override suspend fun create(user: ExposedUser): Int = dbQuery {
         Users.insert {
