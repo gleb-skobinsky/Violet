@@ -4,6 +4,7 @@ import com.violet.email.data.AppSecrets
 import com.violet.email.data.EmailData
 import com.violet.email.data.EmailService
 import com.violet.features.auth.models.SignupResponse
+import com.violet.shared.RepositoriesTags
 import com.violet.users.data.ExposedUser
 import com.violet.users.data.SimpleUser
 import com.violet.users.data.UserService
@@ -23,7 +24,7 @@ internal fun Routing.signupRoute(
 ) {
     route("/signup") {
         install(NotarizedRoute()) {
-            tags = setOf("Auth Repository")
+            tags = setOf(RepositoriesTags.AUTH)
             post = PostInfo.builder {
                 summary("User signup")
                 description("Sign up a user with their email and password")

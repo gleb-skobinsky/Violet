@@ -6,6 +6,7 @@ import com.violet.features.auth.models.TokenData
 import com.violet.jwt.JWTConfig
 import com.violet.jwt.TokenType
 import com.violet.jwt.createToken
+import com.violet.shared.RepositoriesTags
 import com.violet.users.data.SimpleUser
 import com.violet.users.data.UserService
 import io.bkbn.kompendium.core.metadata.PostInfo
@@ -22,7 +23,7 @@ internal fun Routing.loginRoute(
 ) {
     route("/login") {
         install(NotarizedRoute()) {
-            tags = setOf("Auth Repository")
+            tags = setOf(RepositoriesTags.AUTH)
             post = PostInfo.builder {
                 summary("Login")
                 description("Login a user with his username and password")

@@ -8,6 +8,7 @@ import com.violet.jwt.JWTConfig
 import com.violet.jwt.TokenType
 import com.violet.jwt.createToken
 import com.violet.jwt.verifyToken
+import com.violet.shared.RepositoriesTags
 import io.bkbn.kompendium.core.metadata.PostInfo
 import io.bkbn.kompendium.core.plugin.NotarizedRoute
 import io.ktor.http.*
@@ -19,7 +20,7 @@ import io.ktor.server.routing.*
 internal fun Routing.refreshTokenRoute(jwtConfig: JWTConfig) {
     route("/refresh") {
         install(NotarizedRoute()) {
-            tags = setOf("Auth Repository")
+            tags = setOf(RepositoriesTags.AUTH)
             post = PostInfo.builder {
                 summary("Refresh")
                 description("Refresh JWT token")

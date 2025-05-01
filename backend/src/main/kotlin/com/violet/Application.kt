@@ -3,6 +3,7 @@ package com.violet
 import com.violet.di.configureKoin
 import com.violet.email.data.AppSecrets
 import com.violet.features.auth.configureAuth
+import com.violet.features.users.configureUsersRoutes
 import com.violet.plugins.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -24,7 +25,7 @@ fun Application.module() {
     configureSockets()
     configureSerialization()
     configureAuth(secrets, get(), get())
-    configureDatabases(get())
+    configureUsersRoutes(get())
     configureMonitoring()
     configureStaticFiles()
 }
