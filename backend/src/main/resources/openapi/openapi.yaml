@@ -17,7 +17,7 @@ paths:
   /login:
     post:
       tags:
-      - "Auth Repository"
+      - "Auth repository"
       summary: "Login"
       description: "Login a user with his username and password"
       parameters: []
@@ -40,7 +40,7 @@ paths:
   /refresh:
     post:
       tags:
-      - "Auth Repository"
+      - "Auth repository"
       summary: "Refresh"
       description: "Refresh JWT token"
       parameters: []
@@ -63,7 +63,7 @@ paths:
   /signup:
     post:
       tags:
-      - "Auth Repository"
+      - "Auth repository"
       summary: "User signup"
       description: "Sign up a user with their email and password"
       parameters: []
@@ -86,7 +86,7 @@ paths:
   /users/{id}:
     get:
       tags:
-      - "Users Repository"
+      - "Users repository"
       summary: "Get a user"
       description: "User retrieval endpoint"
       parameters:
@@ -113,7 +113,7 @@ paths:
       - matchme-jwt-auth: []
     put:
       tags:
-      - "Users Repository"
+      - "Users repository"
       summary: "Update a user"
       description: "User update endpoint"
       parameters:
@@ -141,7 +141,7 @@ paths:
       - matchme-jwt-auth: []
     delete:
       tags:
-      - "Users Repository"
+      - "Users repository"
       summary: "Delete a user"
       description: "User deletion endpoint"
       parameters:

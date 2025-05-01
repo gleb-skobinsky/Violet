@@ -5,6 +5,8 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
 import java.util.Date
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.minutes
 
 private const val EMAIL_CLAIM_KEY = "email"
 
@@ -13,7 +15,13 @@ data class JWTConfig(
     val secret: String,
     val audience: String,
     val issuer: String
-)
+) {
+    companion object {
+        const val JWT_AUTH_ID = "matchme-jwt-auth"
+        val ACCESS_EXPIRATION_TIMEOUT = 30.minutes
+        val REFRESH_EXPIRATION_TIMEOUT = 7.days
+    }
+}
 
 fun JWTConfig.createToken(
     email: String,

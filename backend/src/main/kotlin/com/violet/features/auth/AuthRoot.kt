@@ -9,6 +9,7 @@ import com.violet.features.auth.routes.loginRoute
 import com.violet.features.auth.routes.refreshTokenRoute
 import com.violet.features.auth.routes.signupRoute
 import com.violet.jwt.JWTConfig
+import com.violet.jwt.JWTConfig.Companion.JWT_AUTH_ID
 import com.violet.users.data.UserService
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
@@ -19,12 +20,6 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import kotlin.time.Duration.Companion.days
-import kotlin.time.Duration.Companion.minutes
-
-const val JWT_AUTH_ID = "matchme-jwt-auth"
-val ACCESS_EXPIRATION_TIMEOUT = 30.minutes
-val REFRESH_EXPIRATION_TIMEOUT = 7.days
 
 private fun AppSecrets.toJwtConfig(): JWTConfig = JWTConfig(
     realm = jwtRealm,
