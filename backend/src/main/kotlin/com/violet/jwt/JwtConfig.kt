@@ -6,6 +6,8 @@ import com.auth0.jwt.exceptions.JWTVerificationException
 import java.util.Date
 import kotlin.time.Duration
 
+private const val EMAIL_CLAIM_KEY = "email"
+
 data class JWTConfig(
     val realm: String,
     val secret: String,
@@ -22,7 +24,7 @@ fun JWTConfig.createToken(
         .withAudience(audience)
         .withIssuer(issuer)
         .withJWTId(type.name)
-        .withClaim("email", email)
+        .withClaim(EMAIL_CLAIM_KEY, email)
         .withExpiresAt(Date(System.currentTimeMillis() + expiration.inWholeMilliseconds))
         .sign(Algorithm.HMAC256(secret))
 
@@ -34,7 +36,7 @@ fun JWTConfig.verifyToken(token: String, type: TokenType): String? =
             .withIssuer(issuer)
             .build()
             .verify(token)
-        jwt.getClaim("email").asString()
+        jwt.getClaim(EMAIL_CLAIM_KEY).asString()
     } catch (e: JWTVerificationException) {
         null
     }

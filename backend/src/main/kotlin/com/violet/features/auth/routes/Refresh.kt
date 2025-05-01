@@ -1,0 +1,66 @@
+package com.violet.features.auth.routes
+
+import com.violet.features.auth.ACCESS_EXPIRATION_TIMEOUT
+import com.violet.features.auth.REFRESH_EXPIRATION_TIMEOUT
+import com.violet.features.auth.models.RefreshToken
+import com.violet.features.auth.models.TokenData
+import com.violet.jwt.JWTConfig
+import com.violet.jwt.TokenType
+import com.violet.jwt.createToken
+import com.violet.jwt.verifyToken
+import io.bkbn.kompendium.core.metadata.PostInfo
+import io.bkbn.kompendium.core.plugin.NotarizedRoute
+import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+
+internal fun Routing.refreshTokenRoute(jwtConfig: JWTConfig) {
+    route("/refresh") {
+        install(NotarizedRoute()) {
+            tags = setOf("Auth Repository")
+            post = PostInfo.builder {
+                summary("Refresh")
+                description("Refresh JWT token")
+                request {
+                    description("Refresh a token")
+                    requestType<RefreshToken>()
+                }
+                response {
+                    description("Token successfully refreshed")
+                    responseCode(HttpStatusCode.OK)
+                    responseType<TokenData>()
+                }
+            }
+        }
+        post {
+            // Extract the refresh token from the request
+            val refreshToken = call.receive<RefreshToken>()
+
+            // Verify the refresh token and obtain the user
+            val email = jwtConfig.verifyToken(
+                token = refreshToken.token,
+                type = TokenType.RefreshToken
+            ) ?: run {
+                call.respond(HttpStatusCode.Forbidden, "Invalid refresh token")
+                return@post
+            }
+
+            // Create new access and refresh tokens for the user
+            val newAccessToken = jwtConfig.createToken(
+                email = email,
+                type = TokenType.AccessToken,
+                expiration = ACCESS_EXPIRATION_TIMEOUT
+            )
+            val newRefreshToken = jwtConfig.createToken(
+                email = email,
+                type = TokenType.RefreshToken,
+                expiration = REFRESH_EXPIRATION_TIMEOUT
+            )
+
+            // Respond with the new tokens
+            call.respond(TokenData(newAccessToken, newRefreshToken))
+        }
+    }
+}

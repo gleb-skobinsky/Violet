@@ -1,15 +1,13 @@
 package com.violet
 
+import com.violet.di.configureKoin
 import com.violet.email.data.AppSecrets
-import com.violet.email.emailKoinModule
+import com.violet.features.auth.configureAuth
 import com.violet.plugins.*
-import com.violet.users.usersModule
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import org.koin.dsl.module
 import org.koin.ktor.ext.get
-import org.koin.ktor.plugin.koin
 
 fun main() {
     embeddedServer(
@@ -25,20 +23,8 @@ fun Application.module() {
     configureSwagger(secrets)
     configureSockets()
     configureSerialization()
-    configureSecurity(secrets, get(), get())
+    configureAuth(secrets, get(), get())
     configureDatabases(get())
     configureMonitoring()
     configureStaticFiles()
-}
-
-private fun Application.configureKoin(secrets: AppSecrets) {
-    koin {
-        modules(
-            module {
-                single<AppSecrets> { secrets }
-            },
-            emailKoinModule,
-            usersModule
-        )
-    }
 }

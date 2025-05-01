@@ -13,10 +13,12 @@ import com.violet.email.data.EnvKeys.SMTP_EMAIL_SENDER
 import com.violet.email.data.EnvKeys.SMTP_HOST
 import com.violet.email.data.EnvKeys.SMTP_PASSWORD
 import com.violet.email.data.EnvKeys.SMTP_PORT
+import com.violet.email.data.EnvKeys.SMTP_SUPPORTED
 import com.violet.email.data.EnvKeys.SMTP_USER_NAME
 import java.io.File
 
 private object EnvKeys {
+    const val SMTP_SUPPORTED = "SMTP_SUPPORTED"
     const val SMTP_HOST = "SMTP_SERVER_HOST"
     const val SMTP_PORT = "SMTP_SERVER_PORT"
     const val SMTP_USER_NAME = "SMTP_SERVER_USER_NAME"
@@ -47,7 +49,8 @@ data class AppSecrets(
     val jwtIssuer: String,
     val jwtRealm: String,
     val jwtSecret: String,
-    val isDebug: Boolean
+    val isDebug: Boolean,
+    val smtpSupported: Boolean
 ) {
     companion object {
         fun fromEnvironment(): AppSecrets {
@@ -70,12 +73,13 @@ data class AppSecrets(
                 jwtIssuer = envMap.getEnvString(JWT_ISSUER),
                 jwtRealm = envMap.getEnvString(JWT_REALM),
                 jwtSecret = envMap.getEnvString(JWT_SECRET),
-                isDebug = envMap.getEnvBool(DEBUG_MODE)
+                isDebug = envMap.getEnvBool(DEBUG_MODE),
+                smtpSupported = envMap.getEnvBool(SMTP_SUPPORTED)
             )
         }
 
         private fun Map<String, String>.getEnvString(key: String): String {
-            return System.getenv(key) ?: getValue(key)
+            return getValue(key)
         }
 
         private fun Map<String, String>.getEnvInt(key: String): Int = getEnvString(key).toInt()

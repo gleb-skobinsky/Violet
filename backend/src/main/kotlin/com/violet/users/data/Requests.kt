@@ -8,5 +8,3 @@ data class ExposedUser(val email: String, val password: String, val verified: Bo
 @Serializable
 data class SimpleUser(val email: String, val password: String)
 
-@Serializable
-data class RefreshToken(val token: String)

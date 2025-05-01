@@ -1,6 +1,7 @@
 package com.violet.plugins
 
 import com.violet.email.data.AppSecrets
+import com.violet.features.auth.JWT_AUTH_ID
 import io.bkbn.kompendium.core.plugin.NotarizedApplication
 import io.bkbn.kompendium.oas.OpenApiSpec
 import io.bkbn.kompendium.oas.component.Components

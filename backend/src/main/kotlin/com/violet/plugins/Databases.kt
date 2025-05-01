@@ -1,5 +1,6 @@
 package com.violet.plugins
 
+import com.violet.features.auth.JWT_AUTH_ID
 import com.violet.users.data.ExposedUser
 import com.violet.users.data.UserService
 import io.bkbn.kompendium.core.metadata.DeleteInfo

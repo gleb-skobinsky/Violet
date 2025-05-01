@@ -80,7 +80,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/String"
+                $ref: "#/components/schemas/SignupResponse"
       deprecated: false
     parameters: []
   /users/{id}:
@@ -191,8 +191,16 @@ components:
           type: "string"
       required:
       - "token"
-    String:
-      type: "string"
+    SignupResponse:
+      type: "object"
+      properties:
+        emailSent:
+          type: "boolean"
+        message:
+          type: "string"
+      required:
+      - "emailSent"
+      - "message"
     ExposedUser:
       type: "object"
       properties:
