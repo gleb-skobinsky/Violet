@@ -91,12 +91,62 @@ paths:
       description: "All notes for the given user"
       parameters: []
       responses:
-        "201":
+        "200":
           description: "Notes list successfully retrieved"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/List-NoteResponse"
+      deprecated: false
+      security:
+      - matchme-jwt-auth: []
+    parameters: []
+  /api/notes/create:
+    post:
+      tags:
+      - "Notes repository"
+      summary: "Create a note"
+      description: "The endpoint for note creation given a title and a body"
+      parameters: []
+      requestBody:
+        description: "Create a note"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNoteRequest"
+        required: true
+      responses:
+        "201":
+          description: "Note successfully created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Boolean"
+      deprecated: false
+      security:
+      - matchme-jwt-auth: []
+    parameters: []
+  /api/notes/{noteId}:
+    delete:
+      tags:
+      - "Notes repository"
+      summary: "Delete a note"
+      description: "The endpoint for note deletion given its id"
+      parameters:
+      - name: "noteId"
+        in: "path"
+        schema:
+          type: "number"
+          format: "int32"
+        required: true
+        deprecated: false
+      responses:
+        "200":
+          description: "Note successfully deleted"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Boolean"
       deprecated: false
       security:
       - matchme-jwt-auth: []
@@ -224,15 +274,31 @@ components:
       properties:
         body:
           type: "string"
+        id:
+          type: "number"
+          format: "int32"
         title:
           type: "string"
       required:
       - "body"
+      - "id"
       - "title"
     List-NoteResponse:
       items:
         $ref: "#/components/schemas/NoteResponse"
       type: "array"
+    Boolean:
+      type: "boolean"
+    CreateNoteRequest:
+      type: "object"
+      properties:
+        body:
+          type: "string"
+        title:
+          type: "string"
+      required:
+      - "body"
+      - "title"
     ExposedUser:
       type: "object"
       properties:

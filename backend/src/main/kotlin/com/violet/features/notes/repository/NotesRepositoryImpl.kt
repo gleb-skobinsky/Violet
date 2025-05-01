@@ -3,10 +3,8 @@ package com.violet.features.notes.repository
 import com.violet.features.notes.models.NoteResponse
 import com.violet.features.users.repository.Users
 import com.violet.shared.BaseRepository
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
 private object Notes : Table() {
@@ -18,7 +16,7 @@ private object Notes : Table() {
 }
 
 class NotesRepositoryImpl(
-    private val database: Database
+    database: Database
 ) : BaseRepository(), NotesRepository {
 
     init {
@@ -36,6 +34,7 @@ class NotesRepositoryImpl(
             Notes.select { Notes.userId eq userId }
                 .map { row ->
                     NoteResponse(
+                        id = row[Notes.id],
                         title = row[Notes.title],
                         body = row[Notes.content]
                     )
@@ -43,7 +42,36 @@ class NotesRepositoryImpl(
         }
     }
 
-    override suspend fun saveNote(title: String, body: String): Boolean {
-        TODO("Not yet implemented")
+    override suspend fun saveNote(
+        userEmail: String,
+        title: String,
+        body: String
+    ): Boolean {
+        return dbQuery {
+            val userId = getUserOrNull(
+                email = userEmail
+            ) ?: return@dbQuery false
+            Notes.insert {
+                it[this.userId] = userId
+                it[this.title] = title
+                it[this.content] = body
+            }
+            true
+        }
+    }
+
+    override suspend fun deleteNote(noteId: Int): Boolean {
+        return dbQuery {
+            Notes.deleteWhere {
+                id.eq(noteId)
+            } > 0
+        }
+    }
+
+    private fun getUserOrNull(email: String): Int? {
+        return Users.select {
+            Users.email eq email
+        }.map { it[Users.id] }
+            .singleOrNull()
     }
 }
