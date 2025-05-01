@@ -1,6 +1,6 @@
 package com.violet.features.users
 
-import com.violet.features.auth.JWT_AUTH_ID
+import com.violet.jwt.JWTConfig.Companion.JWT_AUTH_ID
 import com.violet.users.data.ExposedUser
 import com.violet.users.data.UserService
 import io.ktor.http.*

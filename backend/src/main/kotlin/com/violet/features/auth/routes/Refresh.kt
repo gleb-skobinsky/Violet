@@ -1,10 +1,10 @@
 package com.violet.features.auth.routes
 
-import com.violet.features.auth.ACCESS_EXPIRATION_TIMEOUT
-import com.violet.features.auth.REFRESH_EXPIRATION_TIMEOUT
 import com.violet.features.auth.models.RefreshToken
 import com.violet.features.auth.models.TokenData
 import com.violet.jwt.JWTConfig
+import com.violet.jwt.JWTConfig.Companion.ACCESS_EXPIRATION_TIMEOUT
+import com.violet.jwt.JWTConfig.Companion.REFRESH_EXPIRATION_TIMEOUT
 import com.violet.jwt.TokenType
 import com.violet.jwt.createToken
 import com.violet.jwt.verifyToken

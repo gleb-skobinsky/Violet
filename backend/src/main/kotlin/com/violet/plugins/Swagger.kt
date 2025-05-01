@@ -1,7 +1,7 @@
 package com.violet.plugins
 
 import com.violet.email.data.AppSecrets
-import com.violet.features.auth.JWT_AUTH_ID
+import com.violet.jwt.JWTConfig.Companion.JWT_AUTH_ID
 import io.bkbn.kompendium.core.plugin.NotarizedApplication
 import io.bkbn.kompendium.oas.OpenApiSpec
 import io.bkbn.kompendium.oas.component.Components
@@ -9,10 +9,9 @@ import io.bkbn.kompendium.oas.info.Contact
 import io.bkbn.kompendium.oas.info.Info
 import io.bkbn.kompendium.oas.info.License
 import io.bkbn.kompendium.oas.security.BearerAuth
-import io.ktor.server.application.Application
-import io.ktor.server.application.install
-import io.ktor.server.plugins.swagger.swaggerUI
-import io.ktor.server.routing.routing
+import io.ktor.server.application.*
+import io.ktor.server.plugins.swagger.*
+import io.ktor.server.routing.*
 import java.net.URI
 
 fun Application.configureSwagger(secrets: AppSecrets) {
