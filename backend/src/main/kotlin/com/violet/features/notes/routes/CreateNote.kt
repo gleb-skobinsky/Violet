@@ -1,7 +1,6 @@
 package com.violet.features.notes.routes
 
 import com.violet.features.notes.models.CreateNoteRequest
-import com.violet.features.notes.models.NoteResponse
 import com.violet.features.notes.repository.NotesRepository
 import com.violet.jwt.JWTConfig
 import com.violet.jwt.email
