@@ -136,8 +136,7 @@ paths:
       - name: "noteId"
         in: "path"
         schema:
-          type: "number"
-          format: "int32"
+          type: "string"
         required: true
         deprecated: false
       responses:
@@ -161,8 +160,7 @@ paths:
       - name: "id"
         in: "path"
         schema:
-          type: "number"
-          format: "int32"
+          type: "string"
         required: true
         deprecated: false
       responses:
@@ -188,8 +186,7 @@ paths:
       - name: "id"
         in: "path"
         schema:
-          type: "number"
-          format: "int32"
+          type: "string"
         required: true
         deprecated: false
       requestBody:
@@ -216,8 +213,7 @@ paths:
       - name: "id"
         in: "path"
         schema:
-          type: "number"
-          format: "int32"
+          type: "string"
         required: true
         deprecated: false
       responses:
@@ -275,8 +271,7 @@ components:
         body:
           type: "string"
         id:
-          type: "number"
-          format: "int32"
+          type: "string"
         title:
           type: "string"
       required:

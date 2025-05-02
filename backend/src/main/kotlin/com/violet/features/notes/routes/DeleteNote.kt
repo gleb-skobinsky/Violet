@@ -29,7 +29,7 @@ internal fun Routing.deleteNoteRoute(
                         Parameter(
                             name = NOTE_ID_PARAM,
                             `in` = Parameter.Location.path,
-                            schema = TypeDefinition.INT
+                            schema = TypeDefinition.STRING
                         )
                     )
                     response {
@@ -40,7 +40,7 @@ internal fun Routing.deleteNoteRoute(
                 }
             }
             delete {
-                val id = call.parameters[NOTE_ID_PARAM]?.toIntOrNull() ?: run {
+                val id = call.parameters[NOTE_ID_PARAM] ?: run {
                     call.respond(
                         HttpStatusCode.BadRequest,
                         "Invalid id"

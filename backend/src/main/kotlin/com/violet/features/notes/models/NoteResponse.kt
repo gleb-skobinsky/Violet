@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NoteResponse(
-    val id: Int,
+    val id: String,
     val title: String,
     val body: String
 )

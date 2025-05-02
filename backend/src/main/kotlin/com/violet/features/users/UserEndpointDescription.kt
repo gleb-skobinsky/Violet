@@ -22,7 +22,7 @@ internal fun Route.usersEndpointDescription() {
                 Parameter(
                     name = "id",
                     `in` = Parameter.Location.path,
-                    schema = TypeDefinition.INT
+                    schema = TypeDefinition.STRING
                 )
             )
             response {
@@ -48,7 +48,7 @@ internal fun Route.usersEndpointDescription() {
                 Parameter(
                     name = "id",
                     `in` = Parameter.Location.path,
-                    schema = TypeDefinition.INT
+                    schema = TypeDefinition.STRING
                 )
             )
             request {
@@ -73,7 +73,7 @@ internal fun Route.usersEndpointDescription() {
                 Parameter(
                     name = "id",
                     `in` = Parameter.Location.path,
-                    schema = TypeDefinition.INT
+                    schema = TypeDefinition.STRING
                 )
             )
             response {

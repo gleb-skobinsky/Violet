@@ -11,5 +11,5 @@ interface NotesRepository {
         body: String
     ): Boolean
 
-    suspend fun deleteNote(noteId: Int): Boolean
+    suspend fun deleteNote(noteId: String): Boolean
 }

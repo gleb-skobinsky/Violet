@@ -19,7 +19,7 @@ fun Application.configureUsersRoutes(
             route("/users/{id}") {
                 usersEndpointDescription()
                 get {
-                    val id = call.parameters["id"]?.toIntOrNull() ?: run {
+                    val id = call.parameters["id"] ?: run {
                         call.respond(
                             HttpStatusCode.BadRequest,
                             "Invalid id"
@@ -34,7 +34,7 @@ fun Application.configureUsersRoutes(
                     }
                 }
                 put {
-                    val id = call.parameters["id"]?.toIntOrNull() ?: run {
+                    val id = call.parameters["id"] ?: run {
                         call.respond(
                             HttpStatusCode.BadRequest,
                             "Invalid id"
@@ -46,7 +46,7 @@ fun Application.configureUsersRoutes(
                     call.respond(HttpStatusCode.OK)
                 }
                 delete {
-                    val id = call.parameters["id"]?.toIntOrNull() ?: run {
+                    val id = call.parameters["id"] ?: run {
                         call.respond(
                             HttpStatusCode.BadRequest,
                             "Invalid id"

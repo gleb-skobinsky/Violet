@@ -38,6 +38,8 @@ dependencies {
     implementation(libs.postgres)
     implementation(libs.h2)
     implementation(libs.exposed.core)
+    implementation(libs.exposed.datetime)
+    implementation(libs.exposed.dao)
     implementation(libs.exposed.jdbc)
     implementation(libs.ktor.server.logging)
     implementation(libs.ktor.server.auth)
