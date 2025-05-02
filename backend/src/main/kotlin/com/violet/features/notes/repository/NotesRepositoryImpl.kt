@@ -4,17 +4,22 @@ import com.violet.features.notes.models.NoteResponse
 import com.violet.features.users.repository.Users
 import com.violet.shared.BaseRepository
 import com.violet.shared.uuid
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IdTable
+import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
+import org.jetbrains.exposed.sql.SortOrder.DESC
 
 private object Notes : IdTable<UUID>("notes") {
     override val id = uuid("id").entityId().clientDefault {
@@ -26,6 +31,9 @@ private object Notes : IdTable<UUID>("notes") {
     )
     val title = varchar("title", 255)
     val content = text("content")
+    val createdAt: Column<Instant> = timestamp("created_at")
+    val updatedAt: Column<Instant> = timestamp("updated_at")
+
     override val primaryKey = PrimaryKey(id)
 }
 
@@ -45,6 +53,7 @@ class NotesRepositoryImpl(
                 email = email
             ) ?: return@dbQuery emptyList()
             Notes.select { Notes.userId eq userId }
+                .orderBy(Notes.createdAt to DESC)
                 .map { row ->
                     NoteResponse(
                         id = row[Notes.id].value.toString(),
@@ -68,6 +77,8 @@ class NotesRepositoryImpl(
                 it[this.userId] = userId
                 it[this.title] = title
                 it[this.content] = body
+                it[createdAt] = Clock.System.now()
+                it[updatedAt] = Clock.System.now()
             }
             true
         }
