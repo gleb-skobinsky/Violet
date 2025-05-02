@@ -45,7 +45,7 @@ internal fun Routing.createNoteRoute(
                     )
                     return@post
                 }
-                val note = call.receive<NoteResponse>()
+                val note = call.receive<CreateNoteRequest>()
                 val created = repository.saveNote(
                     userEmail = email,
                     title = note.title,

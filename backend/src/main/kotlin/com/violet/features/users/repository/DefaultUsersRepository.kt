@@ -5,6 +5,7 @@ import com.violet.shared.BaseRepository
 import com.violet.shared.uuid
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Database
@@ -19,7 +20,9 @@ import org.jetbrains.exposed.sql.update
 import java.util.*
 
 object Users : IdTable<UUID>("users") {
-    override val id = uuid("id").entityId()
+    override val id = uuid("id").entityId().clientDefault {
+        EntityID(UUID.randomUUID(), Users)
+    }
     val email = varchar("email", length = 50)
     val password = varchar("password", length = 50)
     val verified = bool("verified")

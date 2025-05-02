@@ -4,6 +4,7 @@ import com.violet.features.notes.models.NoteResponse
 import com.violet.features.users.repository.Users
 import com.violet.shared.BaseRepository
 import com.violet.shared.uuid
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.ReferenceOption
@@ -16,7 +17,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
 private object Notes : IdTable<UUID>("notes") {
-    override val id = uuid("id").entityId()
+    override val id = uuid("id").entityId().clientDefault {
+        EntityID(UUID.randomUUID(), Notes)
+    }
     val userId = uuid("user_id").references(
         ref = Users.id,
         onDelete = ReferenceOption.CASCADE
