@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
@@ -45,6 +46,7 @@ internal class RippleAnimation(
     private val radius: Float,
     private val bounded: Boolean
 ) {
+    private val finishRadius = radius * 1.33f
     private var startRadius: Float? = null
 
     private var targetCenter: Offset? = null
@@ -135,18 +137,43 @@ internal class RippleAnimation(
                 animatedAlpha.value
             }
 
-        val radius = lerp(startRadius!!, radius, animatedRadiusPercent.value)
+        val radius = lerp(startRadius!!, finishRadius, animatedRadiusPercent.value)
         val centerOffset =
             Offset(
                 lerp(origin!!.x, targetCenter!!.x, animatedCenterPercent.value),
                 lerp(origin!!.y, targetCenter!!.y, animatedCenterPercent.value),
             )
-
         val modulatedColor = color.copy(alpha = color.alpha * alpha)
         if (bounded) {
-            clipRect { drawCircle(modulatedColor, radius, centerOffset) }
+            clipRect {
+                drawCircle(
+                    brush = Brush.radialGradient(
+                        listOf(
+                            modulatedColor,
+                            modulatedColor,
+                            Color.Transparent
+                        ),
+                        center = centerOffset,
+                        radius = radius
+                    ),
+                    radius = radius,
+                    center = centerOffset
+                )
+            }
         } else {
-            drawCircle(modulatedColor, radius, centerOffset)
+            drawCircle(
+                brush = Brush.radialGradient(
+                    listOf(
+                        modulatedColor,
+                        modulatedColor,
+                        Color.Transparent
+                    ),
+                    radius = radius,
+                    center = centerOffset
+                ),
+                radius = radius,
+                center = centerOffset
+            )
         }
     }
 }
