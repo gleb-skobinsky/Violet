@@ -19,7 +19,10 @@ dependencyResolutionManagement {
     }
 }
 
-include(":composeApp")
-include(":backend")
-include(":shared")
-include(":secureStorage")
+include(
+    ":composeApp",
+    ":backend",
+    ":uiKit",
+    ":shared",
+    ":secureStorage"
+)
