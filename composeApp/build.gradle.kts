@@ -79,6 +79,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.client.auth)
             implementation(libs.kotlinx.datetime)
+            implementation(projects.uiKit)
         }
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)

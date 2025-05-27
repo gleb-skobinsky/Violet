@@ -8,6 +8,7 @@ import androidx.compose.ui.uikit.OnFocusBehavior
 import androidx.compose.ui.window.ComposeUIViewController
 import org.violet.violetapp.common.presentation.modifiers.noRippleClickable
 import platform.UIKit.UIViewController
+import org.violet.uiKit.ExampleButtonPreview
 
 @Suppress("Unused", "FunctionName")
 fun MainViewController(): UIViewController = ComposeUIViewController(
@@ -20,6 +21,6 @@ fun MainViewController(): UIViewController = ComposeUIViewController(
         modifier = Modifier.noRippleClickable {
             focusManager.clearFocus(true)
         },
-        content = { App() }
+        content = { ExampleButtonPreview() }
     )
 }

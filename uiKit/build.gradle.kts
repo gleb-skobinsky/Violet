@@ -32,6 +32,7 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.runtime)
             implementation(compose.material3)
+            implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.collection)
         }
         androidMain.dependencies {

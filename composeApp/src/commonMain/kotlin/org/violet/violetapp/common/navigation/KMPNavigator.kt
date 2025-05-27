@@ -4,22 +4,18 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.compose.ComposeNavigator
-import org.violet.violetapp.common.utils.QualifiedName
-import org.violet.violetapp.common.utils.promisedValue
-import org.violet.violetapp.common.utils.runningHistory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.violet.violetapp.common.utils.QualifiedName
 
-val LocalKmpNavigator = staticCompositionLocalOf { promisedValue<KMPNavigator>() }
+val LocalKmpNavigator = staticCompositionLocalOf<KMPNavigator> {
+    error("No KMPNavigator provided")
+}
 
 interface KMPNavigator {
 
@@ -39,29 +35,15 @@ interface KMPNavigator {
 
     fun popUntil(screen: Screens)
 
-    /**
-     * Allows to subscribe to pop events.
-     *
-     * The emitted value is the entry that has been popped.
-     *
-     * Mainly defined for the [BackHandler] to work in cross-platform.
-     */
-    val popEvents: Flow<NavBackStackEntry?>
-
     val currentEntry: StateFlow<NavBackStackEntry?>
 
     fun hasScreen(screen: Screens): Boolean
 }
 
-class KMPNavigatorImpl(private val navController: NavController) : KMPNavigator {
-    private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
-
-    override val popEvents = navController.currentBackStack
-        .runningHistory()
-        .filter { (prev, current) ->
-            current.lastOrNull() == prev.getPenultimate()
-        }
-        .map { it.previous?.lastOrNull() }
+class KMPNavigatorImpl(private val navController: NavController) :
+    KMPNavigator {
+    private val coroutineScope =
+        CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     override val currentEntry = navController.currentBackStackEntryFlow
         .stateIn(coroutineScope, SharingStarted.Eagerly, null)
@@ -128,16 +110,6 @@ class KMPNavigatorImpl(private val navController: NavController) : KMPNavigator 
         }.onFailure {
             it.printStackTrace()
         }
-    }
-
-    private fun List<NavBackStackEntry>?.getPenultimate(): NavBackStackEntry? {
-        if (this == null) return null
-        var entriesCount = 0
-        for (entry in asReversed()) {
-            if (entry.destination is ComposeNavigator.Destination) entriesCount++
-            if (entriesCount > 1) return entry
-        }
-        return null
     }
 }
 

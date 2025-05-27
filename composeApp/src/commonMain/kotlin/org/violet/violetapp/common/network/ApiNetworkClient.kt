@@ -9,6 +9,7 @@ import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
+import kotlinx.io.IOException
 import org.jetbrains.compose.resources.getString
 import violet.composeapp.generated.resources.Res
 import violet.composeapp.generated.resources.generic_eror
@@ -33,7 +34,6 @@ class ApiNetworkClient(
         }
     }
 
-    @Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE")
     suspend inline fun <reified Request : Any, reified Response : Any> put(
         urlPath: String,
         body: Request? = null
@@ -45,7 +45,6 @@ class ApiNetworkClient(
         }
     }
 
-    @Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE")
     suspend inline fun <reified Response : Any> get(
         urlPath: String
     ): RequestResult<Response> {
@@ -61,7 +60,7 @@ class ApiNetworkClient(
             block()
         } catch (e: Exception) {
             when (e) {
-                is io.ktor.utils.io.errors.IOException -> {
+                is IOException -> {
                     if (connectivityStatusState.connected) {
                         RequestResult.Error(getString(Res.string.generic_eror))
                     } else {
@@ -80,7 +79,12 @@ class ApiNetworkClient(
         } else {
             println("Http request FAILED:")
             println(bodyAsText())
-            RequestResult.Error(error = ErrorData(message = bodyAsText(), httpStatus = status))
+            RequestResult.Error(
+                error = ErrorData(
+                    message = bodyAsText(),
+                    httpStatus = status
+                )
+            )
         }
     }
 }
