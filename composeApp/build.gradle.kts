@@ -49,6 +49,7 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
+            binaryOption("bundleId", "org.violet.violetapp.ComposeApp")
             isStatic = true
         }
     }
@@ -80,6 +81,7 @@ kotlin {
             implementation(libs.ktor.client.auth)
             implementation(libs.kotlinx.datetime)
             implementation(projects.uiKit)
+            implementation(libs.kmp.bundle)
         }
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)

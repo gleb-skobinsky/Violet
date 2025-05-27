@@ -74,7 +74,7 @@ class KMPNavigatorImpl(private val navController: NavController) :
         if (hasScreen(screen)) return
         ifResumed {
             runWithMain {
-                navController.typedNavigate(screen)
+                navController.navigate(screen)
             }
         }
     }
@@ -83,13 +83,13 @@ class KMPNavigatorImpl(private val navController: NavController) :
         if (hasScreen(screen)) return
         runWithMain {
             navController.popBackStack()
-            navController.typedNavigate(screen)
+            navController.navigate(screen)
         }
     }
 
     override fun replaceAll(screen: Screens) {
         runWithMain {
-            navController.typedNavigate(screen) {
+            navController.navigate(screen) {
                 popUpTo(0) {
                     inclusive = true
                 }

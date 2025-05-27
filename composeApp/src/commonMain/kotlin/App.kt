@@ -10,7 +10,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.bundle.Bundle
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -23,11 +25,9 @@ import org.violet.violetapp.common.navigation.KMPNavigator
 import org.violet.violetapp.common.navigation.KMPNavigatorImpl
 import org.violet.violetapp.common.navigation.LocalKmpNavigator
 import org.violet.violetapp.common.navigation.Screens
-import org.violet.violetapp.common.navigation.autoRouteComposable
-import org.violet.violetapp.common.navigation.typedComposable
 import org.violet.violetapp.common.presentation.RootSnackbarController
-import org.violet.violetapp.common.presentation.components.VioletAppNavBarWrapper
 import org.violet.violetapp.common.presentation.components.SnackbarScaffold
+import org.violet.violetapp.common.presentation.components.VioletAppNavBarWrapper
 import org.violet.violetapp.common.presentation.material.VioletAppColorScheme
 import org.violet.violetapp.common.presentation.material.VioletAppTypography
 import org.violet.violetapp.common.utils.QualifiedName
@@ -64,12 +64,15 @@ fun App(
                     startDestination = Screens.LoginScreen.QualifiedName
                 ) {
                     // Auth graph
-                    typedComposable<Screens.LoginScreen> { LoginScreen() }
-                    typedComposable<Screens.SignupScreen> { SignupScreen() }
-                    autoRouteComposable<Screens.ForgotPasswordScreen> { ForgotPasswordScreen(email) }
-                    typedComposable<Screens.HomeScreen> { }
-                    typedComposable<Screens.FeedScreen> { }
-                    typedComposable<Screens.ProfileScreen> { }
+                    composable<Screens.LoginScreen> { LoginScreen() }
+                    composable<Screens.SignupScreen> { SignupScreen() }
+                    composable<Screens.ForgotPasswordScreen> {
+                        val route = it.toRoute<Screens.ForgotPasswordScreen>()
+                        ForgotPasswordScreen(route.email)
+                    }
+                    composable<Screens.HomeScreen> { }
+                    composable<Screens.FeedScreen> { }
+                    composable<Screens.ProfileScreen> { }
                 }
                 initController.CollectEffects { effect ->
                     when (effect) {
