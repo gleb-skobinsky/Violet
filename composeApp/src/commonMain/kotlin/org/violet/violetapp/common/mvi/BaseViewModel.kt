@@ -30,8 +30,15 @@ abstract class BaseViewModel<S : BaseState, A : BaseAction, E : BaseEffect>(
 
     private var actionJob: Job? = null
 
+    private var prevAction: A? = null
     fun onAction(action: A) {
-        actionJob?.cancel()
+        if (
+            prevAction?.equals(action) == true &&
+            actionJob?.isActive == true
+        ) {
+            return
+        }
+        prevAction = action
         actionJob = viewModelScope.launch {
             performOnAction(action)
         }
