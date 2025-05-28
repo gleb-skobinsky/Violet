@@ -32,6 +32,14 @@ kotlin {
                 }
             }
         }
+        /*
+        compilerOptions {
+            freeCompilerArgs.addAll(
+                "-Xwasm-attach-js-exception",
+                "-Xwasm-use-new-exception-proposal"
+            )
+        }
+         */
         binaries.executable()
     }
 

@@ -30,7 +30,6 @@ import org.violet.violetapp.common.presentation.components.SnackbarScaffold
 import org.violet.violetapp.common.presentation.components.VioletAppNavBarWrapper
 import org.violet.violetapp.common.presentation.material.VioletAppColorScheme
 import org.violet.violetapp.common.presentation.material.VioletAppTypography
-import org.violet.violetapp.common.utils.QualifiedName
 import org.violet.violetapp.init.presentation.InitEffect
 import org.violet.violetapp.init.presentation.InitStateController
 
@@ -61,7 +60,7 @@ fun App(
                         .background(MaterialTheme.colorScheme.surface),
                     enterTransition = { fadeIn(tween(FAST_NAV_ANIMATION)) },
                     exitTransition = { fadeOut(tween(FAST_NAV_ANIMATION)) },
-                    startDestination = Screens.LoginScreen.QualifiedName
+                    startDestination = Screens.LoginScreen
                 ) {
                     // Auth graph
                     composable<Screens.LoginScreen> { LoginScreen() }
@@ -81,7 +80,9 @@ fun App(
                             // process death happened and we should let the navigation controller
                             // to restore its state.
                             // Otherwize, navigate to home screen.
-                            if (savedState == null) navigator.replaceAll(Screens.HomeScreen)
+                            if (savedState == null) {
+                                navigator.replaceAll(Screens.HomeScreen)
+                            }
                         }
 
                         InitEffect.ShowLogin -> navigator.replaceAll(Screens.LoginScreen)

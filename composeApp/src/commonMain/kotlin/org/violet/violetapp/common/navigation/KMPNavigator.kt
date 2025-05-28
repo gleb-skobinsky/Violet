@@ -4,14 +4,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
-import org.violet.violetapp.common.utils.QualifiedName
+import kotlinx.coroutines.flow.Flow
 
 val LocalKmpNavigator = staticCompositionLocalOf<KMPNavigator> {
     error("No KMPNavigator provided")
@@ -35,25 +28,23 @@ interface KMPNavigator {
 
     fun popUntil(screen: Screens)
 
-    val currentEntry: StateFlow<NavBackStackEntry?>
+    val currentEntry: Flow<NavBackStackEntry?>
 
     fun hasScreen(screen: Screens): Boolean
 }
 
-class KMPNavigatorImpl(private val navController: NavController) :
-    KMPNavigator {
-    private val coroutineScope =
-        CoroutineScope(Dispatchers.Main + SupervisorJob())
+class KMPNavigatorImpl(
+    private val navController: NavController
+) : KMPNavigator {
 
     override val currentEntry = navController.currentBackStackEntryFlow
-        .stateIn(coroutineScope, SharingStarted.Eagerly, null)
 
     override fun hasScreen(screen: Screens): Boolean =
         navController.currentBackStackEntry.hasScreen(screen)
 
     override fun goBack() {
         ifResumed {
-            runWithMain {
+            runSafely {
                 navController.navigateUp()
             }
         }
@@ -61,9 +52,9 @@ class KMPNavigatorImpl(private val navController: NavController) :
 
     override fun popUntil(screen: Screens) {
         ifResumed {
-            runWithMain {
+            runSafely {
                 navController.popBackStack(
-                    route = screen.QualifiedName,
+                    route = screen,
                     inclusive = false
                 )
             }
@@ -73,7 +64,7 @@ class KMPNavigatorImpl(private val navController: NavController) :
     override fun goTo(screen: Screens) {
         if (hasScreen(screen)) return
         ifResumed {
-            runWithMain {
+            runSafely {
                 navController.navigate(screen)
             }
         }
@@ -81,14 +72,14 @@ class KMPNavigatorImpl(private val navController: NavController) :
 
     override fun replace(screen: Screens) {
         if (hasScreen(screen)) return
-        runWithMain {
+        runSafely {
             navController.popBackStack()
             navController.navigate(screen)
         }
     }
 
     override fun replaceAll(screen: Screens) {
-        runWithMain {
+        runSafely {
             navController.navigate(screen) {
                 popUpTo(0) {
                     inclusive = true
@@ -97,14 +88,16 @@ class KMPNavigatorImpl(private val navController: NavController) :
         }
     }
 
-    private fun ifResumed(block: () -> Unit) {
+    private inline fun ifResumed(block: () -> Unit) {
         val currentEntry = navController.currentBackStackEntry ?: return
         if (currentEntry.lifecycle.currentState == Lifecycle.State.RESUMED) {
             block()
         }
     }
 
-    private fun runWithMain(block: () -> Unit) = coroutineScope.launch {
+    private inline fun runSafely(
+        crossinline block: () -> Unit
+    ) {
         runCatching {
             block()
         }.onFailure {
@@ -115,5 +108,6 @@ class KMPNavigatorImpl(private val navController: NavController) :
 
 fun NavBackStackEntry?.hasScreen(screen: Screens): Boolean {
     val route = this?.destination?.route ?: return false
-    return screen.QualifiedName in route
+    val screenName = screen::class.qualifiedName ?: return false
+    return screenName in route
 }

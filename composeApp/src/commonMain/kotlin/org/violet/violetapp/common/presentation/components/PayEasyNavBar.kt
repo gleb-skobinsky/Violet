@@ -52,7 +52,7 @@ fun VioletAppNavBarWrapper(
     hazeState: HazeState
 ) {
     val navigator = LocalKmpNavigator.current
-    val entry by navigator.currentEntry.collectAsState()
+    val entry by navigator.currentEntry.collectAsState(null)
     val navbarVisible by remember {
         derivedStateOf {
             BottomBarTab.entries.any {
