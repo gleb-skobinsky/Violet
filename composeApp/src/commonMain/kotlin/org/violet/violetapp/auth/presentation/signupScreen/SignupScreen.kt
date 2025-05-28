@@ -29,16 +29,16 @@ import org.violet.violetapp.common.presentation.components.VerticalSpacer
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import violet.composeapp.generated.resources.Res
-import violet.composeapp.generated.resources.enter_email
-import violet.composeapp.generated.resources.log_in
-import violet.composeapp.generated.resources.make_up_password
-import violet.composeapp.generated.resources.only_latin_symbols
-import violet.composeapp.generated.resources.password_contains_special_symbols
-import violet.composeapp.generated.resources.password_is_long_enough
-import violet.composeapp.generated.resources.passwords_match
-import violet.composeapp.generated.resources.repeat_password
-import violet.composeapp.generated.resources.sign_up
+import org.violet.violetapp.resources.AppRes
+import org.violet.violetapp.resources.enter_email
+import org.violet.violetapp.resources.log_in
+import org.violet.violetapp.resources.make_up_password
+import org.violet.violetapp.resources.only_latin_symbols
+import org.violet.violetapp.resources.password_contains_special_symbols
+import org.violet.violetapp.resources.password_is_long_enough
+import org.violet.violetapp.resources.passwords_match
+import org.violet.violetapp.resources.repeat_password
+import org.violet.violetapp.resources.sign_up
 
 @Composable
 fun SignupScreen(
@@ -69,7 +69,7 @@ fun SignupScreenContent(
         22.dp.VerticalSpacer()
         VioletAppLogo()
         50.dp.VerticalSpacer()
-        AuthTopTwoButtons(Res.string.sign_up, Res.string.log_in) {
+        AuthTopTwoButtons(AppRes.string.sign_up, AppRes.string.log_in) {
             navigator.goTo(Screens.LoginScreen)
         }
         40.dp.VerticalSpacer()
@@ -79,7 +79,7 @@ fun SignupScreenContent(
                 onAction(SignupAction.UpdateEmail(it))
             },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = stringResource(Res.string.enter_email),
+            placeholder = stringResource(AppRes.string.enter_email),
             leftIcon = Sms,
         )
         24.dp.VerticalSpacer()
@@ -89,7 +89,7 @@ fun SignupScreenContent(
                 onAction(SignupAction.UpdatePassword(it))
             },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = stringResource(Res.string.make_up_password),
+            placeholder = stringResource(AppRes.string.make_up_password),
             leftIcon = Lock
         )
         24.dp.VerticalSpacer()
@@ -99,7 +99,7 @@ fun SignupScreenContent(
                 onAction(SignupAction.UpdateRepeatPassword(it))
             },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = stringResource(Res.string.repeat_password),
+            placeholder = stringResource(AppRes.string.repeat_password),
             leftIcon = LockHidden
         )
         24.dp.VerticalSpacer()
@@ -111,7 +111,7 @@ fun SignupScreenContent(
         )
         40.dp.VerticalSpacer()
         VioletAppButton(
-            label = stringResource(Res.string.sign_up),
+            label = stringResource(AppRes.string.sign_up),
             modifier = Modifier.fillMaxWidth(),
             enabled = state.canRegister
         ) {
@@ -132,11 +132,11 @@ internal fun PasswordConditions(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        PasswordCondition(Res.string.passwords_match, passwordsMatch)
-        PasswordCondition(Res.string.only_latin_symbols, containOnlyLatin)
-        PasswordCondition(Res.string.password_is_long_enough, isLongEnough)
+        PasswordCondition(AppRes.string.passwords_match, passwordsMatch)
+        PasswordCondition(AppRes.string.only_latin_symbols, containOnlyLatin)
+        PasswordCondition(AppRes.string.password_is_long_enough, isLongEnough)
         PasswordCondition(
-            Res.string.password_contains_special_symbols,
+            AppRes.string.password_contains_special_symbols,
             hasSpecialSymbols
         )
     }

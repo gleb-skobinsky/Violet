@@ -11,9 +11,9 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
 import kotlinx.io.IOException
 import org.jetbrains.compose.resources.getString
-import violet.composeapp.generated.resources.Res
-import violet.composeapp.generated.resources.generic_eror
-import violet.composeapp.generated.resources.network_unavailable_error
+import org.violet.violetapp.resources.AppRes
+import org.violet.violetapp.resources.generic_eror
+import org.violet.violetapp.resources.network_unavailable_error
 
 class ApiNetworkClient(
     val ktorClient: HttpClient,
@@ -62,13 +62,13 @@ class ApiNetworkClient(
             when (e) {
                 is IOException -> {
                     if (connectivityStatusState.connected) {
-                        RequestResult.Error(getString(Res.string.generic_eror))
+                        RequestResult.Error(getString(AppRes.string.generic_eror))
                     } else {
-                        RequestResult.Error(getString(Res.string.network_unavailable_error))
+                        RequestResult.Error(getString(AppRes.string.network_unavailable_error))
                     }
                 }
 
-                else -> RequestResult.Error(getString(Res.string.generic_eror))
+                else -> RequestResult.Error(getString(AppRes.string.generic_eror))
             }
         }
     }

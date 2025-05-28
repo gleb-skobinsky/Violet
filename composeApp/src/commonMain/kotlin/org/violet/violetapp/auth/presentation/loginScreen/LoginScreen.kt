@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,6 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
+import org.violet.uiKit.theme.LocalVioletTheme
 import org.violet.violetapp.auth.presentation.LoginAction
 import org.violet.violetapp.auth.presentation.LoginEffect
 import org.violet.violetapp.auth.presentation.LoginState
@@ -28,23 +32,19 @@ import org.violet.violetapp.common.navigation.KMPNavigator
 import org.violet.violetapp.common.navigation.LocalKmpNavigator
 import org.violet.violetapp.common.navigation.Screens
 import org.violet.violetapp.common.presentation.RootSnackbarController
+import org.violet.violetapp.common.presentation.components.VerticalSpacer
 import org.violet.violetapp.common.presentation.components.VioletAppButton
 import org.violet.violetapp.common.presentation.components.VioletAppPasswordTextField
 import org.violet.violetapp.common.presentation.components.VioletAppSurface
 import org.violet.violetapp.common.presentation.components.VioletAppTextField
-import org.violet.violetapp.common.presentation.components.VerticalSpacer
 import org.violet.violetapp.common.presentation.modifiers.noRippleClickable
-import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
-import violet.composeapp.generated.resources.Res
-import violet.composeapp.generated.resources.email
-import violet.composeapp.generated.resources.forgot_password
-import violet.composeapp.generated.resources.log_in
-import violet.composeapp.generated.resources.password
-import violet.composeapp.generated.resources.logo
-import violet.composeapp.generated.resources.sign_up
+import org.violet.violetapp.resources.AppRes
+import org.violet.violetapp.resources.email
+import org.violet.violetapp.resources.forgot_password
+import org.violet.violetapp.resources.log_in
+import org.violet.violetapp.resources.logo
+import org.violet.violetapp.resources.password
+import org.violet.violetapp.resources.sign_up
 
 @Composable
 fun LoginScreen(
@@ -75,7 +75,7 @@ fun LoginScreenContent(
         22.dp.VerticalSpacer()
         VioletAppLogo()
         50.dp.VerticalSpacer()
-        AuthTopTwoButtons(Res.string.log_in, Res.string.sign_up) {
+        AuthTopTwoButtons(AppRes.string.log_in, AppRes.string.sign_up) {
             navigator.goTo(Screens.SignupScreen)
         }
         40.dp.VerticalSpacer()
@@ -86,7 +86,7 @@ fun LoginScreenContent(
             },
             leftIcon = Sms,
             modifier = Modifier.fillMaxWidth(),
-            placeholder = stringResource(Res.string.email)
+            placeholder = stringResource(AppRes.string.email)
         )
         24.dp.VerticalSpacer()
         VioletAppPasswordTextField(
@@ -95,7 +95,7 @@ fun LoginScreenContent(
                 onAction(LoginAction.SetPassword(it))
             },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = stringResource(Res.string.password),
+            placeholder = stringResource(AppRes.string.password),
             leftIcon = Lock
         )
         24.dp.VerticalSpacer()
@@ -105,14 +105,14 @@ fun LoginScreenContent(
                 .noRippleClickable {
                     navigator.goTo(Screens.ForgotPasswordScreen())
                 },
-            text = stringResource(Res.string.forgot_password),
+            text = stringResource(AppRes.string.forgot_password),
             style = LocalVioletTheme.typography.bodyMedium,
             color = LocalVioletTheme.colors.primaryContainer
         )
         40.dp.VerticalSpacer()
         VioletAppButton(
             isLoading = state.isLoading,
-            label = stringResource(Res.string.log_in),
+            label = stringResource(AppRes.string.log_in),
             modifier = Modifier.fillMaxWidth(),
             enabled = state.canLogin
         ) {
@@ -126,7 +126,7 @@ fun LoginScreenContent(
 internal fun ColumnScope.VioletAppLogo() {
     Image(
         modifier = Modifier.Companion.align(Alignment.CenterHorizontally),
-        painter = painterResource(Res.drawable.logo),
+        painter = painterResource(AppRes.drawable.logo),
         contentDescription = "Payeasy logo"
     )
 }
@@ -148,7 +148,11 @@ internal fun AuthTopTwoButtons(
 }
 
 @Composable
-fun BigAuthText(text: String, secondary: Boolean = false, onClick: (() -> Unit)? = null) {
+fun BigAuthText(
+    text: String,
+    secondary: Boolean = false,
+    onClick: (() -> Unit)? = null
+) {
     Text(
         modifier = Modifier
             .clip(RoundedCornerShape(6.dp))

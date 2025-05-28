@@ -22,9 +22,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import org.jetbrains.compose.resources.stringResource
-import violet.composeapp.generated.resources.Res
-import violet.composeapp.generated.resources.button_cancel
-import violet.composeapp.generated.resources.button_confirm
+import org.violet.violetapp.resources.AppRes
+import org.violet.violetapp.resources.button_cancel
+import org.violet.violetapp.resources.button_confirm
 
 class ConfirmDialogState(
     initialState: Boolean
@@ -63,8 +63,8 @@ fun VioletAppConfirmDialog(
     state: ConfirmDialogState = rememberConfirmDialogState(),
     dismissOnClickOutside: Boolean = true,
     onCancel: () -> Unit = { state.close() },
-    labelConfirm: String = stringResource(Res.string.button_confirm),
-    labelCancel: String = stringResource(Res.string.button_cancel),
+    labelConfirm: String = stringResource(AppRes.string.button_confirm),
+    labelCancel: String = stringResource(AppRes.string.button_cancel),
     confirmLoading: Boolean = false,
     onConfirm: () -> Unit
 ) {

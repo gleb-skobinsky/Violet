@@ -26,6 +26,21 @@ val LocalVioletTypography = staticCompositionLocalOf<Typography> {
     error("No typography provided")
 }
 
+
+private const val TextSelectionBackgroundOpacity = 0.4f
+
+@Composable
+fun rememberTextSelectionColors(colorScheme: VioletColors): TextSelectionColors {
+    val primaryColor = colorScheme.primary
+    return remember(primaryColor) {
+        TextSelectionColors(
+            handleColor = primaryColor,
+            backgroundColor = primaryColor.copy(alpha = TextSelectionBackgroundOpacity),
+        )
+    }
+}
+
+
 @Composable
 fun VioletTheme(
     content: @Composable () -> Unit
@@ -40,17 +55,4 @@ fun VioletTheme(
         ),
         content = content
     )
-}
-
-private const val TextSelectionBackgroundOpacity = 0.4f
-
-@Composable
-internal fun rememberTextSelectionColors(colorScheme: VioletColors): TextSelectionColors {
-    val primaryColor = colorScheme.primary
-    return remember(primaryColor) {
-        TextSelectionColors(
-            handleColor = primaryColor,
-            backgroundColor = primaryColor.copy(alpha = TextSelectionBackgroundOpacity),
-        )
-    }
 }

@@ -36,16 +36,16 @@ import org.violet.violetapp.common.presentation.components.VerticalSpacer
 import org.violet.violetapp.common.presentation.components.rememberVioletAppBottomSheetState
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import violet.composeapp.generated.resources.Res
-import violet.composeapp.generated.resources.email
-import violet.composeapp.generated.resources.enter_otp_email
-import violet.composeapp.generated.resources.enter_otp_sms
-import violet.composeapp.generated.resources.make_up_new_password
-import violet.composeapp.generated.resources.otp_code_placeholder
-import violet.composeapp.generated.resources.password_restoration
-import violet.composeapp.generated.resources.repeat_password
-import violet.composeapp.generated.resources.restore_password
-import violet.composeapp.generated.resources.send_otp_code
+import org.violet.violetapp.resources.AppRes
+import org.violet.violetapp.resources.email
+import org.violet.violetapp.resources.enter_otp_email
+import org.violet.violetapp.resources.enter_otp_sms
+import org.violet.violetapp.resources.make_up_new_password
+import org.violet.violetapp.resources.otp_code_placeholder
+import org.violet.violetapp.resources.password_restoration
+import org.violet.violetapp.resources.repeat_password
+import org.violet.violetapp.resources.restore_password
+import org.violet.violetapp.resources.send_otp_code
 
 @Composable
 fun ForgotPasswordScreen(
@@ -107,7 +107,7 @@ fun ForgotPasswordScreenContent(
             22.dp.VerticalSpacer()
             VioletAppLogo()
             50.dp.VerticalSpacer()
-            BigAuthText(stringResource(Res.string.password_restoration))
+            BigAuthText(stringResource(AppRes.string.password_restoration))
             40.dp.VerticalSpacer()
             if (!hasEmail) {
                 VioletAppTextField(
@@ -116,7 +116,7 @@ fun ForgotPasswordScreenContent(
                         onAction(ForgotPasswordAction.UpdateEmail(it))
                     },
                     leftIcon = Sms,
-                    placeholder = stringResource(Res.string.email)
+                    placeholder = stringResource(AppRes.string.email)
                 )
                 24.dp.VerticalSpacer()
             }
@@ -126,7 +126,7 @@ fun ForgotPasswordScreenContent(
                     onAction(ForgotPasswordAction.UpdateNewPassword(it))
                 },
                 leftIcon = Lock,
-                placeholder = stringResource(Res.string.make_up_new_password)
+                placeholder = stringResource(AppRes.string.make_up_new_password)
             )
             24.dp.VerticalSpacer()
             VioletAppPasswordTextField(
@@ -135,7 +135,7 @@ fun ForgotPasswordScreenContent(
                     onAction(ForgotPasswordAction.UpdateRepeatPassword(it))
                 },
                 leftIcon = LockHidden,
-                placeholder = stringResource(Res.string.repeat_password)
+                placeholder = stringResource(AppRes.string.repeat_password)
             )
             24.dp.VerticalSpacer()
             PasswordConditions(
@@ -146,7 +146,7 @@ fun ForgotPasswordScreenContent(
             )
             40.dp.VerticalSpacer()
             VioletAppButton(
-                label = stringResource(Res.string.restore_password),
+                label = stringResource(AppRes.string.restore_password),
                 modifier = Modifier.fillMaxWidth(),
                 enabled = state.canResetPassword,
                 isLoading = state.isLoading
@@ -167,8 +167,8 @@ private fun ColumnScope.OtpSheetContent(
     Text(
         text = stringResource(
             when (type) {
-                OtpMessageType.EMAIL -> Res.string.enter_otp_email
-                OtpMessageType.SMS -> Res.string.enter_otp_sms
+                OtpMessageType.EMAIL -> AppRes.string.enter_otp_email
+                OtpMessageType.SMS -> AppRes.string.enter_otp_sms
             }
         ),
         modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -178,7 +178,7 @@ private fun ColumnScope.OtpSheetContent(
     24.dp.VerticalSpacer()
     VioletAppTextField(
         value = otpCode,
-        placeholder = stringResource(Res.string.otp_code_placeholder),
+        placeholder = stringResource(AppRes.string.otp_code_placeholder),
         onValueChange = { newVal ->
             onAction(ForgotPasswordAction.UpdateOtpCode(newVal))
         },
@@ -192,7 +192,7 @@ private fun ColumnScope.OtpSheetContent(
     VioletAppButton(
         modifier = Modifier.fillMaxWidth(),
         enabled = otpCode.isNotBlank(),
-        label = stringResource(Res.string.send_otp_code)
+        label = stringResource(AppRes.string.send_otp_code)
     ) {
         onAction(ForgotPasswordAction.CheckOtp)
     }

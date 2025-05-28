@@ -2,7 +2,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.NonRestartableComposable
@@ -17,6 +16,7 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeSource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
+import org.violet.uiKit.theme.LocalVioletTheme
 import org.violet.uiKit.theme.VioletTheme
 import org.violet.violetapp.auth.presentation.forgotPasswordScreen.ForgotPasswordScreen
 import org.violet.violetapp.auth.presentation.loginScreen.LoginScreen

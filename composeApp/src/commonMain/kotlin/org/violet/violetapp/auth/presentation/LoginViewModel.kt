@@ -10,8 +10,8 @@ import org.violet.violetapp.common.network.onSuccess
 import io.ktor.http.HttpStatusCode
 import org.jetbrains.compose.resources.getString
 import org.koin.core.component.inject
-import violet.composeapp.generated.resources.Res
-import violet.composeapp.generated.resources.invalid_login_or_password
+import org.violet.violetapp.resources.AppRes
+import org.violet.violetapp.resources.invalid_login_or_password
 
 class LoginViewModel : BaseViewModel<LoginState, LoginAction, LoginEffect>(LoginState()) {
 
@@ -30,7 +30,7 @@ class LoginViewModel : BaseViewModel<LoginState, LoginAction, LoginEffect>(Login
                     }
                     .onError {
                         if (it.httpStatus == HttpStatusCode.Unauthorized) {
-                            setEffect(LoginEffect.ShowError(getString(Res.string.invalid_login_or_password)))
+                            setEffect(LoginEffect.ShowError(getString(AppRes.string.invalid_login_or_password)))
                         } else {
                             setEffect(LoginEffect.ShowError(it.message))
                         }

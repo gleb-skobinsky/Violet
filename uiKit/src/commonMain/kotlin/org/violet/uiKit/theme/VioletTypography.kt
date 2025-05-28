@@ -12,41 +12,34 @@ import org.violet.uiKit.resources.UiKitRes
 import org.violet.uiKit.resources.futura_bold
 import org.violet.uiKit.resources.futura_medium
 
-@PublishedApi
-internal var cachedTypography: Typography? = null
-
-inline val violetAppTypography: Typography
+internal inline val violetAppTypography: Typography
     @Composable
     @NonRestartableComposable
     get() {
-        return cachedTypography ?: run {
-            val bold = FontFamily(Font(UiKitRes.font.futura_bold))
-            val medium = FontFamily(Font(UiKitRes.font.futura_medium))
-            val typography = Typography(
-                headlineLarge = TextStyle(
-                    fontFamily = bold,
-                    fontSize = 32.sp,
-                    lineHeight = 36.sp,
-                    fontWeight = FontWeight.Bold
-                ),
-                bodyLarge = TextStyle(
-                    fontFamily = bold,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                ),
-                bodyMedium = TextStyle(
-                    fontFamily = medium,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight(450)
-                ),
-                bodySmall = TextStyle(
-                    fontFamily = medium,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Normal,
-                    lineHeight = 16.sp,
-                ),
-            )
-            cachedTypography = typography
-            typography
-        }
+        val bold = FontFamily(Font(UiKitRes.font.futura_bold))
+        val medium = FontFamily(Font(UiKitRes.font.futura_medium))
+        return Typography(
+            headlineLarge = TextStyle(
+                fontFamily = bold,
+                fontSize = 32.sp,
+                lineHeight = 36.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            bodyLarge = TextStyle(
+                fontFamily = bold,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            bodyMedium = TextStyle(
+                fontFamily = medium,
+                fontSize = 16.sp,
+                fontWeight = FontWeight(450)
+            ),
+            bodySmall = TextStyle(
+                fontFamily = medium,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal,
+                lineHeight = 16.sp,
+            ),
+        )
     }

@@ -19,14 +19,14 @@ import org.violet.violetapp.common.network.RequestResult
 import org.violet.violetapp.common.network.ServerResponse
 import org.violet.violetapp.common.network.genericError
 import org.violet.violetapp.common.network.mapOnSuccess
-import violet.composeapp.generated.resources.Res
-import violet.composeapp.generated.resources.email
-import violet.composeapp.generated.resources.failed_to_send_otp
-import violet.composeapp.generated.resources.generic_eror
-import violet.composeapp.generated.resources.otp_login_not_found
-import violet.composeapp.generated.resources.otp_too_many_times
-import violet.composeapp.generated.resources.user_already_exists
-import violet.composeapp.generated.resources.wrong_otp_code
+import org.violet.violetapp.resources.AppRes
+import org.violet.violetapp.resources.email
+import org.violet.violetapp.resources.failed_to_send_otp
+import org.violet.violetapp.resources.generic_eror
+import org.violet.violetapp.resources.otp_login_not_found
+import org.violet.violetapp.resources.otp_too_many_times
+import org.violet.violetapp.resources.user_already_exists
+import org.violet.violetapp.resources.wrong_otp_code
 
 private const val USER_ALREADY_EXIST_CONTRACT = "user_already_exist"
 private const val SMS_CONTRACT = "phone_message_sent"
@@ -61,9 +61,9 @@ class AuthRepositoryImpl(
         ).mapOnSuccess {
             when {
                 it.error && it.message == USER_ALREADY_EXIST_CONTRACT
-                -> RequestResult.Error(getString(Res.string.user_already_exists))
+                -> RequestResult.Error(getString(AppRes.string.user_already_exists))
 
-                it.error -> RequestResult.Error(getString(Res.string.generic_eror))
+                it.error -> RequestResult.Error(getString(AppRes.string.generic_eror))
                 else -> RequestResult.Success(Unit)
             }
         }
@@ -83,19 +83,19 @@ class AuthRepositoryImpl(
                     !it.error && it.message == SMS_CONTRACT -> RequestResult.Success(OtpMessageType.SMS)
                     it.error && it.message == OTP_LOGIN_CONTRACT -> RequestResult.Error(
                         getString(
-                            Res.string.otp_login_not_found
+                            AppRes.string.otp_login_not_found
                         )
                     )
 
                     it.error && it.message == OTP_TOO_MANY_TIMES_CONTRACT -> RequestResult.Error(
-                        getString(Res.string.otp_too_many_times)
+                        getString(AppRes.string.otp_too_many_times)
                     )
 
                     it.error && it.message == FAILED_TO_SEND_OTP_CONTRACT -> RequestResult.Error(
-                        getString(Res.string.failed_to_send_otp)
+                        getString(AppRes.string.failed_to_send_otp)
                     )
 
-                    else -> RequestResult.Error(getString(Res.string.generic_eror))
+                    else -> RequestResult.Error(getString(AppRes.string.generic_eror))
                 }
             }
     }
@@ -108,28 +108,28 @@ class AuthRepositoryImpl(
             .mapOnSuccess { result ->
                 when {
                     result.error && result.message == OTP_LOGIN_NOT_FOUND -> RequestResult.Error(
-                        getString(Res.string.generic_eror)
+                        getString(AppRes.string.generic_eror)
                     )
 
                     result.error && result.message == OTP_LOGIN_CONTRACT -> RequestResult.Error(
-                        getString(Res.string.otp_login_not_found)
+                        getString(AppRes.string.otp_login_not_found)
                     )
 
                     result.error && result.message == OTP_TOO_MANY_TIMES_CONTRACT -> RequestResult.Error(
-                        getString(Res.string.otp_too_many_times)
+                        getString(AppRes.string.otp_too_many_times)
                     )
 
                     result.error && result.message == OTP_WRONG_CODE_CONTRACT -> RequestResult.Error(
-                        getString(Res.string.wrong_otp_code)
+                        getString(AppRes.string.wrong_otp_code)
                     )
 
                     !result.error -> {
                         result.token?.let { token ->
                             RequestResult.Success(token)
-                        } ?: RequestResult.Error(getString(Res.string.generic_eror))
+                        } ?: RequestResult.Error(getString(AppRes.string.generic_eror))
                     }
 
-                    else -> RequestResult.Error(getString(Res.string.generic_eror))
+                    else -> RequestResult.Error(getString(AppRes.string.generic_eror))
                 }
             }
     }
@@ -145,22 +145,22 @@ class AuthRepositoryImpl(
         ).mapOnSuccess {
             when {
                 it.error && it.message == USER_NOT_FOUND_CONTRACT -> {
-                    RequestResult.Error(getString(Res.string.otp_login_not_found))
+                    RequestResult.Error(getString(AppRes.string.otp_login_not_found))
                 }
 
                 it.error && it.message == OTP_VAlIDATION_ERROR_CONTRACT -> {
-                    RequestResult.Error(getString(Res.string.email))
+                    RequestResult.Error(getString(AppRes.string.email))
                 }
 
                 it.error && it.message == OTP_TOKEN_EXPIRED_CONTRACT -> {
-                    RequestResult.Error(getString(Res.string.email))
+                    RequestResult.Error(getString(AppRes.string.email))
                 }
 
                 !it.error -> {
                     RequestResult.Success(Unit)
                 }
 
-                else -> RequestResult.Error(getString(Res.string.generic_eror))
+                else -> RequestResult.Error(getString(AppRes.string.generic_eror))
             }
         }
     }
@@ -185,7 +185,7 @@ class AuthRepositoryImpl(
             urlPath = "/onboarding/api/auth/user"
         ).mapOnSuccess {
             val userBalance = it.balances.firstOrNull()?.toUserBalance()
-            userBalance ?: return RequestResult.Error(getString(Res.string.generic_eror))
+            userBalance ?: return RequestResult.Error(getString(AppRes.string.generic_eror))
             RequestResult.Success(
                 User(
                     phone = it.phone.orEmpty(),

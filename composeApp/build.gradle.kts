@@ -148,4 +148,7 @@ compose.web {
 
 compose.resources {
     publicResClass = true
+    generateResClass = always
+    packageOfResClass = "org.violet.violetapp.resources"
+    nameOfResClass = "AppRes"
 }
