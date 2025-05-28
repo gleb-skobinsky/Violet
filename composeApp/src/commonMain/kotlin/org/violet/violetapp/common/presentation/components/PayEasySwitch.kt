@@ -1,7 +1,7 @@
 package org.violet.violetapp.common.presentation.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -18,8 +18,8 @@ fun VioletAppSwitch(
         if (label.isNotEmpty()) {
             Text(
                 text = label,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondaryContainer
+                style = LocalVioletTheme.typography.bodyMedium,
+                color = LocalVioletTheme.colors.secondaryContainer
             )
         }
         Switch(
@@ -27,13 +27,13 @@ fun VioletAppSwitch(
             onCheckedChange = onValueChange,
             enabled = enabled,
             colors = SwitchDefaults.colors(
-                checkedThumbColor = MaterialTheme.colorScheme.primaryContainer,
-                checkedIconColor = MaterialTheme.colorScheme.primary,
-                checkedTrackColor = MaterialTheme.colorScheme.primary,
+                checkedThumbColor = LocalVioletTheme.colors.primaryContainer,
+                checkedIconColor = LocalVioletTheme.colors.primary,
+                checkedTrackColor = LocalVioletTheme.colors.primary,
 
-                uncheckedThumbColor = MaterialTheme.colorScheme.onTertiary,
-                uncheckedIconColor = MaterialTheme.colorScheme.tertiary,
-                uncheckedTrackColor = MaterialTheme.colorScheme.tertiary
+                uncheckedThumbColor = LocalVioletTheme.colors.onTertiary,
+                uncheckedIconColor = LocalVioletTheme.colors.tertiary,
+                uncheckedTrackColor = LocalVioletTheme.colors.tertiary
             )
         )
     }

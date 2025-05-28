@@ -2,7 +2,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.NonRestartableComposable
@@ -17,6 +17,7 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeSource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
+import org.violet.uiKit.theme.VioletTheme
 import org.violet.violetapp.auth.presentation.forgotPasswordScreen.ForgotPasswordScreen
 import org.violet.violetapp.auth.presentation.loginScreen.LoginScreen
 import org.violet.violetapp.auth.presentation.signupScreen.SignupScreen
@@ -28,8 +29,6 @@ import org.violet.violetapp.common.navigation.Screens
 import org.violet.violetapp.common.presentation.RootSnackbarController
 import org.violet.violetapp.common.presentation.components.SnackbarScaffold
 import org.violet.violetapp.common.presentation.components.VioletAppNavBarWrapper
-import org.violet.violetapp.common.presentation.material.VioletAppColorScheme
-import org.violet.violetapp.common.presentation.material.VioletAppTypography
 import org.violet.violetapp.init.presentation.InitEffect
 import org.violet.violetapp.init.presentation.InitStateController
 
@@ -42,7 +41,7 @@ fun App(
     initController: InitStateController = koinInject(),
     savedState: Bundle? = null
 ) {
-    VioletAppTheme {
+    VioletTheme {
         val navController = rememberNavController()
         val navigator = remember { KMPNavigatorImpl(navController) }
         val haze = remember { HazeState() }
@@ -57,7 +56,7 @@ fun App(
                     navController = navController,
                     modifier = Modifier
                         .hazeSource(haze)
-                        .background(MaterialTheme.colorScheme.surface),
+                        .background(LocalVioletTheme.colors.surface),
                     enterTransition = { fadeIn(tween(FAST_NAV_ANIMATION)) },
                     exitTransition = { fadeOut(tween(FAST_NAV_ANIMATION)) },
                     startDestination = Screens.LoginScreen
@@ -91,17 +90,6 @@ fun App(
             }
         }
     }
-}
-
-@Composable
-fun VioletAppTheme(
-    content: @Composable () -> Unit
-) {
-    MaterialTheme(
-        colorScheme = VioletAppColorScheme,
-        typography = VioletAppTypography(),
-        content = content
-    )
 }
 
 @Composable

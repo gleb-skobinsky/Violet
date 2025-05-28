@@ -11,7 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,8 +21,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.violet.violetapp.common.icons.ArrowRight
-import org.violet.violetapp.common.presentation.material.dangerGradient
-import org.violet.violetapp.common.presentation.material.primaryGradient
+import org.violet.uiKit.theme.dangerGradient
+import org.violet.uiKit.theme.primaryGradient
 
 enum class VioletAppButtonType {
     Primary,
@@ -32,17 +32,17 @@ enum class VioletAppButtonType {
 @Composable
 private fun VioletAppButtonType.toColors(): ButtonColors = when (this) {
     VioletAppButtonType.Primary -> ButtonDefaults.buttonColors(
-        containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
-        disabledContainerColor = MaterialTheme.colorScheme.tertiary,
-        disabledContentColor = MaterialTheme.colorScheme.onTertiary,
+        containerColor = LocalVioletTheme.colors.primary,
+        contentColor = LocalVioletTheme.colors.onPrimary,
+        disabledContainerColor = LocalVioletTheme.colors.tertiary,
+        disabledContentColor = LocalVioletTheme.colors.onTertiary,
     )
 
     VioletAppButtonType.Danger -> ButtonDefaults.buttonColors(
-        containerColor = MaterialTheme.colorScheme.error,
-        contentColor = MaterialTheme.colorScheme.onError,
-        disabledContainerColor = MaterialTheme.colorScheme.tertiary,
-        disabledContentColor = MaterialTheme.colorScheme.onTertiary,
+        containerColor = LocalVioletTheme.colors.error,
+        contentColor = LocalVioletTheme.colors.onError,
+        disabledContainerColor = LocalVioletTheme.colors.tertiary,
+        disabledContentColor = LocalVioletTheme.colors.onTertiary,
     )
 }
 

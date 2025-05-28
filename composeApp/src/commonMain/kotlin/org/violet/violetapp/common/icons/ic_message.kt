@@ -3,7 +3,7 @@ package org.violet.violetapp.common.icons
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
-import org.violet.violetapp.common.presentation.material.PrimaryGradient
+import org.violet.uiKit.theme.PrimaryGradient
 
 val Message: ImageVector
     get() {

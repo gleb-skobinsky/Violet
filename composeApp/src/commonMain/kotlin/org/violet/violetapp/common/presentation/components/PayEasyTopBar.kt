@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -43,8 +43,8 @@ fun VioletAppTopBar(
         title = {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primaryContainer,
+                style = LocalVioletTheme.typography.bodyMedium,
+                color = LocalVioletTheme.colors.primaryContainer,
                 modifier = Modifier.statusBarsPadding()
             )
         },

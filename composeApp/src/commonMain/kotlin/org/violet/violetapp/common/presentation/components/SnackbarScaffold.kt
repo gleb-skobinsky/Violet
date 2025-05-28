@@ -3,7 +3,7 @@ package org.violet.violetapp.common.presentation.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -18,7 +18,7 @@ fun SnackbarScaffold(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+            .background(LocalVioletTheme.colors.surface),
         snackbarHost = {
             VioletAppSnackbar(snackbarState)
         },

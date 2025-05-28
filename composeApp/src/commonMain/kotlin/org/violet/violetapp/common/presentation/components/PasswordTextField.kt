@@ -1,7 +1,7 @@
 package org.violet.violetapp.common.presentation.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,9 +25,9 @@ fun VioletAppPasswordTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = "",
-    backgroundColor: Color = MaterialTheme.colorScheme.tertiary,
-    textColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    placeholderColor: Color = MaterialTheme.colorScheme.onTertiary,
+    backgroundColor: Color = LocalVioletTheme.colors.tertiary,
+    textColor: Color = LocalVioletTheme.colors.primaryContainer,
+    placeholderColor: Color = LocalVioletTheme.colors.onTertiary,
     shape: Shape = RoundedCornerShape(4.dp),
     leftIcon: ImageVector? = null,
     enabled: Boolean = true,
@@ -53,7 +53,7 @@ fun VioletAppPasswordTextField(
             ClickableIcon(
                 iconVector = Eye,
                 modifier = Modifier.strikeThrough(passwordShown, textColor),
-                tintColor = MaterialTheme.colorScheme.primaryContainer
+                tintColor = LocalVioletTheme.colors.primaryContainer
             ) {
                 passwordShown = !passwordShown
             }

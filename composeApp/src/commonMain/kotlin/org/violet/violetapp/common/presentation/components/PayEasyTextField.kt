@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,11 +33,11 @@ fun VioletAppTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = "",
-    backgroundColor: Color = MaterialTheme.colorScheme.tertiary,
-    textColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    placeholderColor: Color = MaterialTheme.colorScheme.onTertiary,
+    backgroundColor: Color = LocalVioletTheme.colors.tertiary,
+    textColor: Color = LocalVioletTheme.colors.primaryContainer,
+    placeholderColor: Color = LocalVioletTheme.colors.onTertiary,
     shape: Shape = DefaultTextFieldShape,
-    textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
+    textStyle: TextStyle = LocalVioletTheme.typography.bodyMedium,
     leftIcon: ImageVector? = null,
     rightIcon: @Composable (() -> Unit)? = null,
     maxLines: Int = 1,
@@ -75,7 +75,7 @@ fun VioletAppTextField(
             }
         },
         readOnly = readOnly,
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.primaryContainer)
+        cursorBrush = SolidColor(LocalVioletTheme.colors.primaryContainer)
     )
 }
 
@@ -87,7 +87,7 @@ private fun VioletAppLeadingIcon(
     ClickableIcon(
         iconVector = imageVector,
         modifier = modifier
-            .drawIconGlow(MaterialTheme.colorScheme.primary)
+            .drawIconGlow(LocalVioletTheme.colors.primary)
     )
 }
 

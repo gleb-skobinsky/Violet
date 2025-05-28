@@ -3,7 +3,7 @@ package org.violet.violetapp.auth.presentation.forgotPasswordScreen
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -101,7 +101,7 @@ fun ForgotPasswordScreenContent(
         bottomSheetContent = {
             OtpSheetContent(state.otpType, state.otpCode, onAction)
         },
-        bottomSheetColor = MaterialTheme.colorScheme.surface
+        bottomSheetColor = LocalVioletTheme.colors.surface
     ) { _, _ ->
         VioletAppSurface {
             22.dp.VerticalSpacer()
@@ -172,8 +172,8 @@ private fun ColumnScope.OtpSheetContent(
             }
         ),
         modifier = Modifier.align(Alignment.CenterHorizontally),
-        style = MaterialTheme.typography.bodyLarge,
-        color = MaterialTheme.colorScheme.primaryContainer
+        style = LocalVioletTheme.typography.bodyLarge,
+        color = LocalVioletTheme.colors.primaryContainer
     )
     24.dp.VerticalSpacer()
     VioletAppTextField(
@@ -183,9 +183,9 @@ private fun ColumnScope.OtpSheetContent(
             onAction(ForgotPasswordAction.UpdateOtpCode(newVal))
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        textColor = MaterialTheme.colorScheme.primaryContainer,
-        placeholderColor = MaterialTheme.colorScheme.secondaryContainer,
-        backgroundColor = MaterialTheme.colorScheme.tertiary,
+        textColor = LocalVioletTheme.colors.primaryContainer,
+        placeholderColor = LocalVioletTheme.colors.secondaryContainer,
+        backgroundColor = LocalVioletTheme.colors.tertiary,
         leftIcon = Message
     )
     40.dp.VerticalSpacer()

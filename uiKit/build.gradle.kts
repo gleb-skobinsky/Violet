@@ -34,6 +34,7 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.collection)
+            implementation(compose.components.resources)
         }
         androidMain.dependencies {
             implementation(compose.preview)
@@ -55,4 +56,11 @@ android {
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
+}
+
+compose.resources {
+    nameOfResClass = "UiKitRes"
+    generateResClass = always
+    publicResClass = true
+    packageOfResClass = "org.violet.uiKit.resources"
 }

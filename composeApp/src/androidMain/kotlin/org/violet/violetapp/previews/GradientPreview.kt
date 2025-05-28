@@ -17,10 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.violet.uiKit.theme.primaryGradient
+import org.violet.uiKit.utils.angledGradient
+import org.violet.uiKit.utils.diagonalGradient
 import org.violet.violetapp.common.presentation.components.VerticalSpacer
-import org.violet.violetapp.common.presentation.material.primaryGradient
-import org.violet.violetapp.common.presentation.modifiers.angledGradient
-import org.violet.violetapp.common.presentation.modifiers.diagonalGradient
 
 @Composable
 @Preview

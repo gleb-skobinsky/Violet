@@ -24,12 +24,13 @@ kotlin {
         browser {
             commonWebpackConfig {
                 outputFileName = "composeApp.js"
-                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                    static = (static ?: mutableListOf()).apply {
-                        // Serve sources to debug inside browser
-                        add(project.projectDir.path)
+                devServer =
+                    (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                        static = (static ?: mutableListOf()).apply {
+                            // Serve sources to debug inside browser
+                            add(project.projectDir.path)
+                        }
                     }
-                }
             }
         }
         /*
@@ -140,12 +141,11 @@ android {
     }
 }
 
-compose.resources {
-    publicResClass = true
-    generateResClass = always
-}
-
 
 compose.web {
 
+}
+
+compose.resources {
+    publicResClass = true
 }

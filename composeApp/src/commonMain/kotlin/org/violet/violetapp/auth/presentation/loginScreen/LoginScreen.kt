@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -106,8 +106,8 @@ fun LoginScreenContent(
                     navigator.goTo(Screens.ForgotPasswordScreen())
                 },
             text = stringResource(Res.string.forgot_password),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.primaryContainer
+            style = LocalVioletTheme.typography.bodyMedium,
+            color = LocalVioletTheme.colors.primaryContainer
         )
         40.dp.VerticalSpacer()
         VioletAppButton(
@@ -157,10 +157,10 @@ fun BigAuthText(text: String, secondary: Boolean = false, onClick: (() -> Unit)?
             },
         text = text,
         color = if (secondary)
-            MaterialTheme.colorScheme.secondaryContainer
+            LocalVioletTheme.colors.secondaryContainer
         else
-            MaterialTheme.colorScheme.primaryContainer,
-        style = MaterialTheme.typography.headlineLarge.copy(
+            LocalVioletTheme.colors.primaryContainer,
+        style = LocalVioletTheme.typography.headlineLarge.copy(
             fontSize = if (secondary) 24.sp else 32.sp
         )
     )

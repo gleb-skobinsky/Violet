@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -81,7 +81,7 @@ fun VioletAppBottomSheetScaffold(
     bottomSheetShape: Shape = RoundedCornerShape(20.dp, 20.dp),
     hideBottomSheetOnClickOutside: Boolean = false,
     sheetPadding: PaddingValues = PaddingValues.Absolute(16.dp, 0.dp, 16.dp, 16.dp),
-    bottomSheetColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    bottomSheetColor: Color = LocalVioletTheme.colors.surfaceVariant,
     bottomSheetContent: @Composable ColumnScope.() -> Unit,
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
@@ -111,7 +111,7 @@ fun VioletAppBottomSheet(
     sheetHeightFraction: Float = .9f,
     hideBottomSheetOnClickOutside: Boolean = false,
     bottomSheetShape: Shape = RoundedCornerShape(20.dp, 20.dp),
-    bottomSheetColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    bottomSheetColor: Color = LocalVioletTheme.colors.surfaceVariant,
     sheetPadding: PaddingValues = PaddingValues.Absolute(16.dp, 0.dp, 16.dp, 16.dp),
     bottomSheetContent: @Composable (ColumnScope.() -> Unit)
 ) {
@@ -174,7 +174,7 @@ fun VioletAppBottomSheet(
                         content = {
                             BottomSheetDefaults.DragHandle(
                                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                                color = MaterialTheme.colorScheme.secondaryContainer
+                                color = LocalVioletTheme.colors.secondaryContainer
                             )
                             bottomSheetContent()
                         }

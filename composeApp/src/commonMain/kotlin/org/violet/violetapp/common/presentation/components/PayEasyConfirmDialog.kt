@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -76,7 +76,7 @@ fun VioletAppConfirmDialog(
         ) {
             Surface(
                 shape = RoundedCornerShape(16.dp),
-                color = MaterialTheme.colorScheme.surface
+                color = LocalVioletTheme.colors.surface
             ) {
                 Column(
                     Modifier.fillMaxWidth().height(250.dp).padding(16.dp),
@@ -86,8 +86,8 @@ fun VioletAppConfirmDialog(
                     Text(
                         text = descriptionText,
                         modifier = Modifier.fillMaxWidth(0.7f),
-                        color = MaterialTheme.colorScheme.primaryContainer,
-                        style = MaterialTheme.typography.bodyMedium,
+                        color = LocalVioletTheme.colors.primaryContainer,
+                        style = LocalVioletTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center
                     )
                     48.dp.VerticalSpacer()

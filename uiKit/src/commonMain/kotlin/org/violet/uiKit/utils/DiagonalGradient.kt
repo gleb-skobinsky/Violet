@@ -1,4 +1,4 @@
-package org.violet.violetapp.common.presentation.modifiers
+package org.violet.uiKit.utils
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind

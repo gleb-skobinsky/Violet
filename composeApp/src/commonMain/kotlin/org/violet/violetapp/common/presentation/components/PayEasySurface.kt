@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +32,7 @@ fun VioletAppSurface(
     val paddingsModifier = if (handleStatusBars) Modifier.statusBarsPadding() else Modifier
     Column(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.surface)
+            .background(LocalVioletTheme.colors.surface)
             .fillMaxSize()
             .imePadding()
             .then(paddingsModifier)

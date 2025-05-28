@@ -20,7 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -40,7 +40,7 @@ import androidx.navigation.NavBackStackEntry
 import org.violet.violetapp.common.navigation.BottomBarTab
 import org.violet.violetapp.common.navigation.LocalKmpNavigator
 import org.violet.violetapp.common.navigation.hasScreen
-import org.violet.violetapp.common.presentation.material.PrimaryGradient
+import org.violet.uiKit.theme.PrimaryGradient
 import org.violet.violetapp.common.presentation.modifiers.tintHazeChild
 import dev.chrisbanes.haze.HazeState
 
@@ -102,7 +102,7 @@ fun VioletAppNavBar(
                     }
                     .tintHazeChild(
                         hazeState = hazeState,
-                        color = MaterialTheme.colorScheme.surfaceTint
+                        color = LocalVioletTheme.colors.surfaceTint
                     ),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
@@ -123,9 +123,9 @@ fun VioletAppNavBar(
                             contentDescription = null,
                             modifier = Modifier.size(32.dp),
                             tint = if (isSelected)
-                                MaterialTheme.colorScheme.primary
+                                LocalVioletTheme.colors.primary
                             else
-                                MaterialTheme.colorScheme.primaryContainer
+                                LocalVioletTheme.colors.primaryContainer
                         )
                     }
                 }

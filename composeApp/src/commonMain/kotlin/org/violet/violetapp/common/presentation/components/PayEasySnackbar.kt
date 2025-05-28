@@ -1,7 +1,7 @@
 package org.violet.violetapp.common.presentation.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -14,8 +14,8 @@ fun VioletAppSnackbar(snackbarState: SnackbarHostState) {
         Snackbar(
             snackbarData = data,
             shape = RoundedCornerShape(12.dp),
-            containerColor = MaterialTheme.colorScheme.secondary,
-            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            containerColor = LocalVioletTheme.colors.secondary,
+            contentColor = LocalVioletTheme.colors.onSecondaryContainer,
         )
     }
 }

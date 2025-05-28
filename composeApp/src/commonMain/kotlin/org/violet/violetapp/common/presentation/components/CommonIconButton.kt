@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,7 +16,7 @@ fun CommonIconButton(
     imageVector: ImageVector,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    color: Color = MaterialTheme.colorScheme.primaryContainer,
+    color: Color = LocalVioletTheme.colors.primaryContainer,
     onClick: () -> Unit
 ) {
     IconButton(

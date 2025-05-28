@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.MaterialTheme
+import org.violet.uiKit.theme.LocalVioletTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -150,19 +150,19 @@ internal fun PasswordCondition(
     Row {
         Text(
             text = "• ",
-            style = MaterialTheme.typography.bodySmall,
+            style = LocalVioletTheme.typography.bodySmall,
             color = if (isSatisfied)
-                MaterialTheme.colorScheme.primary
+                LocalVioletTheme.colors.primary
             else
-                MaterialTheme.colorScheme.secondaryContainer
+                LocalVioletTheme.colors.secondaryContainer
         )
         Text(
             text = stringResource(label),
-            style = MaterialTheme.typography.bodySmall,
+            style = LocalVioletTheme.typography.bodySmall,
             color = if (isSatisfied)
-                MaterialTheme.colorScheme.primaryContainer
+                LocalVioletTheme.colors.primaryContainer
             else
-                MaterialTheme.colorScheme.secondaryContainer
+                LocalVioletTheme.colors.secondaryContainer
         )
     }
 }

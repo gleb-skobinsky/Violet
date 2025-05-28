@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,11 +16,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import org.violet.uiKit.theme.LocalVioletTheme
 import org.violet.violetapp.common.icons.Copy
 import org.violet.violetapp.common.presentation.modifiers.noRippleClickable
 
@@ -42,9 +43,9 @@ fun VioletAppTableItem(
     ) {
         Text(
             text = label,
-            style = MaterialTheme.typography.bodyLarge.copy(
+            style = LocalVioletTheme.typography.bodyLarge.copy(
                 textAlign = TextAlign.Start,
-                color = MaterialTheme.colorScheme.primaryContainer
+                color = LocalVioletTheme.colors.primaryContainer
             )
         )
         4.dp.VerticalSpacer()
@@ -55,9 +56,9 @@ fun VioletAppTableItem(
         ) {
             Text(
                 text = value,
-                style = MaterialTheme.typography.bodyMedium.copy(
+                style = LocalVioletTheme.typography.bodyMedium.copy(
                     textAlign = TextAlign.Start,
-                    color = MaterialTheme.colorScheme.primaryContainer
+                    color = LocalVioletTheme.colors.primaryContainer
                 ),
                 overflow = if (isTextExpanded) TextOverflow.Clip else TextOverflow.Ellipsis,
                 maxLines = if (isTextExpanded) Int.MAX_VALUE else 1,
@@ -82,7 +83,7 @@ fun VioletAppTableItem(
                             .size(24.dp),
                         imageVector = Copy,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurface
+                        tint = Color.Unspecified
                     )
                 }
             }
