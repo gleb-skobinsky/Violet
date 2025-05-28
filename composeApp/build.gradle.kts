@@ -90,6 +90,7 @@ kotlin {
             implementation(libs.splashscreen)
             implementation(libs.androidx.appcompat)
             implementation(libs.ktor.client.android)
+            implementation(libs.androidx.core.ktx)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.ios)
