@@ -45,7 +45,7 @@ actual class ConnectivityStatus actual constructor(
             } else {
                 _networkStateFlow.value = ConnectivityStatusState.DISCONNECTED
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             _networkStateFlow.value = ConnectivityStatusState.UNKNOWN
         }
     }

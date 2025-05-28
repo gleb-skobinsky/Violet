@@ -14,7 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.haze
+import dev.chrisbanes.haze.hazeSource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.violet.violetapp.auth.presentation.forgotPasswordScreen.ForgotPasswordScreen
@@ -57,7 +57,7 @@ fun App(
                 NavHost(
                     navController = navController,
                     modifier = Modifier
-                        .haze(haze)
+                        .hazeSource(haze)
                         .background(MaterialTheme.colorScheme.surface),
                     enterTransition = { fadeIn(tween(FAST_NAV_ANIMATION)) },
                     exitTransition = { fadeOut(tween(FAST_NAV_ANIMATION)) },

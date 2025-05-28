@@ -2,13 +2,12 @@ package org.violet.violetapp.common.utils
 
 enum class Platform {
     Android,
-    IOS
+    IOS,
+    Web;
+
+    val isAndroid get() = this == Android
+    val isIOS get() = this == IOS
+    val isWeb get() = this == Web
 }
-
-val Platform.isAndroid
-    get() = this == Platform.Android
-
-val Platform.isIOS
-    get() = this == Platform.IOS
 
 expect val platform: Platform

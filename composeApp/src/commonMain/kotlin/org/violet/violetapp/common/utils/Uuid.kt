@@ -1,3 +1,7 @@
 package org.violet.violetapp.common.utils
 
-expect fun uuid(): String
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
+
+@OptIn(ExperimentalUuidApi::class)
+fun uuid(): String = Uuid.random().toString()

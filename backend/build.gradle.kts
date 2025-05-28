@@ -28,6 +28,7 @@ dependencies {
     implementation(libs.jakarta.activation)
     implementation(projects.shared)
     implementation(libs.ktor.server)
+    implementation(libs.ktor.server.auth)
     implementation(libs.ktor.server.host)
     implementation(libs.ktor.server.swagger)
     implementation(libs.ktor.server.openapi)

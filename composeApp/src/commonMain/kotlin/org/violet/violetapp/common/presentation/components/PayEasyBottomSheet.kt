@@ -39,7 +39,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import org.violet.violetapp.common.presentation.LocalScreenSize
 import org.violet.violetapp.common.presentation.modifiers.noRippleClickable
-import org.violet.violetapp.common.utils.isIOS
 import org.violet.violetapp.common.utils.platform
 
 @Stable
