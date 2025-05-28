@@ -55,10 +55,6 @@ abstract class BaseViewModel<S : BaseState, A : BaseAction, E : BaseEffect>(
         }
     }
 
-    protected suspend fun setAction(action: () -> A) {
-        performOnAction(action.invoke())
-    }
-
     protected fun setState(transform: (S) -> S) {
         _state.update(transform)
     }
