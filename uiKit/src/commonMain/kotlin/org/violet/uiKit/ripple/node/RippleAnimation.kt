@@ -28,6 +28,7 @@ typealias RippleDrawCommand = DrawScope.(
 ) -> Unit
 
 val SmoothRippleCommand: RippleDrawCommand = { color, center, radius ->
+    val correctedRadius = radius * 1.33f
     drawCircle(
         brush = Brush.radialGradient(
             listOf(
@@ -36,9 +37,9 @@ val SmoothRippleCommand: RippleDrawCommand = { color, center, radius ->
                 Color.Transparent
             ),
             center = center,
-            radius = radius
+            radius = correctedRadius
         ),
-        radius = radius,
+        radius = correctedRadius,
         center = center
     )
 }
@@ -68,7 +69,6 @@ internal class RippleAnimation(
     private val bounded: Boolean,
     private val onDraw: RippleDrawCommand = SmoothRippleCommand
 ) {
-    private val finishRadius = radius * 1.33f
     private var startRadius: Float? = null
 
     private var targetCenter: Offset? = null
@@ -159,13 +159,15 @@ internal class RippleAnimation(
                 animatedAlpha.value
             }
 
-        val radius =
-            lerp(startRadius!!, finishRadius, animatedRadiusPercent.value)
-        val centerOffset =
-            Offset(
-                lerp(origin!!.x, targetCenter!!.x, animatedCenterPercent.value),
-                lerp(origin!!.y, targetCenter!!.y, animatedCenterPercent.value),
-            )
+        val radius = lerp(
+            start = startRadius!!,
+            stop = radius,
+            fraction = animatedRadiusPercent.value
+        )
+        val centerOffset = Offset(
+            lerp(origin!!.x, targetCenter!!.x, animatedCenterPercent.value),
+            lerp(origin!!.y, targetCenter!!.y, animatedCenterPercent.value),
+        )
         val modulatedColor = color.copy(alpha = color.alpha * alpha)
         if (bounded) {
             clipRect {

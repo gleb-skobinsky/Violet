@@ -16,8 +16,16 @@ internal class CommonRippleNode(
     bounded: Boolean,
     radius: Dp,
     color: ColorProducer,
-    rippleAlpha: () -> RippleAlpha
-) : RippleNode(interactionSource, bounded, radius, color, rippleAlpha) {
+    rippleAlpha: () -> RippleAlpha,
+    private val drawCommand: RippleDrawCommand
+) : RippleNode(
+    interactionSource = interactionSource,
+    bounded = bounded,
+    radius = radius,
+    color = color,
+    rippleAlpha = rippleAlpha,
+    rippleDrawCommand = drawCommand
+) {
     private val ripples =
         MutableScatterMap<PressInteraction.Press, RippleAnimation>()
 
@@ -28,13 +36,17 @@ internal class CommonRippleNode(
     ) {
         // Finish existing ripples
         ripples.forEach { _, ripple -> ripple.finish() }
-        val origin = if (bounded) interaction.pressPosition else null
-        val rippleAnimation =
-            RippleAnimation(
-                origin = origin,
-                radius = targetRadius,
-                bounded = bounded
-            )
+        val origin = if (bounded) {
+            interaction.pressPosition
+        } else {
+            null
+        }
+        val rippleAnimation = RippleAnimation(
+            origin = origin,
+            radius = targetRadius,
+            bounded = bounded,
+            onDraw = drawCommand
+        )
         ripples[interaction] = rippleAnimation
         coroutineScope.launch {
             try {

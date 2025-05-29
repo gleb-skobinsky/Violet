@@ -19,16 +19,18 @@ internal class DelegatingRippleNode(
     private val interactionSource: InteractionSource,
     private val bounded: Boolean,
     private val radius: Dp,
-    color: ColorProducer
+    color: ColorProducer,
+    drawCommand: RippleDrawCommand
 ) : AbstractDelegatingRippleNode<DelegatableNode>(
     color = color,
-    nodeProducer = ColoredRippleNodeProducer { color, alpha ->
+    nodeProducer = { color, alpha ->
         createUniversalRippleNode(
             interactionSource = interactionSource,
             bounded = bounded,
             radius = radius,
             color = color,
-            rippleAlpha = alpha
+            rippleAlpha = alpha,
+            drawCommand = drawCommand
         )
     }
 )

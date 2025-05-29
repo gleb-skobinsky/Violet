@@ -10,9 +10,3 @@ fun interface ColoredRippleNodeProducer<Node : DelegatableNode> {
         alpha: () -> RippleAlpha
     ): Node
 }
-
-fun interface AlphaRippleNodeProducer<Node: DelegatableNode> {
-    fun create(
-        alpha: () -> RippleAlpha
-    ): Node
-}

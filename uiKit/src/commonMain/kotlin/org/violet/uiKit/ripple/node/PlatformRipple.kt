@@ -11,13 +11,15 @@ fun createUniversalRippleNode(
     bounded: Boolean,
     radius: Dp,
     color: ColorProducer,
-    rippleAlpha: () -> RippleAlpha
+    rippleAlpha: () -> RippleAlpha,
+    drawCommand: RippleDrawCommand
 ): DelegatableNode {
     return CommonRippleNode(
-        interactionSource,
-        bounded,
-        radius,
-        color,
-        rippleAlpha
+        interactionSource = interactionSource,
+        bounded = bounded,
+        radius = radius,
+        color = color,
+        rippleAlpha = rippleAlpha,
+        drawCommand = drawCommand
     )
 }

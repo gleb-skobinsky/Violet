@@ -13,7 +13,8 @@ internal class RippleNodeFactory(
     private val bounded: Boolean,
     private val radius: Dp,
     private val color: Color = Color.Unspecified,
-    private val colorProducer: ColorProducer? = null
+    private val colorProducer: ColorProducer? = null,
+    private val drawCommand: RippleDrawCommand = SmoothRippleCommand
 ) : IndicationNodeFactory {
 
     constructor(bounded: Boolean, radius: Dp, color: Color) : this(
@@ -28,17 +29,18 @@ internal class RippleNodeFactory(
             interactionSource = interactionSource,
             bounded = bounded,
             radius = radius,
-            color = userDefinedColorProducer
+            color = userDefinedColorProducer,
+            drawCommand = drawCommand
         )
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is RippleNodeFactory) return false
-
         if (bounded != other.bounded) return false
         if (radius != other.radius) return false
         if (colorProducer != other.colorProducer) return false
+        if (drawCommand != other.drawCommand) return false
         return color == other.color
     }
 
@@ -47,6 +49,7 @@ internal class RippleNodeFactory(
         result = 31 * result + radius.hashCode()
         result = 31 * result + color.hashCode()
         result = 31 * result + colorProducer.hashCode()
+        result = 31 * result + drawCommand.hashCode()
         return result
     }
 }

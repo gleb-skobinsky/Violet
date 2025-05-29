@@ -1,10 +1,13 @@
 package org.violet.uiKit.ripple.node
 
 import androidx.compose.foundation.IndicationNodeFactory
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorProducer
 import androidx.compose.ui.unit.Dp
+import org.violet.uiKit.ripple.node.experimental.BetaRippleApi
 
 @Stable
 fun universalRipple(
@@ -31,7 +34,43 @@ fun universalRipple(
     return RippleNodeFactory(bounded, radius, colorProducer = color)
 }
 
+@Composable
+@BetaRippleApi
+fun rememberCustomRipple(
+    bounded: Boolean = true,
+    radius: Dp = Dp.Unspecified,
+    color: Color = Color.Unspecified,
+    drawCommand: RippleDrawCommand
+): IndicationNodeFactory {
+    val rememberedCommand = remember { drawCommand }
+    return remember(bounded, radius, color, rememberedCommand) {
+        RippleNodeFactory(
+            bounded = bounded,
+            radius = radius,
+            color = color,
+            drawCommand = rememberedCommand
+        )
+    }
+}
 
+@Composable
+@BetaRippleApi
+fun rememberCustomRipple(
+    bounded: Boolean = true,
+    radius: Dp = Dp.Unspecified,
+    color: ColorProducer,
+    drawCommand: RippleDrawCommand
+): IndicationNodeFactory {
+    val rememberedCommand = remember { drawCommand }
+    return remember(bounded, radius, color, rememberedCommand) {
+        RippleNodeFactory(
+            bounded = bounded,
+            radius = radius,
+            colorProducer = color,
+            drawCommand = rememberedCommand
+        )
+    }
+}
 
 private val DefaultBoundedRipple = RippleNodeFactory(
     bounded = true,
