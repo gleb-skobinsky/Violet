@@ -48,8 +48,7 @@ class OpacityRippleNode(
             interactionSource.interactions
                 .filterIsInstance<PressInteraction>()
                 .collect { interaction ->
-                    pressJob?.cancel()
-                    pressJob = handlePressInteraction(interaction)
+                    handlePressInteraction(interaction)
                 }
         }
     }
@@ -57,8 +56,9 @@ class OpacityRippleNode(
 
     private fun handlePressInteraction(
         pressInteraction: PressInteraction
-    ): Job {
-        return coroutineScope.launch {
+    ) {
+        pressJob?.cancel()
+        pressJob = coroutineScope.launch {
             when (pressInteraction) {
                 is PressInteraction.Press -> fadeOut()
 
