@@ -3,6 +3,7 @@ package org.violet.uiKit.ripple.node
 import androidx.compose.foundation.IndicationNodeFactory
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorProducer
 import androidx.compose.ui.unit.Dp
 
 @Stable
@@ -11,12 +12,26 @@ fun universalRipple(
     radius: Dp = Dp.Unspecified,
     color: Color = Color.Unspecified
 ): IndicationNodeFactory {
-    return if (radius == Dp.Unspecified && color == Color.Unspecified) {
-        if (bounded) return DefaultBoundedRipple else DefaultUnboundedRipple
-    } else {
-        RippleNodeFactory(bounded, radius, color)
+    return when {
+        radius != Dp.Unspecified || color != Color.Unspecified -> {
+            RippleNodeFactory(bounded, radius, color)
+        }
+
+        bounded -> DefaultBoundedRipple
+        else -> DefaultUnboundedRipple
     }
 }
+
+@Stable
+fun universalRipple(
+    bounded: Boolean = true,
+    radius: Dp = Dp.Unspecified,
+    color: ColorProducer
+): IndicationNodeFactory {
+    return RippleNodeFactory(bounded, radius, color)
+}
+
+
 
 private val DefaultBoundedRipple = RippleNodeFactory(
     bounded = true,

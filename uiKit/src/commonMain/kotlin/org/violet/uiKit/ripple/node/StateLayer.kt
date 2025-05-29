@@ -119,16 +119,22 @@ internal class StateLayer(
         }
     }
 
-    fun DrawScope.drawStateLayer(radius: Float, color: Color) {
+    fun DrawScope.drawStateLayer(
+        radius: Float,
+        color: Color,
+        rippleDrawCommand: RippleDrawCommand
+    ) {
         val alpha = animatedAlpha.value
 
         if (alpha > 0f) {
             val modulatedColor = color.copy(alpha = alpha)
 
             if (bounded) {
-                clipRect { drawCircle(modulatedColor, radius) }
+                clipRect {
+                    this@drawStateLayer.rippleDrawCommand(color, center, radius)
+                }
             } else {
-                drawCircle(modulatedColor, radius)
+                this@drawStateLayer.rippleDrawCommand(color, center, radius)
             }
         }
     }

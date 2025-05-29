@@ -21,6 +21,27 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.max
 
+typealias RippleDrawCommand = DrawScope.(
+    color: Color,
+    center: Offset,
+    radius: Float
+) -> Unit
+
+val SmoothRippleCommand: RippleDrawCommand = { color, center, radius ->
+    drawCircle(
+        brush = Brush.radialGradient(
+            listOf(
+                color,
+                color,
+                Color.Transparent
+            ),
+            center = center,
+            radius = radius
+        ),
+        radius = radius,
+        center = center
+    )
+}
 
 /**
  * [RippleAnimation]s are drawn as part of [Ripple] as a visual indicator for an different
@@ -44,7 +65,8 @@ import kotlin.math.max
 internal class RippleAnimation(
     private var origin: Offset?,
     private val radius: Float,
-    private val bounded: Boolean
+    private val bounded: Boolean,
+    private val onDraw: RippleDrawCommand = SmoothRippleCommand
 ) {
     private val finishRadius = radius * 1.33f
     private var startRadius: Float? = null
@@ -137,7 +159,8 @@ internal class RippleAnimation(
                 animatedAlpha.value
             }
 
-        val radius = lerp(startRadius!!, finishRadius, animatedRadiusPercent.value)
+        val radius =
+            lerp(startRadius!!, finishRadius, animatedRadiusPercent.value)
         val centerOffset =
             Offset(
                 lerp(origin!!.x, targetCenter!!.x, animatedCenterPercent.value),
@@ -146,34 +169,10 @@ internal class RippleAnimation(
         val modulatedColor = color.copy(alpha = color.alpha * alpha)
         if (bounded) {
             clipRect {
-                drawCircle(
-                    brush = Brush.radialGradient(
-                        listOf(
-                            modulatedColor,
-                            modulatedColor,
-                            Color.Transparent
-                        ),
-                        center = centerOffset,
-                        radius = radius
-                    ),
-                    radius = radius,
-                    center = centerOffset
-                )
+                this@draw.onDraw(modulatedColor, centerOffset, radius)
             }
         } else {
-            drawCircle(
-                brush = Brush.radialGradient(
-                    listOf(
-                        modulatedColor,
-                        modulatedColor,
-                        Color.Transparent
-                    ),
-                    radius = radius,
-                    center = centerOffset
-                ),
-                radius = radius,
-                center = centerOffset
-            )
+            this@draw.onDraw(modulatedColor, centerOffset, radius)
         }
     }
 }

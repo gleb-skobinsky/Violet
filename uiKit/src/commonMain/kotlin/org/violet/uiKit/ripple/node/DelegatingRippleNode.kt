@@ -1,12 +1,10 @@
 package org.violet.uiKit.ripple.node
 
 import androidx.compose.foundation.interaction.InteractionSource
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.RippleConfiguration
 import androidx.compose.material3.RippleDefaults
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorProducer
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.node.CompositionLocalConsumerModifierNode
@@ -17,15 +15,30 @@ import androidx.compose.ui.node.currentValueOf
 import androidx.compose.ui.node.observeReads
 import androidx.compose.ui.unit.Dp
 
-@OptIn(ExperimentalMaterial3Api::class)
 internal class DelegatingRippleNode(
     private val interactionSource: InteractionSource,
     private val bounded: Boolean,
     private val radius: Dp,
-    private val color: Color,
+    color: ColorProducer
+) : AbstractDelegatingRippleNode<DelegatableNode>(
+    color = color,
+    nodeProducer = ColoredRippleNodeProducer { color, alpha ->
+        createUniversalRippleNode(
+            interactionSource = interactionSource,
+            bounded = bounded,
+            radius = radius,
+            color = color,
+            rippleAlpha = alpha
+        )
+    }
+)
+
+internal open class AbstractDelegatingRippleNode<Node : DelegatableNode>(
+    private val color: ColorProducer,
+    private val nodeProducer: ColoredRippleNodeProducer<Node>
 ) : DelegatingNode(), CompositionLocalConsumerModifierNode,
     ObserverModifierNode {
-    private var rippleNode: DelegatableNode? = null
+    private var rippleNode: Node? = null
 
     override fun onAttach() {
         updateConfiguration()
@@ -42,7 +55,7 @@ internal class DelegatingRippleNode(
      */
     private fun updateConfiguration() {
         observeReads {
-            val configuration = currentValueOf(LocalRippleConfiguration)
+            val configuration = currentValueOf(LocalRippleConfig)
             if (configuration == null) {
                 removeRipple()
             } else {
@@ -53,13 +66,14 @@ internal class DelegatingRippleNode(
 
     private fun attachNewRipple() {
         val calculateColor = ColorProducer {
-            if (color.isSpecified) {
-                color
+            val userColor = color()
+            if (userColor.isSpecified) {
+                userColor
             } else {
                 // If this is null, the ripple will be removed, so this should always be non-null in
                 // normal use
                 val rippleConfiguration =
-                    currentValueOf(LocalRippleConfiguration)
+                    currentValueOf(LocalRippleConfig)
                 if (rippleConfiguration?.color?.isSpecified == true) {
                     rippleConfiguration.color
                 } else {
@@ -71,20 +85,16 @@ internal class DelegatingRippleNode(
         val calculateRippleAlpha = {
             // If this is null, the ripple will be removed, so this should always be non-null in
             // normal use
-            val rippleConfiguration = currentValueOf(LocalRippleConfiguration)
+            val rippleConfiguration = currentValueOf(LocalRippleConfig)
             rippleConfiguration?.rippleAlpha ?: RippleDefaults.RippleAlpha
         }
 
-        rippleNode =
-            delegate(
-                createUniversalRippleNode(
-                    interactionSource,
-                    bounded,
-                    radius,
-                    calculateColor,
-                    calculateRippleAlpha
-                )
+        rippleNode = delegate(
+            nodeProducer.create(
+                calculateColor,
+                calculateRippleAlpha
             )
+        )
     }
 
     private fun removeRipple() {

@@ -34,7 +34,8 @@ internal abstract class RippleNode(
     protected val bounded: Boolean,
     private val radius: Dp,
     private val color: ColorProducer,
-    protected val rippleAlpha: () -> RippleAlpha
+    protected val rippleAlpha: () -> RippleAlpha,
+    private val rippleDrawCommand: RippleDrawCommand = SmoothRippleCommand
 ) :
     Modifier.Node(),
     CompositionLocalConsumerModifierNode,
@@ -117,7 +118,7 @@ internal abstract class RippleNode(
 
     override fun ContentDrawScope.draw() {
         drawContent()
-        stateLayer?.run { drawStateLayer(targetRadius, rippleColor) }
+        stateLayer?.run { drawStateLayer(targetRadius, rippleColor, rippleDrawCommand) }
         drawRipples()
     }
 

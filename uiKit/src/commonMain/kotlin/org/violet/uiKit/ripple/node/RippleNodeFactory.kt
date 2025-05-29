@@ -4,6 +4,7 @@ import androidx.compose.foundation.IndicationNodeFactory
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorProducer
 import androidx.compose.ui.node.DelegatableNode
 import androidx.compose.ui.unit.Dp
 
@@ -11,8 +12,14 @@ import androidx.compose.ui.unit.Dp
 internal class RippleNodeFactory(
     private val bounded: Boolean,
     private val radius: Dp,
-    private val color: Color
+    private val color: ColorProducer
 ) : IndicationNodeFactory {
+
+    constructor(bounded: Boolean, radius: Dp, color: Color) : this(
+        bounded,
+        radius,
+        ColorProducer { color }
+    )
 
     override fun create(interactionSource: InteractionSource): DelegatableNode {
         return DelegatingRippleNode(interactionSource, bounded, radius, color)
