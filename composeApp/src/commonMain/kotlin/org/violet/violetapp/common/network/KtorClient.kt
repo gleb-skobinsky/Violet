@@ -34,7 +34,7 @@ fun configureKtorClient(
     defaultRequest {
         url {
             protocol = URLProtocol.HTTPS
-            host = "lk-wl-stage.etoplatezhi.ru"
+            host = "localhost"
         }
         bearerAuth(userSecureStorage.getToken().orEmpty())
         contentType(ContentType.Application.Json)

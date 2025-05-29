@@ -12,17 +12,24 @@ import androidx.compose.ui.unit.Dp
 internal class RippleNodeFactory(
     private val bounded: Boolean,
     private val radius: Dp,
-    private val color: ColorProducer
+    private val color: Color = Color.Unspecified,
+    private val colorProducer: ColorProducer? = null
 ) : IndicationNodeFactory {
 
     constructor(bounded: Boolean, radius: Dp, color: Color) : this(
-        bounded,
-        radius,
-        ColorProducer { color }
+        bounded = bounded,
+        radius = radius,
+        colorProducer = ColorProducer { color }
     )
 
     override fun create(interactionSource: InteractionSource): DelegatableNode {
-        return DelegatingRippleNode(interactionSource, bounded, radius, color)
+        val userDefinedColorProducer = colorProducer ?: ColorProducer { color }
+        return DelegatingRippleNode(
+            interactionSource = interactionSource,
+            bounded = bounded,
+            radius = radius,
+            color = userDefinedColorProducer
+        )
     }
 
     override fun equals(other: Any?): Boolean {
@@ -31,6 +38,7 @@ internal class RippleNodeFactory(
 
         if (bounded != other.bounded) return false
         if (radius != other.radius) return false
+        if (colorProducer != other.colorProducer) return false
         return color == other.color
     }
 
@@ -38,6 +46,7 @@ internal class RippleNodeFactory(
         var result = bounded.hashCode()
         result = 31 * result + radius.hashCode()
         result = 31 * result + color.hashCode()
+        result = 31 * result + colorProducer.hashCode()
         return result
     }
 }

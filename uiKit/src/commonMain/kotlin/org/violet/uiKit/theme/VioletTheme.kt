@@ -10,6 +10,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import org.violet.uiKit.ripple.node.opacity.opacityRipple
 import org.violet.uiKit.ripple.node.universalRipple
 
 @Stable
@@ -49,7 +50,7 @@ fun VioletTheme(
     CompositionLocalProvider(
         LocalVioletTypography provides violetAppTypography,
         LocalVioletColors provides VioletAppColorScheme,
-        LocalIndication provides universalRipple(),
+        LocalIndication provides opacityRipple(300, 300),
         LocalTextSelectionColors provides rememberTextSelectionColors(
             colorScheme
         ),

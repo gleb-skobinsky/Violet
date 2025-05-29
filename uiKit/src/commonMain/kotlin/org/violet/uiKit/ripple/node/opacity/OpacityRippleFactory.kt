@@ -6,7 +6,6 @@ import androidx.compose.foundation.IndicationNodeFactory
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.node.DelegatableNode
-import org.violet.uiKit.ripple.node.NullBasedRippleDelegator
 
 @Stable
 internal class OpacityRippleFactory(
@@ -25,7 +24,12 @@ internal class OpacityRippleFactory(
     )
 
     override fun create(interactionSource: InteractionSource): DelegatableNode {
-        return NullBasedRippleDelegator { OpacityRippleNode() }
+        return OpacityRippleNode(
+            fadeInSpec = fadeInSpec,
+            fadeOutSpec = fadeOutSpec,
+            minAlpha = minAlpha,
+            interactionSource = interactionSource
+        )
     }
 
     override fun hashCode(): Int {
@@ -35,6 +39,9 @@ internal class OpacityRippleFactory(
         return result
     }
 
+    // While FiniteAnimationSpec interface itself is not stable or supports
+    // structural equality, its widespread children like TweenSpec or SpringSpec
+    // do support structural equality, so they can be safely compared here.
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is OpacityRippleFactory) return false
