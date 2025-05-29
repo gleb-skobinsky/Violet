@@ -1,4 +1,4 @@
-package org.violet.uiKit.ripple.node
+package org.violet.uiKit.ripple.node.drawBasedRipple
 
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.runtime.Immutable

@@ -1,4 +1,4 @@
-package org.violet.uiKit.ripple.node
+package org.violet.uiKit.ripple.node.drawBasedRipple
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec

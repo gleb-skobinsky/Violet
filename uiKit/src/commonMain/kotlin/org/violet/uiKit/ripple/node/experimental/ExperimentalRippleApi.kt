@@ -4,4 +4,4 @@ package org.violet.uiKit.ripple.node.experimental
 @Target(AnnotationTarget.FUNCTION)
 @Retention(value = AnnotationRetention.BINARY)
 @RequiresOptIn(level = RequiresOptIn.Level.WARNING)
-annotation class BetaRippleApi
+annotation class ExperimentalRippleApi

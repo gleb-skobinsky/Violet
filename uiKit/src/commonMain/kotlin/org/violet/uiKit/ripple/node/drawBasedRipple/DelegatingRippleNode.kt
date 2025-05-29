@@ -1,4 +1,4 @@
-package org.violet.uiKit.ripple.node
+package org.violet.uiKit.ripple.node.drawBasedRipple
 
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.material3.LocalContentColor

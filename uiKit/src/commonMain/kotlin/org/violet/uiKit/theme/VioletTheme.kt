@@ -10,8 +10,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
-import org.violet.uiKit.ripple.node.opacity.opacityRipple
-import org.violet.uiKit.ripple.node.universalRipple
+import org.violet.uiKit.ripple.node.opacityRipple.opacityRipple
 
 @Stable
 object LocalVioletTheme {

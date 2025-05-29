@@ -7,7 +7,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorProducer
 import androidx.compose.ui.unit.Dp
-import org.violet.uiKit.ripple.node.experimental.BetaRippleApi
+import org.violet.uiKit.ripple.node.drawBasedRipple.RippleDrawCommand
+import org.violet.uiKit.ripple.node.drawBasedRipple.RippleNodeFactory
+import org.violet.uiKit.ripple.node.experimental.ExperimentalRippleApi
 
 @Stable
 fun universalRipple(
@@ -35,7 +37,7 @@ fun universalRipple(
 }
 
 @Composable
-@BetaRippleApi
+@ExperimentalRippleApi
 fun rememberCustomRipple(
     bounded: Boolean = true,
     radius: Dp = Dp.Unspecified,
@@ -54,7 +56,7 @@ fun rememberCustomRipple(
 }
 
 @Composable
-@BetaRippleApi
+@ExperimentalRippleApi
 fun rememberCustomRipple(
     bounded: Boolean = true,
     radius: Dp = Dp.Unspecified,

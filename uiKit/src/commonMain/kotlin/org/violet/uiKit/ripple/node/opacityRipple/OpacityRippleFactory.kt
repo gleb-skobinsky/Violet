@@ -1,4 +1,4 @@
-package org.violet.uiKit.ripple.node.opacity
+package org.violet.uiKit.ripple.node.opacityRipple
 
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.tween

@@ -1,4 +1,4 @@
-package org.violet.uiKit
+package org.violet.uiKit.ripple
 
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
@@ -17,23 +17,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.inset
-import androidx.compose.ui.graphics.vector.VectorPainter
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.violet.uiKit.ripple.node.experimental.BetaRippleApi
-import org.violet.uiKit.ripple.node.opacity.opacityRipple
+import org.violet.uiKit.ripple.node.experimental.ExperimentalRippleApi
+import org.violet.uiKit.ripple.node.opacityRipple.opacityRipple
 import org.violet.uiKit.ripple.node.rememberCustomRipple
 import org.violet.uiKit.ripple.node.universalRipple
-import org.violet.uiKit.ripple.utils.IcHeartEmpty
-import org.violet.uiKit.ripple.utils.inferHeightForWidth
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Composable
 fun UniversalButton() {
@@ -47,7 +43,7 @@ fun UniversalButton() {
 @Composable
 fun FadingButton() {
     CompositionLocalProvider(
-        LocalIndication provides opacityRipple(300, 300)
+        LocalIndication provides opacityRipple(300, 200)
     ) {
         ClickableBox()
     }
@@ -62,46 +58,49 @@ fun MaterialButton() {
     }
 }
 
-@OptIn(BetaRippleApi::class)
+@OptIn(ExperimentalRippleApi::class)
 @Composable
-fun HeartButton() {
-    val painter = rememberVectorPainter(IcHeartEmpty)
+fun StarButton() {
     CompositionLocalProvider(
         LocalIndication provides rememberCustomRipple(
             color = Color.Red,
-            radius = 160.dp
+            radius = 150.dp
         ) { color, center, radius ->
-            drawHeart(painter, radius, center, color)
+            drawStar(radius, center, color)
         }
     ) {
         ClickableBox(DpSize(300.dp, 300.dp))
     }
 }
 
-private fun DrawScope.drawHeart(
-    painter: VectorPainter,
+fun Double.toRadians(): Double = this * PI / 180.0
+
+private fun DrawScope.drawStar(
     radius: Float,
     center: Offset,
     color: Color
 ) {
-    with(painter) {
-        val width = radius * 2
-        val height = inferHeightForWidth(width)
-        val left = center.x - radius
-        val top = center.y - (height / 2)
-        println("Center: ${center.x} ${center.y} w $width h $height")
-        //println("Left: $left top: $top")
-        inset(
-            left = left,
-            top = top,
-            right = 0f,
-            bottom = 0f
-        ) {
-            draw(
-                size = Size(width, height),
-                colorFilter = ColorFilter.tint(color)
-            )
-        }
+    val radiusInner = radius * 0.4f
+
+    val points = mutableListOf<Offset>()
+
+    // A 5-point star has 10 points: 5 outer, 5 inner
+    for (i in 0 until 10) {
+        val angle = ((i * 36.0) - 90.0).toRadians()
+        val r = if (i % 2 == 0) radius else radiusInner
+        val x = (center.x + cos(angle) * r).toFloat()
+        val y = (center.y + sin(angle) * r).toFloat()
+        points.add(Offset(x, y))
+    }
+
+    // Draw lines between consecutive points
+    for (i in points.indices) {
+        drawLine(
+            color = color,
+            start = points[i],
+            end = points[(i + 1) % points.size],
+            strokeWidth = 10f
+        )
     }
 }
 
@@ -132,7 +131,7 @@ fun ExampleButtonPreview() {
         UniversalButton()
         MaterialButton()
         FadingButton()
-        HeartButton()
+        StarButton()
     }
 }
 

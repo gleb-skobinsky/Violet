@@ -1,5 +1,6 @@
-package org.violet.uiKit.ripple.node
+package org.violet.uiKit.ripple.node.drawBasedRipple
 
+import androidx.collection.mutableObjectListOf
 import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
@@ -21,13 +22,11 @@ import androidx.compose.ui.unit.isUnspecified
 import androidx.compose.ui.unit.toSize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import androidx.collection.mutableObjectListOf
-
 
 /**
- * Abstract [Modifier.Node] that provides common functionality used by ripple node implementations.
+ * Abstract [androidx.compose.ui.Modifier.Node] that provides common functionality used by ripple node implementations.
  * Implementing classes should use [stateLayer] to draw the [StateLayer], so they only need to
- * handle showing the ripple effect when pressed, and not other [Interaction]s.
+ * handle showing the ripple effect when pressed, and not other [androidx.compose.foundation.interaction.Interaction]s.
  */
 internal abstract class RippleNode(
     private val interactionSource: InteractionSource,
@@ -51,7 +50,7 @@ internal abstract class RippleNode(
     protected var targetRadius: Float = 0f
 
     // The size is needed for Android to update ripple bounds if the size changes
-    protected var rippleSize: Size = Size.Zero
+    protected var rippleSize: Size = Size.Companion.Zero
         private set
 
     val rippleColor: Color

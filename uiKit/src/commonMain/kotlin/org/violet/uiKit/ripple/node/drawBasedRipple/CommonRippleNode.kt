@@ -1,4 +1,4 @@
-package org.violet.uiKit.ripple.node
+package org.violet.uiKit.ripple.node.drawBasedRipple
 
 import androidx.collection.MutableScatterMap
 import androidx.compose.foundation.interaction.InteractionSource
@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.unit.Dp
 import kotlinx.coroutines.launch
+import org.violet.uiKit.ripple.node.drawBasedRipple.RippleNode
 
 internal class CommonRippleNode(
     interactionSource: InteractionSource,

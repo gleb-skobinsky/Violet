@@ -1,4 +1,4 @@
-package org.violet.uiKit.ripple.node
+package org.violet.uiKit.ripple.node.drawBasedRipple
 
 import androidx.compose.foundation.IndicationNodeFactory
 import androidx.compose.foundation.interaction.InteractionSource
@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.Dp
 internal class RippleNodeFactory(
     private val bounded: Boolean,
     private val radius: Dp,
-    private val color: Color = Color.Unspecified,
+    private val color: Color = Color.Companion.Unspecified,
     private val colorProducer: ColorProducer? = null,
     private val drawCommand: RippleDrawCommand = SmoothRippleCommand
 ) : IndicationNodeFactory {
