@@ -131,10 +131,10 @@ internal class StateLayer(
 
             if (bounded) {
                 clipRect {
-                    this@drawStateLayer.rippleDrawCommand(color, center, radius)
+                    this@drawStateLayer.rippleDrawCommand(modulatedColor, center, radius)
                 }
             } else {
-                this@drawStateLayer.rippleDrawCommand(color, center, radius)
+                this@drawStateLayer.rippleDrawCommand(modulatedColor, center, radius)
             }
         }
     }

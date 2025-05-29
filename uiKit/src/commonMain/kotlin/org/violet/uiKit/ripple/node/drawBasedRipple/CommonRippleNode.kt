@@ -10,7 +10,6 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.unit.Dp
 import kotlinx.coroutines.launch
-import org.violet.uiKit.ripple.node.drawBasedRipple.RippleNode
 
 internal class CommonRippleNode(
     interactionSource: InteractionSource,
