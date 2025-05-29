@@ -28,7 +28,7 @@ fun universalRipple(
     radius: Dp = Dp.Unspecified,
     color: ColorProducer
 ): IndicationNodeFactory {
-    return RippleNodeFactory(bounded, radius, color)
+    return RippleNodeFactory(bounded, radius, colorProducer = color)
 }
 
 
