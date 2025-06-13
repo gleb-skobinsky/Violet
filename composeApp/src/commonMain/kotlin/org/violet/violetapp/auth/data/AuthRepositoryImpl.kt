@@ -1,5 +1,7 @@
 package org.violet.violetapp.auth.data
 
+import auth.data.SignupRequest
+import auth.data.SignupResponse
 import auth.data.TokenData
 import auth.data.UserData
 import auth.data.UserLoginRequest
@@ -9,12 +11,12 @@ import org.violet.violetapp.auth.data.entities.CheckOtpRequest
 import org.violet.violetapp.auth.data.entities.CheckOtpResponse
 import org.violet.violetapp.auth.data.entities.OtpRequest
 import org.violet.violetapp.auth.data.entities.ResetPasswordRequest
-import org.violet.violetapp.auth.data.entities.SignupRequest
 import org.violet.violetapp.auth.domain.AuthRepository
 import org.violet.violetapp.auth.domain.entities.OtpMessageType
 import org.violet.violetapp.common.network.ApiNetworkClient
 import org.violet.violetapp.common.network.RequestResult
 import org.violet.violetapp.common.network.ServerResponse
+import org.violet.violetapp.common.network.mapOnError
 import org.violet.violetapp.common.network.mapOnSuccess
 import org.violet.violetapp.resources.AppRes
 import org.violet.violetapp.resources.email
@@ -25,7 +27,7 @@ import org.violet.violetapp.resources.otp_too_many_times
 import org.violet.violetapp.resources.user_already_exists
 import org.violet.violetapp.resources.wrong_otp_code
 
-private const val USER_ALREADY_EXIST_CONTRACT = "user_already_exist"
+private const val USER_ALREADY_EXIST_CONTRACT = "User already exists"
 private const val SMS_CONTRACT = "phone_message_sent"
 private const val EMAIL_CONTRACT = "email_message_sent"
 private const val OTP_LOGIN_CONTRACT = "auc_error_used_login"
@@ -57,17 +59,21 @@ class AuthRepositoryImpl(
         login: String,
         password: String
     ): RequestResult<Unit> {
-        return client.post<SignupRequest, ServerResponse>(
+        return client.post<SignupRequest, SignupResponse>(
             urlPath = Endpoints.Auth.Signup,
-            body = SignupRequest(login, password)
-        ).mapOnSuccess {
+            body = SignupRequest(
+                email = login,
+                password = password
+            )
+        ).mapOnError {
             when {
-                it.error && it.message == USER_ALREADY_EXIST_CONTRACT
-                    -> RequestResult.Error(getString(AppRes.string.user_already_exists))
-
-                it.error -> RequestResult.Error(getString(AppRes.string.generic_eror))
-                else -> RequestResult.Success(Unit)
+                it.message == USER_ALREADY_EXIST_CONTRACT -> {
+                    RequestResult.Error(getString(AppRes.string.user_already_exists))
+                }
+                else -> RequestResult.Error(getString(AppRes.string.generic_eror))
             }
+        }.mapOnSuccess {
+            RequestResult.Success(Unit)
         }
     }
 

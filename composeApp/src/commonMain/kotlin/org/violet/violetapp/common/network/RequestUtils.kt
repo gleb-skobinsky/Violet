@@ -1,10 +1,20 @@
 package org.violet.violetapp.common.network
 
 
-inline fun <IN : Any, OUT : Any> RequestResult<IN>.mapOnSuccess(block: (IN) -> RequestResult<OUT>): RequestResult<OUT> =
+inline fun <IN : Any, OUT : Any> RequestResult<IN>.mapOnSuccess(
+    block: (IN) -> RequestResult<OUT>
+): RequestResult<OUT> =
     when (this) {
         is RequestResult.Success -> block(data)
         is RequestResult.Error -> RequestResult.Error(error = error)
+    }
+
+inline fun <T : Any> RequestResult<T>.mapOnError(
+    block: (ErrorData) -> RequestResult<T>
+): RequestResult<T> =
+    when (this) {
+        is RequestResult.Success -> this
+        is RequestResult.Error -> block(error)
     }
 
 inline fun <T : Any> RequestResult<T>.onSuccess(block: (T) -> Unit): RequestResult<T> {

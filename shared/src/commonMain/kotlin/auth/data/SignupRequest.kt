@@ -1,9 +1,9 @@
-package org.violet.violetapp.auth.data.entities
+package auth.data
 
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class SignupRequest(
-    val login: String,
+    val email: String,
     val password: String
 )

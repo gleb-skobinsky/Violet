@@ -1,8 +1,7 @@
 package com.violet.features.auth.routes
 
+import auth.data.SignupRequest
 import auth.data.SignupResponse
-import auth.data.UserData
-import auth.data.UserLoginRequest
 import com.violet.email.data.AppSecrets
 import com.violet.email.data.EmailData
 import com.violet.email.data.EmailService
@@ -33,7 +32,7 @@ internal fun Routing.signupRoute(
                 description("Sign up a user with their email and password")
                 request {
                     description("Register a user")
-                    requestType<UserData>()
+                    requestType<SignupRequest>()
                 }
                 response {
                     description("User successfully registered")
@@ -43,7 +42,7 @@ internal fun Routing.signupRoute(
             }
         }
         post {
-            val user = call.receive<UserLoginRequest>()
+            val user = call.receive<SignupRequest>()
             usersRepository.readByEmail(user.email)?.let {
                 call.respond(HttpStatusCode.BadRequest, "User already exists")
                 return@post
