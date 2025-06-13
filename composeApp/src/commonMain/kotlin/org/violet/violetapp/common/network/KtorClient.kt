@@ -1,8 +1,5 @@
 package org.violet.violetapp.common.network
 
-import org.violet.violetapp.auth.data.UserSecureStorage
-import org.violet.violetapp.init.presentation.InitAction
-import org.violet.violetapp.init.presentation.InitStateController
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.auth.Auth
@@ -14,10 +11,13 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.bearerAuth
 import io.ktor.http.ContentType
-import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import org.violet.violetapp.auth.data.UserSecureStorage
+import org.violet.violetapp.common.utils.localhost
+import org.violet.violetapp.init.presentation.InitAction
+import org.violet.violetapp.init.presentation.InitStateController
 
 private const val NETWORK_TIMEOUT = 30_000L
 
@@ -33,8 +33,9 @@ fun configureKtorClient(
 
     defaultRequest {
         url {
-            protocol = URLProtocol.HTTPS
-            host = "localhost"
+            protocol = localhost.protocol
+            host = localhost.host
+            port = localhost.port
         }
         bearerAuth(userSecureStorage.getToken().orEmpty())
         contentType(ContentType.Application.Json)
