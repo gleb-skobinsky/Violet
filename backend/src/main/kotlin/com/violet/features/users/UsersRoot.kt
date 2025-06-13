@@ -1,6 +1,7 @@
 package com.violet.features.users
 
 import com.violet.features.users.models.UserData
+import com.violet.features.users.models.toUpdatedUser
 import com.violet.features.users.repository.UsersRepository
 import com.violet.jwt.JWTConfig.Companion.JWT_AUTH_ID
 import io.ktor.http.HttpStatusCode
@@ -46,7 +47,7 @@ fun Application.configureUsersRoutes(
                         return@put
                     }
                     val user = call.receive<UserData>()
-                    usersRepository.update(id, user)
+                    usersRepository.update(id, user.toUpdatedUser())
                     call.respond(HttpStatusCode.OK)
                 }
                 delete {

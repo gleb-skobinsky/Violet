@@ -2,6 +2,7 @@ package com.violet.features.users.repository
 
 import com.violet.features.users.models.ExistingUser
 import com.violet.features.users.models.NewUser
+import com.violet.features.users.models.UpdatedUser
 import com.violet.shared.BaseRepository
 import com.violet.shared.uuid
 import kotlinx.datetime.Clock
@@ -85,7 +86,7 @@ class DefaultUsersRepository(database: Database) : UsersRepository,
     }
 
 
-    override suspend fun update(id: String, user: ExistingUser) {
+    override suspend fun update(id: String, user: UpdatedUser) {
         dbQuery {
             Users.update({ Users.id eq id.uuid() }) {
                 it[email] = user.email

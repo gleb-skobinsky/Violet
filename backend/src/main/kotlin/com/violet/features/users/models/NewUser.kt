@@ -12,3 +12,9 @@ data class ExistingUser(
     val password: String,
     val verified: Boolean
 )
+
+data class UpdatedUser(
+    val id: String,
+    val email: String,
+    val verified: Boolean
+)

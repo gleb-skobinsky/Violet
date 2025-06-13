@@ -8,3 +8,11 @@ data class UserData(
     val email: String,
     val verified: Boolean
 )
+
+fun UserData.toUpdatedUser(): UpdatedUser {
+    return UpdatedUser(
+        id = id,
+        email = email,
+        verified = verified
+    )
+}

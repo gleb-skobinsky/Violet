@@ -2,6 +2,7 @@ package com.violet.features.users.repository
 
 import com.violet.features.users.models.ExistingUser
 import com.violet.features.users.models.NewUser
+import com.violet.features.users.models.UpdatedUser
 
 interface UsersRepository {
 
@@ -11,7 +12,7 @@ interface UsersRepository {
 
     suspend fun readByEmail(email: String): ExistingUser?
 
-    suspend fun update(id: String, user: ExistingUser)
+    suspend fun update(id: String, user: UpdatedUser)
 
     suspend fun delete(id: String)
 }
