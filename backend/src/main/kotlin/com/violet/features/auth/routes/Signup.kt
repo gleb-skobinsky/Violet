@@ -8,21 +8,23 @@ import com.violet.features.users.models.ExposedUser
 import com.violet.features.users.models.SimpleUser
 import com.violet.features.users.repository.UsersRepository
 import com.violet.shared.RepositoriesTags
+import common.data.Endpoints
 import io.bkbn.kompendium.core.metadata.PostInfo
 import io.bkbn.kompendium.core.plugin.NotarizedRoute
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
-import java.util.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.routing.Routing
+import io.ktor.server.routing.post
+import io.ktor.server.routing.route
+import java.util.Random
 
 internal fun Routing.signupRoute(
     usersRepository: UsersRepository,
     secrets: AppSecrets,
     emailService: EmailService
 ) {
-    route("/signup") {
+    route(Endpoints.Auth.Signup) {
         install(NotarizedRoute()) {
             tags = setOf(RepositoriesTags.AUTH)
             post = PostInfo.builder {

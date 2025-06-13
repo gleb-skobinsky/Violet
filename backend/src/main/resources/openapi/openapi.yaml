@@ -14,7 +14,7 @@ info:
     name: "Open license"
 servers: []
 paths:
-  /login:
+  /api/v1/login:
     post:
       tags:
       - "Auth repository"
@@ -37,7 +37,7 @@ paths:
                 $ref: "#/components/schemas/TokenData"
       deprecated: false
     parameters: []
-  /refresh:
+  /api/v1/refresh:
     post:
       tags:
       - "Auth repository"
@@ -60,7 +60,7 @@ paths:
                 $ref: "#/components/schemas/TokenData"
       deprecated: false
     parameters: []
-  /signup:
+  /api/v1/signup:
     post:
       tags:
       - "Auth repository"
@@ -83,7 +83,7 @@ paths:
                 $ref: "#/components/schemas/SignupResponse"
       deprecated: false
     parameters: []
-  /api/notes:
+  /api/v1/notes:
     get:
       tags:
       - "Notes repository"
@@ -101,7 +101,7 @@ paths:
       security:
       - matchme-jwt-auth: []
     parameters: []
-  /api/notes/create:
+  /api/v1/notes/create:
     post:
       tags:
       - "Notes repository"
@@ -126,7 +126,7 @@ paths:
       security:
       - matchme-jwt-auth: []
     parameters: []
-  /api/notes/{noteId}:
+  /api/v1/notes/{noteId}:
     delete:
       tags:
       - "Notes repository"

@@ -3,23 +3,24 @@ package com.violet.features.notes.routes
 import com.violet.features.notes.repository.NotesRepository
 import com.violet.jwt.JWTConfig
 import com.violet.shared.RepositoriesTags
+import common.data.Endpoints.Notes.DeleteNote
+import common.data.Endpoints.Notes.NoteIdParam
 import io.bkbn.kompendium.core.metadata.DeleteInfo
 import io.bkbn.kompendium.core.plugin.NotarizedRoute
 import io.bkbn.kompendium.json.schema.definition.TypeDefinition
 import io.bkbn.kompendium.oas.payload.Parameter
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
-
-private const val NOTE_ID_PARAM = "noteId"
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.auth.authenticate
+import io.ktor.server.response.respond
+import io.ktor.server.routing.Routing
+import io.ktor.server.routing.delete
+import io.ktor.server.routing.route
 
 internal fun Routing.deleteNoteRoute(
     repository: NotesRepository,
 ) {
     authenticate(JWTConfig.JWT_AUTH_ID) {
-        route("/api/notes/{$NOTE_ID_PARAM}") {
+        route(DeleteNote) {
             install(NotarizedRoute()) {
                 tags = setOf(RepositoriesTags.NOTES)
                 delete = DeleteInfo.builder {
@@ -27,7 +28,7 @@ internal fun Routing.deleteNoteRoute(
                     description("The endpoint for note deletion given its id")
                     parameters(
                         Parameter(
-                            name = NOTE_ID_PARAM,
+                            name = NoteIdParam,
                             `in` = Parameter.Location.path,
                             schema = TypeDefinition.STRING
                         )
@@ -40,7 +41,7 @@ internal fun Routing.deleteNoteRoute(
                 }
             }
             delete {
-                val id = call.parameters[NOTE_ID_PARAM] ?: run {
+                val id = call.parameters[NoteIdParam] ?: run {
                     call.respond(
                         HttpStatusCode.BadRequest,
                         "Invalid id"

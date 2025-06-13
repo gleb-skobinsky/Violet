@@ -5,21 +5,24 @@ import com.violet.features.notes.repository.NotesRepository
 import com.violet.jwt.JWTConfig
 import com.violet.jwt.email
 import com.violet.shared.RepositoriesTags
+import common.data.Endpoints.Notes.CreateNote
 import io.bkbn.kompendium.core.metadata.PostInfo
 import io.bkbn.kompendium.core.plugin.NotarizedRoute
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.principal
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.routing.Routing
+import io.ktor.server.routing.post
+import io.ktor.server.routing.route
 
 internal fun Routing.createNoteRoute(
     repository: NotesRepository,
 ) {
     authenticate(JWTConfig.JWT_AUTH_ID) {
-        route("/api/notes/create") {
+        route(CreateNote) {
             install(NotarizedRoute()) {
                 tags = setOf(RepositoriesTags.NOTES)
                 post = PostInfo.builder {

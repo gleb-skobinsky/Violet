@@ -9,19 +9,21 @@ import com.violet.jwt.JWTConfig.Companion.REFRESH_EXPIRATION_TIMEOUT
 import com.violet.jwt.TokenType
 import com.violet.jwt.createToken
 import com.violet.shared.RepositoriesTags
+import common.data.Endpoints
 import io.bkbn.kompendium.core.metadata.PostInfo
 import io.bkbn.kompendium.core.plugin.NotarizedRoute
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.routing.Routing
+import io.ktor.server.routing.post
+import io.ktor.server.routing.route
 
 internal fun Routing.loginRoute(
     usersRepository: UsersRepository,
     jwtConfig: JWTConfig
 ) {
-    route("/login") {
+    route(Endpoints.Auth.Login) {
         install(NotarizedRoute()) {
             tags = setOf(RepositoriesTags.AUTH)
             post = PostInfo.builder {
