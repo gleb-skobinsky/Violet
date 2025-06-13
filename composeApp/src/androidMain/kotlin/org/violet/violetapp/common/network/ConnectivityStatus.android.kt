@@ -8,12 +8,12 @@ import android.net.NetworkRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-actual class ConnectivityStatus actual constructor(
+class AndroidConnectivityStatus(
     context: Context
-) {
+) : ConnectivityStatus {
     private val _networkStateFlow = MutableStateFlow(ConnectivityStatusState.UNKNOWN)
-    actual val networkStateFlow = _networkStateFlow.asStateFlow()
-    actual val networkState: ConnectivityStatusState
+    override val networkStateFlow = _networkStateFlow.asStateFlow()
+    override val networkState: ConnectivityStatusState
         get() = _networkStateFlow.value
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {

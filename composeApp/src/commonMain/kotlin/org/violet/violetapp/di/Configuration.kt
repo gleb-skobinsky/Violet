@@ -1,9 +1,9 @@
 package org.violet.violetapp.di
 
-import coil3.PlatformContext
 import io.ktor.client.HttpClient
 import kotlinx.serialization.json.Json
 import org.koin.core.KoinApplication
+import org.koin.core.scope.Scope
 import org.koin.dsl.module
 import org.violet.violetapp.auth.authModule
 import org.violet.violetapp.auth.data.UserSecureStorage
@@ -15,7 +15,9 @@ import org.violet.violetapp.init.initModule
 import org.violet.violetapp.secureStorage.Vault
 import org.violet.violetapp.secureStorage.VaultDebugImpl
 
-private fun coreModule(context: PlatformContext) = module {
+expect fun Scope.getConnectivityStatus(): ConnectivityStatus
+
+private val coreModule = module {
     single {
         Json {
             ignoreUnknownKeys = true
@@ -26,13 +28,13 @@ private fun coreModule(context: PlatformContext) = module {
     single<HttpClient> {
         configureKtorClient(get(), get(), get())
     }
-    single { ConnectivityStatus(context) }
+    single<ConnectivityStatus> { getConnectivityStatus() }
     single { ApiNetworkClient(get(), get()) }
 }
 
-fun KoinApplication.configureModules(context: PlatformContext) {
+fun KoinApplication.configureModules() {
     modules(
-        coreModule(context),
+        coreModule,
         authModule,
         initModule
     )

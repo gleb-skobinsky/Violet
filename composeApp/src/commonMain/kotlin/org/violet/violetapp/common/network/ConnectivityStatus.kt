@@ -1,9 +1,8 @@
 package org.violet.violetapp.common.network
 
-import coil3.PlatformContext
 import kotlinx.coroutines.flow.StateFlow
 
-expect class ConnectivityStatus(context: PlatformContext) {
+interface ConnectivityStatus {
     val networkStateFlow: StateFlow<ConnectivityStatusState>
     val networkState: ConnectivityStatusState
 }
