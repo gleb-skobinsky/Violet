@@ -95,8 +95,9 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.splashscreen)
             implementation(libs.androidx.appcompat)
-            implementation(libs.ktor.client.android)
+            implementation(libs.ktor.client.okhttp)
             implementation(libs.androidx.core.ktx)
+            implementation(libs.sl4j.android)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.ios)
@@ -104,6 +105,8 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.sl4j.desktop)
         }
     }
 }
