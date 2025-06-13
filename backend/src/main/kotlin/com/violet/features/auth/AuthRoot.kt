@@ -5,21 +5,29 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.violet.email.data.AppSecrets
 import com.violet.email.data.EmailService
 import com.violet.features.auth.models.UserSession
+import com.violet.features.auth.routes.checkSessionRoute
 import com.violet.features.auth.routes.loginRoute
 import com.violet.features.auth.routes.refreshTokenRoute
 import com.violet.features.auth.routes.signupRoute
+import com.violet.features.users.repository.UsersRepository
 import com.violet.jwt.JWTConfig
 import com.violet.jwt.JWTConfig.Companion.JWT_AUTH_ID
-import com.violet.features.users.repository.UsersRepository
-import io.ktor.client.*
-import io.ktor.client.engine.apache.*
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
-import io.ktor.server.sessions.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.apache.Apache
+import io.ktor.http.HttpMethod
+import io.ktor.server.application.Application
+import io.ktor.server.auth.OAuthAccessTokenResponse
+import io.ktor.server.auth.OAuthServerSettings
+import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.authentication
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.jwt.jwt
+import io.ktor.server.auth.oauth
+import io.ktor.server.response.respondRedirect
+import io.ktor.server.routing.get
+import io.ktor.server.routing.routing
+import io.ktor.server.sessions.sessions
+import io.ktor.server.sessions.set
 
 private fun AppSecrets.toJwtConfig(): JWTConfig = JWTConfig(
     realm = jwtRealm,
@@ -74,7 +82,8 @@ fun Application.configureAuth(
             }
 
             get("/callback") {
-                val principal: OAuthAccessTokenResponse.OAuth2? = call.authentication.principal()
+                val principal: OAuthAccessTokenResponse.OAuth2? =
+                    call.authentication.principal()
                 call.sessions.set(UserSession(principal?.accessToken.toString()))
                 call.respondRedirect("/hello")
             }
@@ -82,6 +91,7 @@ fun Application.configureAuth(
         loginRoute(usersRepository, jwtConfig)
         refreshTokenRoute(jwtConfig)
         signupRoute(usersRepository, secrets, emailService)
+        checkSessionRoute(usersRepository)
     }
 }
 

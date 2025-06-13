@@ -1,6 +1,7 @@
 package com.violet.features.users.repository
 
-import com.violet.features.users.models.ExposedUser
+import com.violet.features.users.models.ExistingUser
+import com.violet.features.users.models.NewUser
 import com.violet.shared.BaseRepository
 import com.violet.shared.uuid
 import kotlinx.datetime.Clock
@@ -42,7 +43,7 @@ class DefaultUsersRepository(database: Database) : UsersRepository,
         }
     }
 
-    override suspend fun create(user: ExposedUser): String = dbQuery {
+    override suspend fun create(user: NewUser): String = dbQuery {
         Users.insert {
             it[email] = user.email
             it[password] = user.password
@@ -52,12 +53,13 @@ class DefaultUsersRepository(database: Database) : UsersRepository,
         }[Users.id].value.toString()
     }
 
-    override suspend fun readById(id: String): ExposedUser? {
+    override suspend fun readById(id: String): ExistingUser? {
         return dbQuery {
             Users.selectAll()
                 .andWhere { Users.id eq id.uuid() }
                 .map { row ->
-                    ExposedUser(
+                    ExistingUser(
+                        id = row[Users.id].toString(),
                         email = row[Users.email],
                         password = row[Users.password],
                         verified = row[Users.verified]
@@ -67,14 +69,15 @@ class DefaultUsersRepository(database: Database) : UsersRepository,
         }
     }
 
-    override suspend fun readByEmail(email: String): ExposedUser? {
+    override suspend fun readByEmail(email: String): ExistingUser? {
         return dbQuery {
             Users.selectAll().andWhere { Users.email eq email }
-                .map {
-                    ExposedUser(
-                        it[Users.email],
-                        it[Users.password],
-                        it[Users.verified]
+                .map { row ->
+                    ExistingUser(
+                        id = row[Users.id].toString(),
+                        email = row[Users.email],
+                        password = row[Users.password],
+                        verified = row[Users.verified]
                     )
                 }
                 .singleOrNull()
@@ -82,11 +85,11 @@ class DefaultUsersRepository(database: Database) : UsersRepository,
     }
 
 
-    override suspend fun update(id: String, user: ExposedUser) {
+    override suspend fun update(id: String, user: ExistingUser) {
         dbQuery {
             Users.update({ Users.id eq id.uuid() }) {
                 it[email] = user.email
-                it[password] = user.password
+                // it[password] = user.password
                 it[updatedAt] = Clock.System.now()
             }
         }

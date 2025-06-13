@@ -1,6 +1,6 @@
 package com.violet.features.users
 
-import com.violet.features.users.models.ExposedUser
+import com.violet.features.users.models.UserData
 import com.violet.shared.RepositoriesTags
 import io.bkbn.kompendium.core.metadata.DeleteInfo
 import io.bkbn.kompendium.core.metadata.GetInfo
@@ -8,9 +8,8 @@ import io.bkbn.kompendium.core.metadata.PutInfo
 import io.bkbn.kompendium.core.plugin.NotarizedRoute
 import io.bkbn.kompendium.json.schema.definition.TypeDefinition
 import io.bkbn.kompendium.oas.payload.Parameter
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.routing.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.routing.Route
 
 internal fun Route.usersEndpointDescription() {
     install(NotarizedRoute()) {
@@ -28,7 +27,7 @@ internal fun Route.usersEndpointDescription() {
             response {
                 description("User successfully retrieved")
                 responseCode(HttpStatusCode.OK)
-                responseType<ExposedUser>()
+                responseType<UserData>()
             }
             canRespond {
                 description("User not found")
@@ -53,7 +52,7 @@ internal fun Route.usersEndpointDescription() {
             )
             request {
                 description("Update a user")
-                requestType<ExposedUser>()
+                requestType<UserData>()
             }
             response {
                 description("User successfully updated")

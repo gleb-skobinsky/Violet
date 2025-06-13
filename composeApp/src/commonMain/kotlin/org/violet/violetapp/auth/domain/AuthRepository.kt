@@ -1,6 +1,5 @@
 package org.violet.violetapp.auth.domain
 
-import org.violet.violetapp.auth.data.entities.User
 import org.violet.violetapp.auth.domain.entities.OtpMessageType
 import org.violet.violetapp.common.network.RequestResult
 
@@ -16,6 +15,4 @@ interface AuthRepository {
     suspend fun resetPassword(login: String, password: String, otpToken: String): RequestResult<Unit>
 
     suspend fun checkSession(): RequestResult<Unit>
-
-    suspend fun user(): RequestResult<User>
 }

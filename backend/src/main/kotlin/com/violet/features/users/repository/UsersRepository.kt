@@ -1,16 +1,17 @@
 package com.violet.features.users.repository
 
-import com.violet.features.users.models.ExposedUser
+import com.violet.features.users.models.ExistingUser
+import com.violet.features.users.models.NewUser
 
 interface UsersRepository {
 
-    suspend fun create(user: ExposedUser): String
+    suspend fun create(user: NewUser): String
 
-    suspend fun readById(id: String): ExposedUser?
+    suspend fun readById(id: String): ExistingUser?
 
-    suspend fun readByEmail(email: String): ExposedUser?
+    suspend fun readByEmail(email: String): ExistingUser?
 
-    suspend fun update(id: String, user: ExposedUser)
+    suspend fun update(id: String, user: ExistingUser)
 
     suspend fun delete(id: String)
 }

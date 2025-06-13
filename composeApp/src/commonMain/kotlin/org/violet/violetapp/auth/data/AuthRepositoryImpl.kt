@@ -1,6 +1,5 @@
 package org.violet.violetapp.auth.data
 
-import ApiUserResponse
 import org.jetbrains.compose.resources.getString
 import org.violet.violetapp.auth.data.entities.CheckOtpRequest
 import org.violet.violetapp.auth.data.entities.CheckOtpResponse
@@ -9,9 +8,7 @@ import org.violet.violetapp.auth.data.entities.LoginResponse
 import org.violet.violetapp.auth.data.entities.OtpRequest
 import org.violet.violetapp.auth.data.entities.ResetPasswordRequest
 import org.violet.violetapp.auth.data.entities.SignupRequest
-import org.violet.violetapp.auth.data.entities.User
 import org.violet.violetapp.auth.data.entities.UserDataResponse
-import org.violet.violetapp.auth.data.entities.toUserBalance
 import org.violet.violetapp.auth.domain.AuthRepository
 import org.violet.violetapp.auth.domain.entities.OtpMessageType
 import org.violet.violetapp.common.network.ApiNetworkClient
@@ -44,7 +41,10 @@ class AuthRepositoryImpl(
     private val client: ApiNetworkClient,
     private val userSecureStorage: UserSecureStorage
 ) : AuthRepository {
-    override suspend fun login(email: String, password: String): RequestResult<Unit> =
+    override suspend fun login(
+        email: String,
+        password: String
+    ): RequestResult<Unit> =
         client.post<LoginRequest, LoginResponse>(
             urlPath = "/onboarding/api/auth/login",
             body = LoginRequest(login = email, password = password)
@@ -54,14 +54,17 @@ class AuthRepositoryImpl(
                 RequestResult.Success(Unit)
             }
 
-    override suspend fun register(login: String, password: String): RequestResult<Unit> {
+    override suspend fun register(
+        login: String,
+        password: String
+    ): RequestResult<Unit> {
         return client.post<SignupRequest, ServerResponse>(
             urlPath = "/onboarding/api/auth/register",
             body = SignupRequest(login, password)
         ).mapOnSuccess {
             when {
                 it.error && it.message == USER_ALREADY_EXIST_CONTRACT
-                -> RequestResult.Error(getString(AppRes.string.user_already_exists))
+                    -> RequestResult.Error(getString(AppRes.string.user_already_exists))
 
                 it.error -> RequestResult.Error(getString(AppRes.string.generic_eror))
                 else -> RequestResult.Success(Unit)
@@ -80,7 +83,10 @@ class AuthRepositoryImpl(
                         OtpMessageType.EMAIL
                     )
 
-                    !it.error && it.message == SMS_CONTRACT -> RequestResult.Success(OtpMessageType.SMS)
+                    !it.error && it.message == SMS_CONTRACT -> RequestResult.Success(
+                        OtpMessageType.SMS
+                    )
+
                     it.error && it.message == OTP_LOGIN_CONTRACT -> RequestResult.Error(
                         getString(
                             AppRes.string.otp_login_not_found
@@ -100,7 +106,10 @@ class AuthRepositoryImpl(
             }
     }
 
-    override suspend fun checkOtp(login: String, code: String): RequestResult<String> {
+    override suspend fun checkOtp(
+        login: String,
+        code: String
+    ): RequestResult<String> {
         return client.post<CheckOtpRequest, CheckOtpResponse>(
             urlPath = "/onboarding/api/auth/2fa/check",
             body = CheckOtpRequest(login, code)
@@ -126,7 +135,8 @@ class AuthRepositoryImpl(
                     !result.error -> {
                         result.token?.let { token ->
                             RequestResult.Success(token)
-                        } ?: RequestResult.Error(getString(AppRes.string.generic_eror))
+                        }
+                            ?: RequestResult.Error(getString(AppRes.string.generic_eror))
                     }
 
                     else -> RequestResult.Error(getString(AppRes.string.generic_eror))
@@ -177,22 +187,6 @@ class AuthRepositoryImpl(
 
                 else -> RequestResult.Success(Unit)
             }
-        }
-    }
-
-    override suspend fun user(): RequestResult<User> {
-        return client.get<ApiUserResponse>(
-            urlPath = "/onboarding/api/auth/user"
-        ).mapOnSuccess {
-            val userBalance = it.balances.firstOrNull()?.toUserBalance()
-            userBalance ?: return RequestResult.Error(getString(AppRes.string.generic_eror))
-            RequestResult.Success(
-                User(
-                    phone = it.phone.orEmpty(),
-                    email = it.email,
-                    balance = userBalance
-                )
-            )
         }
     }
 }

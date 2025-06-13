@@ -1,14 +1,18 @@
 package com.violet.features.users
 
-import com.violet.features.users.models.ExposedUser
+import com.violet.features.users.models.UserData
 import com.violet.features.users.repository.UsersRepository
 import com.violet.jwt.JWTConfig.Companion.JWT_AUTH_ID
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.Application
+import io.ktor.server.auth.authenticate
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.routing.delete
+import io.ktor.server.routing.get
+import io.ktor.server.routing.put
+import io.ktor.server.routing.route
+import io.ktor.server.routing.routing
 
 fun Application.configureUsersRoutes(
     usersRepository: UsersRepository
@@ -41,7 +45,7 @@ fun Application.configureUsersRoutes(
                         )
                         return@put
                     }
-                    val user = call.receive<ExposedUser>()
+                    val user = call.receive<UserData>()
                     usersRepository.update(id, user)
                     call.respond(HttpStatusCode.OK)
                 }

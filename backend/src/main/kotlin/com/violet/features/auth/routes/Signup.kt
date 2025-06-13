@@ -4,8 +4,9 @@ import com.violet.email.data.AppSecrets
 import com.violet.email.data.EmailData
 import com.violet.email.data.EmailService
 import com.violet.features.auth.models.SignupResponse
-import com.violet.features.users.models.ExposedUser
+import com.violet.features.users.models.NewUser
 import com.violet.features.users.models.SimpleUser
+import com.violet.features.users.models.UserData
 import com.violet.features.users.repository.UsersRepository
 import com.violet.shared.RepositoriesTags
 import common.data.Endpoints
@@ -32,7 +33,7 @@ internal fun Routing.signupRoute(
                 description("Sign up a user with their email and password")
                 request {
                     description("Register a user")
-                    requestType<SimpleUser>()
+                    requestType<UserData>()
                 }
                 response {
                     description("User successfully registered")
@@ -49,7 +50,7 @@ internal fun Routing.signupRoute(
             }
             if (secrets.smtpSupported) {
                 usersRepository.create(
-                    ExposedUser(
+                    NewUser(
                         email = user.email,
                         password = user.password,
                         verified = false
@@ -71,7 +72,7 @@ internal fun Routing.signupRoute(
                 )
             } else {
                 usersRepository.create(
-                    ExposedUser(
+                    NewUser(
                         email = user.email,
                         password = user.password,
                         verified = true

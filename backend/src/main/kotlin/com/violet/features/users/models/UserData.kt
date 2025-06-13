@@ -3,8 +3,8 @@ package com.violet.features.users.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ExposedUser(
+data class UserData(
+    val id: String,
     val email: String,
-    val password: String,
     val verified: Boolean
 )

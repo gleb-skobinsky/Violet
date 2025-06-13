@@ -6,6 +6,7 @@ object Endpoints {
         const val Login = "/api/v1/login"
         const val Signup = "/api/v1/signup"
         const val RefreshToken = "/api/v1/refresh"
+        const val CheckSession = "/api/v1/check-session"
     }
 
     object Notes {
