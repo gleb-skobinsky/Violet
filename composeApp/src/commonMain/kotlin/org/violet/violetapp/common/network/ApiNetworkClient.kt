@@ -77,8 +77,6 @@ class ApiNetworkClient(
         return if (status.isSuccess()) {
             RequestResult.Success(data = body<Response>())
         } else {
-            println("Http request FAILED:")
-            println(bodyAsText())
             RequestResult.Error(
                 error = ErrorData(
                     message = bodyAsText(),

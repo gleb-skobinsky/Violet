@@ -12,13 +12,11 @@ inline fun <reified VM : ViewModel> NavBackStackEntry.sharedKoinViewModel(
     navController: NavHostController,
 ): VM {
     val parentEntry = remember(this) {
-        try {
+        runCatching {
             destination.parent?.route
                 ?.let { navController.getBackStackEntry(it) }
                 ?: this
-        } catch (e: Exception) {
-            this
-        }
+        }.getOrNull() ?: this
     }
     return koinViewModel(viewModelStoreOwner = parentEntry)
 }
