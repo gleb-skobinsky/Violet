@@ -1,7 +1,7 @@
 package com.violet.features.auth.routes
 
-import com.violet.features.auth.models.TokenData
-import com.violet.features.users.models.SimpleUser
+import auth.data.TokenData
+import auth.data.UserLoginRequest
 import com.violet.features.users.repository.UsersRepository
 import com.violet.jwt.JWTConfig
 import com.violet.jwt.JWTConfig.Companion.ACCESS_EXPIRATION_TIMEOUT
@@ -31,7 +31,7 @@ internal fun Routing.loginRoute(
                 description("Login a user with his username and password")
                 request {
                     description("Login a user")
-                    requestType<SimpleUser>()
+                    requestType<UserLoginRequest>()
                 }
                 response {
                     description("User successfully logged in")
@@ -41,13 +41,16 @@ internal fun Routing.loginRoute(
             }
         }
         post {
-            val user = call.receive<SimpleUser>()
+            val user = call.receive<UserLoginRequest>()
             val dbUser = usersRepository.readByEmail(user.email) ?: run {
                 call.respond(HttpStatusCode.NotFound, "User name not found")
                 return@post
             }
             if (user.password != dbUser.password) {
-                call.respond(HttpStatusCode.Unauthorized, "Password is incorrect")
+                call.respond(
+                    HttpStatusCode.Unauthorized,
+                    "Password is incorrect"
+                )
                 return@post
             }
             val accessToken = jwtConfig.createToken(

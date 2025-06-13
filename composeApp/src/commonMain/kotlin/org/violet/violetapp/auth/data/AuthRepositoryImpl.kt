@@ -1,20 +1,20 @@
 package org.violet.violetapp.auth.data
 
+import auth.data.TokenData
+import auth.data.UserData
+import auth.data.UserLoginRequest
+import common.data.Endpoints
 import org.jetbrains.compose.resources.getString
 import org.violet.violetapp.auth.data.entities.CheckOtpRequest
 import org.violet.violetapp.auth.data.entities.CheckOtpResponse
-import org.violet.violetapp.auth.data.entities.LoginRequest
-import org.violet.violetapp.auth.data.entities.LoginResponse
 import org.violet.violetapp.auth.data.entities.OtpRequest
 import org.violet.violetapp.auth.data.entities.ResetPasswordRequest
 import org.violet.violetapp.auth.data.entities.SignupRequest
-import org.violet.violetapp.auth.data.entities.UserDataResponse
 import org.violet.violetapp.auth.domain.AuthRepository
 import org.violet.violetapp.auth.domain.entities.OtpMessageType
 import org.violet.violetapp.common.network.ApiNetworkClient
 import org.violet.violetapp.common.network.RequestResult
 import org.violet.violetapp.common.network.ServerResponse
-import org.violet.violetapp.common.network.genericError
 import org.violet.violetapp.common.network.mapOnSuccess
 import org.violet.violetapp.resources.AppRes
 import org.violet.violetapp.resources.email
@@ -45,21 +45,20 @@ class AuthRepositoryImpl(
         email: String,
         password: String
     ): RequestResult<Unit> =
-        client.post<LoginRequest, LoginResponse>(
-            urlPath = "/onboarding/api/auth/login",
-            body = LoginRequest(login = email, password = password)
-        )
-            .mapOnSuccess {
-                userSecureStorage.saveToken(it.accessToken)
-                RequestResult.Success(Unit)
-            }
+        client.post<UserLoginRequest, TokenData>(
+            urlPath = Endpoints.Auth.Login,
+            body = UserLoginRequest(email = email, password = password)
+        ).mapOnSuccess {
+            userSecureStorage.saveToken(it.accessToken)
+            RequestResult.Success(Unit)
+        }
 
     override suspend fun register(
         login: String,
         password: String
     ): RequestResult<Unit> {
         return client.post<SignupRequest, ServerResponse>(
-            urlPath = "/onboarding/api/auth/register",
+            urlPath = Endpoints.Auth.Signup,
             body = SignupRequest(login, password)
         ).mapOnSuccess {
             when {
@@ -176,17 +175,10 @@ class AuthRepositoryImpl(
     }
 
     override suspend fun checkSession(): RequestResult<Unit> {
-        return client.get<UserDataResponse>(
-            urlPath = "/onboarding/api/auth/user"
+        return client.get<UserData>(
+            urlPath = Endpoints.Auth.CheckSession
         ).mapOnSuccess {
-            when {
-                it.error != null -> {
-                    userSecureStorage.clearAll()
-                    genericError()
-                }
-
-                else -> RequestResult.Success(Unit)
-            }
+            RequestResult.Success(Unit)
         }
     }
 }

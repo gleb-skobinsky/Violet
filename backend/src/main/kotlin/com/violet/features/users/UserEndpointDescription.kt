@@ -1,6 +1,6 @@
 package com.violet.features.users
 
-import com.violet.features.users.models.UserData
+import auth.data.UserData
 import com.violet.shared.RepositoriesTags
 import io.bkbn.kompendium.core.metadata.DeleteInfo
 import io.bkbn.kompendium.core.metadata.GetInfo

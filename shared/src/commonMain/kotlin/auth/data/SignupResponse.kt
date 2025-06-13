@@ -1,4 +1,4 @@
-package com.violet.features.auth.models
+package auth.data
 
 import kotlinx.serialization.Serializable
 

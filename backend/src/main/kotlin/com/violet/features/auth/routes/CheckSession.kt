@@ -1,6 +1,6 @@
 package com.violet.features.auth.routes
 
-import com.violet.features.users.models.UserData
+import auth.data.UserData
 import com.violet.features.users.models.toUserData
 import com.violet.features.users.repository.UsersRepository
 import com.violet.jwt.JWTConfig

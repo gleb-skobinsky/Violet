@@ -1,12 +1,12 @@
 package com.violet.features.auth.routes
 
+import auth.data.SignupResponse
+import auth.data.UserData
+import auth.data.UserLoginRequest
 import com.violet.email.data.AppSecrets
 import com.violet.email.data.EmailData
 import com.violet.email.data.EmailService
-import com.violet.features.auth.models.SignupResponse
 import com.violet.features.users.models.NewUser
-import com.violet.features.users.models.SimpleUser
-import com.violet.features.users.models.UserData
 import com.violet.features.users.repository.UsersRepository
 import com.violet.shared.RepositoriesTags
 import common.data.Endpoints
@@ -43,7 +43,7 @@ internal fun Routing.signupRoute(
             }
         }
         post {
-            val user = call.receive<SimpleUser>()
+            val user = call.receive<UserLoginRequest>()
             usersRepository.readByEmail(user.email)?.let {
                 call.respond(HttpStatusCode.BadRequest, "User already exists")
                 return@post
@@ -59,7 +59,11 @@ internal fun Routing.signupRoute(
                 val emailData = EmailData(
                     emailFrom = secrets.emailFrom,
                     emailTo = user.email,
-                    message = "Verify your email using the following code: ${Random().nextInt(999999)}",
+                    message = "Verify your email using the following code: ${
+                        Random().nextInt(
+                            999999
+                        )
+                    }",
                     subject = "Email verification"
                 )
                 emailService.sendEmail2(emailData)
