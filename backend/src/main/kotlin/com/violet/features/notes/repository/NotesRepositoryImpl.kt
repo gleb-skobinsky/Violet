@@ -12,14 +12,15 @@ import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.SortOrder.DESC
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
-import org.jetbrains.exposed.sql.SortOrder.DESC
+import java.util.UUID
 
 private object Notes : IdTable<UUID>("notes") {
     override val id = uuid("id").entityId().clientDefault {
@@ -52,7 +53,8 @@ class NotesRepositoryImpl(
             val userId = getUserOrNull(
                 email = email
             ) ?: return@dbQuery emptyList()
-            Notes.select { Notes.userId eq userId }
+            Notes.selectAll()
+                .andWhere { Notes.userId eq userId }
                 .orderBy(Notes.createdAt to DESC)
                 .map { row ->
                     NoteResponse(
@@ -93,9 +95,10 @@ class NotesRepositoryImpl(
     }
 
     private fun getUserOrNull(email: String): UUID? {
-        return Users.select {
-            Users.email eq email
-        }.map { it[Users.id] }
+        return Users.selectAll()
+            .andWhere {
+                Users.email eq email
+            }.map { it[Users.id] }
             .singleOrNull()?.value
     }
 }

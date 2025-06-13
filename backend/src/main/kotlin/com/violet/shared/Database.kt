@@ -7,6 +7,7 @@ import org.koin.dsl.module
 val databaseModule = module {
     single<Database> {
         val secrets: AppSecrets = get()
+        println("Db user: ${secrets.dbUser} ${secrets.dbPassword}")
         Database.connect(
             url = "jdbc:postgresql://localhost:${secrets.dbPort}/${secrets.dbName}",
             user = secrets.dbUser,

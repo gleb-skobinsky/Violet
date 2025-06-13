@@ -11,13 +11,15 @@ import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
 import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-import java.util.*
+import java.util.UUID
 
 object Users : IdTable<UUID>("users") {
     override val id = uuid("id").entityId().clientDefault {
@@ -32,7 +34,8 @@ object Users : IdTable<UUID>("users") {
     override val primaryKey = PrimaryKey(id)
 }
 
-class DefaultUsersRepository(database: Database) : UsersRepository, BaseRepository() {
+class DefaultUsersRepository(database: Database) : UsersRepository,
+    BaseRepository() {
 
     init {
         transaction(database) {
@@ -52,7 +55,8 @@ class DefaultUsersRepository(database: Database) : UsersRepository, BaseReposito
 
     override suspend fun readById(id: String): ExposedUser? {
         return dbQuery {
-            Users.select { Users.id eq id.uuid() }
+            Users.selectAll()
+                .andWhere { Users.id eq id.uuid() }
                 .map { row ->
                     ExposedUser(
                         email = row[Users.email],
@@ -66,8 +70,14 @@ class DefaultUsersRepository(database: Database) : UsersRepository, BaseReposito
 
     override suspend fun readByEmail(email: String): ExposedUser? {
         return dbQuery {
-            Users.select { Users.email eq email }
-                .map { ExposedUser(it[Users.email], it[Users.password], it[Users.verified]) }
+            Users.selectAll().andWhere { Users.email eq email }
+                .map {
+                    ExposedUser(
+                        it[Users.email],
+                        it[Users.password],
+                        it[Users.verified]
+                    )
+                }
                 .singleOrNull()
         }
     }
