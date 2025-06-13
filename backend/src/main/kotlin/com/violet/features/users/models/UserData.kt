@@ -16,3 +16,9 @@ fun UserData.toUpdatedUser(): UpdatedUser {
         verified = verified
     )
 }
+
+fun ExistingUser.toUserData() = UserData(
+    id = id,
+    email = email,
+    verified = verified
+)

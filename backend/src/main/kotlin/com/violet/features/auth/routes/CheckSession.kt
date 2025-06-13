@@ -1,6 +1,7 @@
 package com.violet.features.auth.routes
 
 import com.violet.features.users.models.UserData
+import com.violet.features.users.models.toUserData
 import com.violet.features.users.repository.UsersRepository
 import com.violet.jwt.JWTConfig
 import com.violet.jwt.email
@@ -48,11 +49,7 @@ internal fun Routing.checkSessionRoute(
                 }
 
                 call.respond(
-                    UserData(
-                        id = dbUser.id,
-                        email = dbUser.email,
-                        verified = dbUser.verified
-                    )
+                    dbUser.toUserData()
                 )
             }
         }
