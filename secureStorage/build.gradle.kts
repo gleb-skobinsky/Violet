@@ -41,6 +41,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.multiplatform.settings)
             implementation(libs.multiplatform.settings.coroutines)
+            implementation(libs.coroutines)
             implementation(libs.koin.core)
         }
         val dataStoreMain by creating {
@@ -67,6 +68,12 @@ kotlin {
         }
         androidMain {
             dependsOn(dataStoreMain)
+        }
+        val wasmJsMain by getting {
+            dependsOn(commonMain.get())
+            dependencies {
+                implementation(libs.kotlinx.browser)
+            }
         }
     }
 }
