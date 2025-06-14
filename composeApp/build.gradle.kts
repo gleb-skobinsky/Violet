@@ -97,7 +97,6 @@ kotlin {
             implementation(libs.androidx.appcompat)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.androidx.core.ktx)
-            implementation(libs.sl4j.android)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.ios)
@@ -106,7 +105,6 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
             implementation(libs.ktor.client.okhttp)
-            implementation(libs.sl4j.desktop)
         }
     }
 }

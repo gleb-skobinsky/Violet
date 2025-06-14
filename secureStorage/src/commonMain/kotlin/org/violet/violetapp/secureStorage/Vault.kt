@@ -1,9 +1,9 @@
 package org.violet.violetapp.secureStorage
 
 interface Vault {
-    fun string(key: String): String?
+    suspend fun string(key: String): String?
 
-    fun saveStr(key: String, value: String)
+    suspend fun saveStr(key: String, value: String)
 
-    fun clear()
+    suspend fun clear()
 }

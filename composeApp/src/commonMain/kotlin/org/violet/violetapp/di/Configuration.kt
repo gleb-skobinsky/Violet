@@ -13,7 +13,7 @@ import org.violet.violetapp.common.network.ConnectivityStatus
 import org.violet.violetapp.common.network.configureKtorClient
 import org.violet.violetapp.init.initModule
 import org.violet.violetapp.secureStorage.Vault
-import org.violet.violetapp.secureStorage.VaultDebugImpl
+import org.violet.violetapp.secureStorage.VaultImpl
 
 expect fun Scope.getConnectivityStatus(): ConnectivityStatus
 
@@ -23,7 +23,7 @@ private val coreModule = module {
             ignoreUnknownKeys = true
         }
     }
-    single<Vault> { VaultDebugImpl() }
+    single<Vault> { VaultImpl() }
     single<UserSecureStorage> { UserSecureStorageImpl(get()) }
     single<HttpClient> {
         configureKtorClient(get(), get(), get())

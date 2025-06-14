@@ -8,37 +8,37 @@ private data object SecureStorageKeys {
 }
 
 interface UserSecureStorage {
-    fun saveEmail(email: String)
+    suspend fun saveEmail(email: String)
 
-    fun saveToken(token: String)
+    suspend fun saveToken(token: String)
 
-    fun getEmail(): String?
+    suspend fun getEmail(): String?
 
-    fun getToken(): String?
+    suspend fun getToken(): String?
 
-    fun clearAll()
+    suspend fun clearAll()
 }
 
 class UserSecureStorageImpl(
     private val vault: Vault
 ) : UserSecureStorage {
-    override fun saveEmail(email: String) {
+    override suspend fun saveEmail(email: String) {
         vault.saveStr(SecureStorageKeys.USER_EMAIL, email)
     }
 
-    override fun saveToken(token: String) {
+    override suspend fun saveToken(token: String) {
         vault.saveStr(SecureStorageKeys.USER_ACCESS_TOKEN, token)
     }
 
-    override fun getEmail(): String? {
+    override suspend fun getEmail(): String? {
         return vault.string(SecureStorageKeys.USER_EMAIL)
     }
 
-    override fun getToken(): String? {
+    override suspend fun getToken(): String? {
         return vault.string(SecureStorageKeys.USER_ACCESS_TOKEN)
     }
 
-    override fun clearAll() {
+    override suspend fun clearAll() {
         vault.clear()
     }
 }

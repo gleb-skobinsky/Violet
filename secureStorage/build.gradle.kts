@@ -35,9 +35,38 @@ kotlin {
 
     jvm()
 
+    @Suppress("Unused")
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.multiplatform.settings)
+            implementation(libs.multiplatform.settings.coroutines)
+            implementation(libs.koin.core)
+        }
+        val dataStoreMain by creating {
+            dependsOn(commonMain.get())
+            dependencies {
+                implementation(libs.datastore.settings)
+                implementation(libs.androidx.datastore)
+            }
+        }
+        val iosMain by creating {
+            dependsOn(dataStoreMain)
+        }
+        val iosX64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        val jvmMain by getting {
+            dependsOn(dataStoreMain)
+        }
+        androidMain {
+            dependsOn(dataStoreMain)
         }
     }
 }
