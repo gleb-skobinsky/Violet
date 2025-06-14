@@ -71,6 +71,7 @@ exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "e
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
 ktor-server-logging = { module = "io.ktor:ktor-server-call-logging-jvm" }
 ktor-server-auth = { module = "io.ktor:ktor-server-auth-jvm" }
+ktor-server-cors = { module = "io.ktor:ktor-server-cors" }
 ktor-client-core-jvm = { module = "io.ktor:ktor-client-core-jvm" }
 ktor-client-apache = { module = "io.ktor:ktor-client-apache-jvm" }
 simple-mail = { module = "org.simplejavamail:simple-java-mail", version.ref = "simplejavaMail" }

@@ -1,5 +1,8 @@
 package org.violet.violetapp.auth.presentation
 
+import io.ktor.http.HttpStatusCode
+import org.jetbrains.compose.resources.getString
+import org.koin.core.component.inject
 import org.violet.violetapp.auth.domain.AuthRepository
 import org.violet.violetapp.common.mvi.BaseAction
 import org.violet.violetapp.common.mvi.BaseEffect
@@ -7,13 +10,11 @@ import org.violet.violetapp.common.mvi.BaseState
 import org.violet.violetapp.common.mvi.BaseViewModel
 import org.violet.violetapp.common.network.onError
 import org.violet.violetapp.common.network.onSuccess
-import io.ktor.http.HttpStatusCode
-import org.jetbrains.compose.resources.getString
-import org.koin.core.component.inject
 import org.violet.violetapp.resources.AppRes
 import org.violet.violetapp.resources.invalid_login_or_password
 
-class LoginViewModel : BaseViewModel<LoginState, LoginAction, LoginEffect>(LoginState()) {
+class LoginViewModel :
+    BaseViewModel<LoginState, LoginAction, LoginEffect>(LoginState()) {
 
     private val authRepository: AuthRepository by inject()
 
@@ -24,17 +25,15 @@ class LoginViewModel : BaseViewModel<LoginState, LoginAction, LoginEffect>(Login
                 authRepository.login(
                     email = currentState.email,
                     password = currentState.password
-                )
-                    .onSuccess {
-                        setEffect(LoginEffect.NavigateToMain)
+                ).onSuccess {
+                    setEffect(LoginEffect.NavigateToMain)
+                }.onError {
+                    if (it.httpStatus == HttpStatusCode.Unauthorized) {
+                        setEffect(LoginEffect.ShowError(getString(AppRes.string.invalid_login_or_password)))
+                    } else {
+                        setEffect(LoginEffect.ShowError(it.message))
                     }
-                    .onError {
-                        if (it.httpStatus == HttpStatusCode.Unauthorized) {
-                            setEffect(LoginEffect.ShowError(getString(AppRes.string.invalid_login_or_password)))
-                        } else {
-                            setEffect(LoginEffect.ShowError(it.message))
-                        }
-                    }
+                }
                 setState { it.copy(isLoading = false) }
             }
 
