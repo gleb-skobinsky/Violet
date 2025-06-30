@@ -1,7 +1,6 @@
 package org.violet.violetapp.common.navigation
 
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.Flow
@@ -43,29 +42,25 @@ class KMPNavigatorImpl(
         navController.currentBackStackEntry.hasScreen(screen)
 
     override fun goBack() {
-        ifResumed {
-            runSafely {
-                navController.navigateUp()
-            }
+        runSafely {
+            navController.navigateUp()
         }
     }
 
     override fun popUntil(screen: Screens) {
-        ifResumed {
-            runSafely {
-                navController.popBackStack(
-                    route = screen,
-                    inclusive = false
-                )
-            }
+        runSafely {
+            navController.popBackStack(
+                route = screen,
+                inclusive = false
+            )
         }
     }
 
     override fun goTo(screen: Screens) {
         if (hasScreen(screen)) return
-        ifResumed {
-            runSafely {
-                navController.navigate(screen)
+        runSafely {
+            navController.navigate(screen) {
+                launchSingleTop = true
             }
         }
     }
@@ -85,13 +80,6 @@ class KMPNavigatorImpl(
                     inclusive = true
                 }
             }
-        }
-    }
-
-    private inline fun ifResumed(block: () -> Unit) {
-        val currentEntry = navController.currentBackStackEntry ?: return
-        if (currentEntry.lifecycle.currentState == Lifecycle.State.RESUMED) {
-            block()
         }
     }
 
