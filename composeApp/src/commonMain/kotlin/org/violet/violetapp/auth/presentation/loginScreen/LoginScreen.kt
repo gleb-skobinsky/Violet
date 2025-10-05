@@ -20,8 +20,10 @@ import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import org.violet.uiKit.theme.LocalVioletTheme
+import org.violet.uiKit.theme.VioletTheme
 import org.violet.violetapp.auth.presentation.LoginAction
 import org.violet.violetapp.auth.presentation.LoginEffect
 import org.violet.violetapp.auth.presentation.LoginState
@@ -30,6 +32,7 @@ import org.violet.violetapp.common.icons.Lock
 import org.violet.violetapp.common.icons.Sms
 import org.violet.violetapp.common.mvi.CollectEffects
 import org.violet.violetapp.common.navigation.KMPNavigator
+import org.violet.violetapp.common.navigation.KMPNavigator.Companion.PreviewNavigator
 import org.violet.violetapp.common.navigation.LocalKmpNavigator
 import org.violet.violetapp.common.navigation.Screens
 import org.violet.violetapp.common.presentation.RootSnackbarController
@@ -171,4 +174,16 @@ fun BigAuthText(
             fontSize = if (secondary) 24.sp else 32.sp
         )
     )
+}
+
+@Composable
+@Preview
+fun LoginScreenPreview() {
+    VioletTheme {
+        LoginScreenContent(
+            state = LoginState(),
+            onAction = {},
+            navigator = PreviewNavigator
+        )
+    }
 }

@@ -4,6 +4,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 val LocalKmpNavigator = staticCompositionLocalOf<KMPNavigator> {
     error("No KMPNavigator provided")
@@ -30,6 +31,18 @@ interface KMPNavigator {
     val currentEntry: Flow<NavBackStackEntry?>
 
     fun hasScreen(screen: Screens): Boolean
+
+    companion object {
+        val PreviewNavigator = object : KMPNavigator {
+            override fun goBack() = Unit
+            override fun goTo(screen: Screens) = Unit
+            override fun replace(screen: Screens) = Unit
+            override fun replaceAll(screen: Screens) = Unit
+            override fun popUntil(screen: Screens) = Unit
+            override val currentEntry: Flow<NavBackStackEntry?> = emptyFlow()
+            override fun hasScreen(screen: Screens): Boolean = false
+        }
+    }
 }
 
 class KMPNavigatorImpl(
