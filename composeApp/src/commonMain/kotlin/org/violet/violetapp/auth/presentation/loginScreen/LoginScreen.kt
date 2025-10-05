@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,8 +18,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.violet.uiKit.theme.LocalVioletTheme
 import org.violet.violetapp.auth.presentation.LoginAction
@@ -125,8 +126,10 @@ fun LoginScreenContent(
 @Composable
 internal fun ColumnScope.VioletAppLogo() {
     Image(
-        modifier = Modifier.Companion.align(Alignment.CenterHorizontally),
-        painter = painterResource(AppRes.drawable.logo),
+        modifier = Modifier
+            .align(Alignment.CenterHorizontally)
+            .size(240.dp),
+        imageVector = vectorResource(AppRes.drawable.logo),
         contentDescription = "Payeasy logo"
     )
 }
