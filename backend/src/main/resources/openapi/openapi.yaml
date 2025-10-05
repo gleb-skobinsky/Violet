@@ -72,7 +72,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserData"
+              $ref: "#/components/schemas/SignupRequest"
         required: true
       responses:
         "201":
@@ -283,6 +283,16 @@ components:
       required:
       - "emailSent"
       - "message"
+    SignupRequest:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        password:
+          type: "string"
+      required:
+      - "email"
+      - "password"
     UserData:
       type: "object"
       properties:
